@@ -1,10 +1,39 @@
 # Horizon
 
-## Info
+## How to start and run flask app
 
-download the flask and msql connector dependencies in the media-app directory after download by running :  
-pip install Flask  
-pip install mysql-connector-python  
-pip install python-dotenv  
+### 1. Colne the repository
+```bash
+ git clone https://github.com/Horizon-LLC/Horizon.git
+ ```
+### 2. Navigate to backend directory
+ ```bash
+cd media-app/backend
+```
+### 3. Set Up the Virtual Environment:
+   - **For macOS/Linux**:
+     1. Make the setup script executable:
+        ```bash
+        chmod +x setup.sh
+        ```
+     2. Run the setup script:
+        ```bash
+        bash setup.sh
+        ```
 
-youll need to manually create the .env file in the backend folder after cloning the repository. The discord has what to put in it so it can connect to the database 
+   - **For Windows**:
+     1. Run the setup batch file:
+        ```bash
+        setup.bat
+        ```
+### 4. Add database information in the .env file. Please ask Adiran or Keita. 
+### 5. Run flask
+```bash
+flask run
+```
+### Note for macOS/Linux:
+When you run flask, make sure you activate virtual environment.
+```bash
+source venv/bin/activate
+flask run
+```
