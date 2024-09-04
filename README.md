@@ -14,17 +14,17 @@ cd media-app/backend
    - **For macOS/Linux**:
      1. Make the setup script executable:
         ```bash
-        chmod +x setup.sh
+        chmod +x ../setup-files/setup.sh
         ```
      2. Run the setup script:
         ```bash
-        bash setup.sh
+        bash ../setup-files/setup.sh
         ```
 
    - **For Windows**:
      1. Run the setup batch file:
         ```bash
-        setup.bat
+        ../setup-files/setup.bat
         ```
 ### 4. Add database information in the .env file. Please ask Adiran or Keita. 
 ### 5. Run flask
