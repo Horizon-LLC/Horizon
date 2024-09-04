@@ -1,15 +1,19 @@
+import os
 from flask import Flask
 import mysql.connector
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
 
 #connecting to the database
 def get_db_connection():
     connection = mysql.connector.connect(
-        host='horizon-llc.cdcgg8uief43.us-east-1.rds.amazonaws.com',
-        user='admin',
-        password='horizon4800',
-        database='horizon'
+        host=os.getenv('DB_HOST'),
+        user=os.getenv('DB_USER'),
+        password=os.getenv('DB_PASSWORD'),
+        database=os.getenv('DB_NAME')
     )
     return connection
 
