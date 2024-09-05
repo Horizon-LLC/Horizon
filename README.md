@@ -37,3 +37,27 @@ When you run flask, make sure you activate virtual environment.
 source venv/bin/activate
 flask run
 ```
+
+### 6. Navigate to the Frontend:
+open another terminal and navigate to the frontend directory like 
+```bash
+cd path/to/../frontend
+```
+
+### 7.  Install React Dependencies:
+```bash
+npm install
+```
+
+### 8. Start the React
+```bash
+npm start
+```
+
+### Final Note :
+You will now have two terminals running:
+* One for Flask (Backend) on http://localhost:5000.
+* One for React (Frontend) on http://localhost:3000.
+
+Copy http://localhost:3000 and paste on your brower to view the frontend, and React will fetch data from Flask when needed.
+
