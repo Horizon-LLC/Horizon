@@ -18,6 +18,9 @@ pip install Flask-Login
 pip install python-dotenv
 pip install pymysql
 pip install flask-cors
+pip install mysql-connector-python
+REM mypy is for static type checking
+pip install mypy
 
 REM Step 5: Freeze dependencies to requirements.txt
 pip freeze > requirements.txt
@@ -35,3 +38,4 @@ cd ..\frontend
 npm install
 
 echo Setup complete! To run the Flask app, use 'flask run'. To run the React app, use 'npm start' in the frontend directory.
+echo Copy http://localhost:3000 and paste on your brower to view the frontend, and React will fetch data from Flask when needed.
