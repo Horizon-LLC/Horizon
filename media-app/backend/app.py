@@ -1,14 +1,19 @@
 import os
-from flask import Flask
+from flask import Flask, jsonify
+from flask_cors import CORS
 import mysql.connector
+from mysql.connector.connection import MySQLConnection
+from typing import List, Dict
 from dotenv import load_dotenv
 
+# Load environment variables from .env file
 load_dotenv()
 
 app = Flask(__name__)
+CORS(app)  # Enable Cross-Origin Resource Sharing (CORS)
 
-#connecting to the database
-def get_db_connection():
+# Function to establish the database connection
+def get_db_connection() -> MySQLConnection:
     connection = mysql.connector.connect(
         host=os.getenv('DB_HOST'),
         user=os.getenv('DB_USER'),
@@ -17,10 +22,7 @@ def get_db_connection():
     )
     return connection
 
-# checking if it connected to the database correctly 
-# run the flask app to see by running "python app.py" in the backend folder and then
-# opening your browser and going to "http://localhost:5000/test-db"
-# "ctrl + C to end it in the terminal"
+# Route to test the database connection
 @app.route('/test-db', methods=['GET'])
 def test_db():
     try:
@@ -30,9 +32,23 @@ def test_db():
         db_name = cursor.fetchone()
         cursor.close()
         connection.close()
-        return f"connected to database named ' {db_name[0]} ' successfully "
+        return f"Connected to database named '{db_name[0]}' successfully"
     except mysql.connector.Error as err:
         return f"Error: {err}"
-    
+
+# Route to fetch all users from the 'user' table
+@app.route('/allUsers', methods=['GET'])
+def get_all_users():
+    try:
+        connection = get_db_connection()
+        cursor = connection.cursor(dictionary=True)  # Get results as dictionary
+        cursor.execute("SELECT * FROM user")  # Query user data
+        users: List[Dict[str, str]] = cursor.fetchall()  # Fetch all user records
+        cursor.close()
+        connection.close()
+        return jsonify(users)  # Return JSON response
+    except mysql.connector.Error as err:
+        return jsonify({"error": str(err)})
+
 if __name__ == "__main__":
     app.run(debug=True)
