@@ -4,13 +4,32 @@ const UserList = () => {
     const [users, setUsers] = useState([]);
     const [error, setError] = useState(null);
 
+
     const fetchData = async () => {
+        console.log("Button clicked, fetching data...");  // Check if this logs in the console
         try {
-            const response = await fetch('/data');  // Call Flask API
+            const response = await fetch("http://127.0.0.1:5000/allUsers");  // Call Flask API
+            console.log("Response status:", response.status);  // Log the status code
+            // Log the raw response to check if it's valid
+            console.log("Raw response:", response);
+
+            // Check if the response is OK
+            if (!response.ok) {
+                console.log("Failed to fetch data:", response.status);
+                throw new Error(`Error: ${response.status}`);
+            }
+
+
             const data = await response.json();
+            if (response.ok) {
+                console.log("Success: fetched data");
+            } else {
+                console.log("Failed: fetched data");
+            }
             setUsers(data);
         } catch (error) {
             setError('Error fetching data');
+            console.error("Fetch error:", error);  // Log the error details
         }
     };
 
@@ -24,7 +43,7 @@ const UserList = () => {
                 {users.length > 0 && (
                     <ul>
                         {users.map(user => (
-                            <li key={user.id}>ID: {user.id}, Name: {user.name}, Email: {user.email}</li>
+                            <li key={user.id}>ID: {user.id}, Name: {user.username}, Email: {user.email}, User_Creation_Date{user.user_creation_date}, is_above_18{user.is_above_18}</li>
                         ))}
                     </ul>
                 )}
