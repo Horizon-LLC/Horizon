@@ -19,6 +19,9 @@ pip install python-dotenv
 pip install pymysql
 pip install flask-cors
 pip install mysql-connector-python
+
+REM Enable to communicate Flask(Backend) and React(Frontend)
+pip install flask-cors 
 REM mypy is for static type checking
 pip install mypy
 

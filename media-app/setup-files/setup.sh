@@ -19,6 +19,7 @@ pip install python-dotenv
 pip install pymysql
 pip install flask-cors
 pip install mysql-connector-python
+pip install flask-cors # Enable to communicate Flask(Backend) and React(Frontend)
 pip install mypy # this is for static type checking
 
 # Step 5: Freeze dependencies to requirements.txt
