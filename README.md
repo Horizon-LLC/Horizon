@@ -1,8 +1,11 @@
 # Horizon
+<br/><br/>
+## Visiting our social media website -> [horizon-llc.net](https://horizon-llc.net/)
 
-## How to start and run flask app
+<br/><br/>  
+## How to start and run flask app on a local server
 
-### 1. Colne the repository
+### 1. Clone the repository
 ```bash
  git clone https://github.com/Horizon-LLC/Horizon.git
  ```
@@ -26,7 +29,7 @@ cd media-app/backend
         ```bash
         ../setup-files/setup.bat
         ```
-### 4. Add database information in the .env file. Please ask Adiran or Keita. 
+### 4. Add database information in the .env file. Please ask Adrian or Keita. 
 ### 5. Run flask
 ```bash
 flask run
@@ -60,4 +63,10 @@ You will now have two terminals running:
 * One for React (Frontend) on http://localhost:3000.
 
 Copy http://localhost:3000 and paste on your brower to view the frontend, and React will fetch data from Flask when needed.
+<br/><br/> 
+
+## How its ran on the cloud 
+
+### Clients access the website through a custom domain (horizon-llc.net) managed by AWS Route 53, which directs them to AWS CloudFront to serve the React frontend hosted on a S3 bucket. The React app communicates with a Flask backend via AWS API Gateway, which triggers AWS Lambda to run the Flask API and get the database data from an AWS RDS MySQL database.
+
 
