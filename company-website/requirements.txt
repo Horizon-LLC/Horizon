@@ -1,0 +1,2 @@
+Flask==2.3.2  # or the latest compatible version of Flask
+gunicorn==20.1.0  # for Heroku deployment

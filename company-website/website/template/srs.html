@@ -1,0 +1,13 @@
+{% extends "base.html" %} 
+
+{% block title %}SRS{% endblock %}
+ 
+{% block content %}
+<div class="container mt-5">
+    <h1 class="webtitle center-horizontal">SRS</h1>
+    <div class="pdf-container">
+        <embed src="{{ url_for('static', filename='srs/srs.pdf') }}" type="application/pdf" width="100%" height="100%" />
+    </div>
+</div>
+{% endblock %}
+
