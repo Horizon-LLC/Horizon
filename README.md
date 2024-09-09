@@ -2,7 +2,7 @@
 <br/><br/>
 ## Visiting our social media website -> [horizon-llc.net](https://horizon-llc.net/)
 <br/><br/>
-## Visiting our comopany website -> [company.horizon-llc.net](https://company.horizon-llc.net/)
+## Visiting our company website -> [company.horizon-llc.net](https://company.horizon-llc.net/)
 
 <br/><br/>  
 ## How to start and run flask app on a local server
