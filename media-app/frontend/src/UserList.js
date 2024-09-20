@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
 
+import {Button} from "@nextui-org/button";
+import {Chip} from "@nextui-org/chip";
+
+
 const UserList = () => {
     const [users, setUsers] = useState([]);
     const [error, setError] = useState(null);
@@ -36,7 +40,7 @@ const UserList = () => {
     return (
         <div>
             <h1>Click to Get All Users</h1>
-            <button onClick={fetchData}>Get User Data</button>
+            <Button color="primary" onClick={fetchData}>Get User Data</Button>
 
             {error && <p>{error}</p>}
             <div id="user-data">
