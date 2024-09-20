@@ -1,13 +1,7 @@
-import {Card, CardBody} from "@nextui-org/react";
+import GenericTable from './GenericTable';
 
 const CommentTable = () => {
-    return (
-        <Card>
-            <CardBody>
-                COMMENT
-            </CardBody>
-        </Card>  
-    )
+    return <GenericTable apiEndpoint="api/comment" title="Comment Table" />;
 };
 
 export default CommentTable;

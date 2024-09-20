@@ -4,7 +4,8 @@ import ERDiagram from './ERDiagram';
 import FriendshipTable from './FriendshipTable';
 import MessageTable from './MessageTable';
 import GroupTable from './GroupTable';
-import GroupRoleTable from './GroupRoleTable';
+//TODO need to replace with notification
+// import GroupRoleTable from './GroupRoleTable';
 import GroupMemTable from './GroupMemTable';
 import PostTable from './PostTable';
 import LikeTable from './LikeTable';
@@ -33,9 +34,10 @@ const EntityList = () => {
                 <Tab key="group" title="Group">
                     <GroupTable />
                 </Tab>
-                <Tab key="grouprole" title="Group Role">
-                    <GroupRoleTable />
-                </Tab>
+                {/* TODO need to replace with notification*/}
+                {/*<Tab key="grouprole" title="Group Role">*/}
+                {/*    <GroupRoleTable />*/}
+                {/*</Tab>*/}
                 <Tab key="groupmem" title="Group Membership">
                     <GroupMemTable />
                 </Tab>

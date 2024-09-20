@@ -39,6 +39,7 @@ echo FLASK_APP=app.py >> .env
 REM Step 8: Navigate to the frontend directory and install React dependencies
 cd ..\frontend
 npm install
+npm install @nextui-org/react
 
 echo Setup complete! To run the Flask app, use 'flask run'. To run the React app, use 'npm start' in the frontend directory.
 echo Copy http://localhost:3000 and paste on your brower to view the frontend, and React will fetch data from Flask when needed.

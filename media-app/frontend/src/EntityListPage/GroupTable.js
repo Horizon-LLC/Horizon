@@ -1,13 +1,8 @@
-import {Card, CardBody} from "@nextui-org/react";
+import GenericTable from "./GenericTable";
 
 const GroupTable = () => {
-    return (
-        <Card>
-            <CardBody>
-                GROUP
-            </CardBody>
-        </Card>  
-    )
+    return <GenericTable apiEndpoint="api/group" title="Group Table" />;
+
 };
 
 export default GroupTable;

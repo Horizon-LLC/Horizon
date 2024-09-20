@@ -1,13 +1,7 @@
-import {Card, CardBody} from "@nextui-org/react";
+import GenericTable from './GenericTable';
 
 const PostTable = () => {
-    return (
-        <Card>
-            <CardBody>
-                POST
-            </CardBody>
-        </Card>  
-    )
+    return <GenericTable apiEndpoint="api/post" title="Post Table" />;
 };
 
 export default PostTable;

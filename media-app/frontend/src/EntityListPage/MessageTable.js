@@ -1,13 +1,7 @@
-import {Card, CardBody} from "@nextui-org/react";
+import GenericTable from './GenericTable';
 
 const MessageTable = () => {
-    return (
-        <Card>
-            <CardBody>
-                MESSAGE
-            </CardBody>
-        </Card>  
-    )
+    return <GenericTable apiEndpoint="api/message" title="Message Table" />;
 };
 
 export default MessageTable;

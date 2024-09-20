@@ -1,13 +1,7 @@
-import {Card, CardBody} from "@nextui-org/react";
+import GenericTable from './GenericTable';
 
 const FriendshipTable = () => {
-    return (
-        <Card>
-            <CardBody>
-                FRIENDSHIP
-            </CardBody>
-        </Card>  
-    )
+    return <GenericTable apiEndpoint="api/friendship" title="Friendship Table" />;
 };
 
 export default FriendshipTable;

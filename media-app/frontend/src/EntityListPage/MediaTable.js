@@ -1,13 +1,7 @@
-import {Card, CardBody} from "@nextui-org/react";
+import GenericTable from './GenericTable';
 
 const MediaTable = () => {
-    return (
-        <Card>
-            <CardBody>
-                MEDIA
-            </CardBody>
-        </Card>  
-    )
+    return <GenericTable apiEndpoint="api/media" title="Media Table" />;
 };
 
 export default MediaTable;

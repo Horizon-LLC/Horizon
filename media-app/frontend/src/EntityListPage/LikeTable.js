@@ -1,13 +1,7 @@
-import {Card, CardBody} from "@nextui-org/react";
+import GenericTable from './GenericTable';
 
 const LikeTable = () => {
-    return (
-        <Card>
-            <CardBody>
-                LIKE
-            </CardBody>
-        </Card>  
-    )
+    return <GenericTable apiEndpoint="api/like" title="Like Table" />;
 };
 
 export default LikeTable;

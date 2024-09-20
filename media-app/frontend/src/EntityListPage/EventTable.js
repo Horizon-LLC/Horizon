@@ -1,13 +1,7 @@
-import {Card, CardBody} from "@nextui-org/react";
+import GenericTable from './GenericTable';
 
 const EventTable = () => {
-    return (
-        <Card>
-            <CardBody>
-                Event
-            </CardBody>
-        </Card>  
-    )
+    return <GenericTable apiEndpoint="api/event" title="Event Table" />;
 };
 
 export default EventTable;

@@ -1,13 +1,7 @@
-import {Card, CardBody} from "@nextui-org/react";
+import GenericTable from './GenericTable';
 
 const UserTable = () => {
-    return (
-        <Card>
-            <CardBody>
-                USER
-            </CardBody>
-        </Card>  
-    )
+    return <GenericTable apiEndpoint="allUsers" title="User Table" />;
 };
 
 export default UserTable;

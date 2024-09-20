@@ -1,13 +1,7 @@
-import {Card, CardBody} from "@nextui-org/react";
+import GenericTable from './GenericTable';
 
 const TagTable = () => {
-    return (
-        <Card>
-            <CardBody>
-                TAG
-            </CardBody>
-        </Card>  
-    )
+    return <GenericTable apiEndpoint="api/tag" title="Tag Table" />;
 };
 
 export default TagTable;
