@@ -1,27 +1,21 @@
-import os
-from flask import Flask, jsonify, Response
+from flask import Flask, jsonify, Response, render_template
 from flask_cors import CORS
 import mysql.connector
-from mysql.connector.connection import MySQLConnection
 from typing import List, Dict, Optional
-from dotenv import load_dotenv
 
-# Load environment variables from .env file
-load_dotenv()
+# from graphviz import render
+
+from database.db import get_db_connection
+from database.test_routes import test_blueprint  # Import test blueprint
+from user_routes import user_blueprint # Import the blueprint
+
 
 app = Flask(__name__)
 CORS(app)  # Enable Cross-Origin Resource Sharing (CORS)
 
-# Function to establish the database connection
-# Optional[MySQLConnection] for the database connection function indicates that it could return None if the connection fails.
-def get_db_connection() -> Optional[MySQLConnection]:
-    connection: Optional[MySQLConnection] = mysql.connector.connect(
-        host=os.getenv('DB_HOST'),
-        user=os.getenv('DB_USER'),
-        password=os.getenv('DB_PASSWORD'),
-        database=os.getenv('DB_NAME')
-    )
-    return connection
+# Register the user blueprint
+app.register_blueprint(user_blueprint)
+app.register_blueprint(test_blueprint)  # Register the test routes blueprint
 
 # Route to test the database connection
 @app.route('/test-db', methods=['GET'])
@@ -79,6 +73,8 @@ def get_table_data(table_name) -> Response:
         return jsonify(data)
     except mysql.connector.Error as err:
         return jsonify({"error": str(err)})
+
+
 
 
 if __name__ == "__main__":

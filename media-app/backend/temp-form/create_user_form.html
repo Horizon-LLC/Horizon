@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mock User Sign-Up Form</title>
+</head>
+<body>
+    <h1>Mock User Sign-Up Form</h1>
+    <form id="userForm">
+        <label for="first_name">First Name:</label>
+        <input type="text" id="first_name" name="first_name" required><br>
+
+        <label for="last_name">Last Name:</label>
+        <input type="text" id="last_name" name="last_name" required><br>
+
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required><br>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br>
+
+        <label for="date_of_birth">Date of Birth:</label>
+        <input type="date" id="date_of_birth" name="date_of_birth" required><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br>
+
+
+        <label for="security_question">Security Question:</label>
+        <input type="text" id="security_question" name="security_question"><br>
+
+        <label for="security_answer">Security Answer:</label>
+        <input type="text" id="security_answer" name="security_answer"><br>
+
+        <button type="submit">Create User</button>
+    </form>
+
+    <p id="resultMessage"></p>
+
+    <script>
+        document.getElementById('userForm').addEventListener('submit', async (event) => {
+            event.preventDefault();  // Prevent the form from submitting the traditional way
+
+            // Collect form data
+            const formData = {
+                first_name: document.getElementById('first_name').value,
+                last_name: document.getElementById('last_name').value,
+                // profile_pic: document.getElementById('profile_pic').value,
+                username: document.getElementById('username').value,
+                email: document.getElementById('email').value,
+                date_of_birth: document.getElementById('date_of_birth').value,
+                password: document.getElementById('password').value,
+                // location: document.getElementById('location').value,
+                security_question: document.getElementById('security_question').value,
+                security_answer: document.getElementById('security_answer').value
+            };
+
+            try {
+                const response = await fetch('http://127.0.0.1:5000/createUser', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+                document.getElementById('resultMessage').innerText = result.message || result.error;
+            } catch (error) {
+                document.getElementById('resultMessage').innerText = 'Error submitting form. Please try again.';
+                console.error('Error:', error);
+            }
+        });
+    </script>
+</body>
+</html>
