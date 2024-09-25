@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardBody } from "@nextui-org/react";
+import {CircularProgress} from "@nextui-org/react";
 
 const GenericTable = ({ apiEndpoint, title }) => {
     const [data, setData] = useState([]);
@@ -34,7 +35,7 @@ const GenericTable = ({ apiEndpoint, title }) => {
         <Card>
             <CardBody>
                 <h2>{title}</h2>
-                {loading && <p>Loading...</p>}
+                {loading && <CircularProgress aria-label="Loading..." />}
                 {error && <p>{error}</p>}
                 <ul>
                     {data.map((item, index) => (

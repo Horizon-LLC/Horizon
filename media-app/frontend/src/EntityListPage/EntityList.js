@@ -1,19 +1,8 @@
-import CommentTable from './CommentTable';
-import UserTable from './UserTable';
-import ERDiagram from './ERDiagram';
-import FriendshipTable from './FriendshipTable';
-import MessageTable from './MessageTable';
-import GroupTable from './GroupTable';
 //TODO need to replace with notification
 // import GroupRoleTable from './GroupRoleTable';
-import GroupMemTable from './GroupMemTable';
-import PostTable from './PostTable';
-import LikeTable from './LikeTable';
-import MediaTable from './MediaTable';
-import EventTable from './EventTable';
-import TagTable from './TagTable';
-import {Button} from "@nextui-org/button";
-import {Tabs, Tab, Card, CardBody} from "@nextui-org/react";
+import {CommentTable, UserTable, ERDiagram, FriendshipTable, MessageTable, GroupTable, 
+    GroupMemTable, PostTable, LikeTable, MediaTable, EventTable, TagTable} from './TableList';
+import {Tabs, Tab} from "@nextui-org/react";
 
 const EntityList = () => {
     return (
