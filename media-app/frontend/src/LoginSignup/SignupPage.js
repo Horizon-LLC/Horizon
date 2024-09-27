@@ -1,14 +1,18 @@
-import './Login&Signup.css';
+import './LoginSignup.css';
 
 import React, {useState} from "react";
-import {Button, Card, CardBody, CardHeader, Input, Spacer, DateInput, Select, SelectItem, ScrollShadow} from "@nextui-org/react";
+import {Button, Card, CardBody, CardHeader, Input, Spacer, DateInput, Select, SelectItem, CircularProgress} from "@nextui-org/react";
 import { LuEye, LuEyeOff } from "react-icons/lu";
 import {getLocalTimeZone, CalendarDate, today} from "@internationalized/date";
 import {questions} from './questions';
+import { useNavigate } from 'react-router-dom';
 
 const SignupPage = () => {
+    const navigate = useNavigate();
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const [isVisible, setIsVisible] = React.useState(false);
-    const toggleVisibility = () => setIsVisible(!isVisible);
+
+    const toggleVisibility = () => setIsVisible(prev => !prev);
 
     const [formData, setFormData] = useState({
         first_name: '',
@@ -18,8 +22,7 @@ const SignupPage = () => {
         date_of_birth: '',
         password: '',
         security_question: '',
-        security_answer: '',
-        confirmPassword: ''
+        security_answer: ''
     });
 
     const handleChange = (e) => {
@@ -29,8 +32,30 @@ const SignupPage = () => {
         });
     };
 
+    const handleDateChange = (value) => {
+        if (value) {
+            setFormData({
+                ...formData,
+                date_of_birth: value.toString()  
+            });
+        } else {
+            setFormData({
+                ...formData,
+                date_of_birth: '' 
+            });
+        }
+    };
+
+    const handleSelectChange = (choice) => {
+        setFormData({
+            ...formData,
+            security_question: choice.value
+        });
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsSubmitting(true);
 
         try {
             const response = await fetch('http://localhost:5000/createUser', {
@@ -42,13 +67,16 @@ const SignupPage = () => {
             });
 
             const result = await response.json();
+
             if (response.ok) {
-                alert(result.message);
+                navigate('/Home');
             } else {
                 alert(result.error);
             }
         } catch (error) {
             console.error('Error:', error);
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
@@ -71,7 +99,7 @@ const SignupPage = () => {
                         label={"Date of Birth"} 
                         isRequired
                         name="date_of_birth"
-                        onChange={(value) => setFormData({ ...formData, date_of_birth: value.toString() })}
+                        onChange={handleDateChange}
                         minValue={today(getLocalTimeZone()).subtract({years: 100})}
                         maxValue={today(getLocalTimeZone()).subtract({days: 1})}
                         />
@@ -82,10 +110,10 @@ const SignupPage = () => {
                         placeholder="Select a question"
                         className="max-w-xs"
                         name="security_question"
-                        onChange={(value) => setFormData({ ...formData, security_question: value })}
+                        onChange={handleSelectChange}
                         >
                             {questions.map((question) => (
-                                <SelectItem key={question.key}>
+                                <SelectItem key={question.key} value={question.label}>
                                 {question.label}
                                 </SelectItem>
                             ))}
@@ -114,8 +142,8 @@ const SignupPage = () => {
                             onChange={handleChange}
                         />
                         <Spacer y={5}/>
-                        <Button color="primary" type="submit" className="max-w-xs">
-                            Signup
+                        <Button color="primary" type="submit" className="max-w-xs" isDisabled={isSubmitting}>
+                            {isSubmitting ? <CircularProgress aria-label="Loading..." /> : 'Sign up'}
                         </Button>
                         </form>
                 </CardBody>
