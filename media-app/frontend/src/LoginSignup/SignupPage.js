@@ -58,7 +58,7 @@ const SignupPage = () => {
         setIsSubmitting(true);
 
         try {
-            const response = await fetch('http://localhost:5000/createUser', {
+            const response = await fetch('http://127.0.0.1:5000/createUser', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -1,7 +1,7 @@
 import './MainPage.css'
 import {Button, Card, CardBody, CardHeader, Input, Spacer} from "@nextui-org/react";
 
-const UserMainPage = () => {
+const HomePage = () => {
     return (
         <div className='container'>
             <Card className='card-container'>
@@ -25,4 +25,4 @@ const UserMainPage = () => {
     )
 };
 
-export default UserMainPage;
+export default HomePage;

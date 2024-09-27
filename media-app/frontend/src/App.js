@@ -4,7 +4,7 @@ import UserList from './UserList';  // Import the UserList component
 import EntityList from './EntityListPage/EntityList';
 import LoginPage from './LoginSignup/LoginPage';
 import SignupPage from './LoginSignup/SignupPage';
-import UserMainPage from './MainPage/UserMainPage';
+import HomePage from './MainPage/HomePage';
 
 import {NextUIProvider} from "@nextui-org/react";
 import {Navbar, NavbarBrand, NavbarContent, NavbarItem, Divider} from "@nextui-org/react";
@@ -44,7 +44,7 @@ function App() {
               <Route path="/EntityDatabase" element={<EntityList />} />
               <Route path="/Login" element={<LoginPage />} />
               <Route path="/Signup" element={<SignupPage />} />
-              <Route path="/Home" element={<UserMainPage />} />
+              <Route path="/Home" element={<HomePage />} />
             </Routes>
           </div>
         </BrowserRouter>
