@@ -5,10 +5,12 @@ import {Button, Card, CardBody, CardHeader, Input, Spacer, DateInput, Select, Se
 import { LuEye, LuEyeOff } from "react-icons/lu";
 import {getLocalTimeZone, CalendarDate, today} from "@internationalized/date";
 import {questions} from './questions';
+import { useNavigate } from 'react-router-dom'; 
 
 const SignupPage = () => {
     const [isVisible, setIsVisible] = React.useState(false);
     const toggleVisibility = () => setIsVisible(!isVisible);
+    const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
         first_name: '',
@@ -44,6 +46,7 @@ const SignupPage = () => {
             const result = await response.json();
             if (response.ok) {
                 alert(result.message);
+                navigate('/Login');
             } else {
                 alert(result.error);
             }
@@ -82,10 +85,11 @@ const SignupPage = () => {
                         placeholder="Select a question"
                         className="max-w-xs"
                         name="security_question"
-                        onChange={(value) => setFormData({ ...formData, security_question: value })}
+                        value={formData.security_question} 
+                        onChange={(e) => setFormData({ ...formData, security_question: e.target.value })}
                         >
                             {questions.map((question) => (
-                                <SelectItem key={question.key}>
+                                <SelectItem key={question.key} value={question.label}>
                                 {question.label}
                                 </SelectItem>
                             ))}

@@ -2,8 +2,8 @@
 # This file handles:
 # 1. Create user
 
-from flask import Blueprint, jsonify, request
-from werkzeug.security import generate_password_hash
+from flask import Blueprint, jsonify, request, session
+from werkzeug.security import generate_password_hash, check_password_hash
 import mysql.connector
 from database.db import get_db_connection
 
@@ -63,5 +63,45 @@ def create_user():
 
     except mysql.connector.Error as err:
         # Handle any database errors
-        print(f"Error occurred: {err}")  # Log the error message in the terminal
+        print(f"Error occurred: {err}")  #
         return jsonify({'error': str(err)}), 500
+
+
+# Route to log in a user
+@user_blueprint.route('/login', methods=['POST'])
+def login_user():
+    data = request.json
+
+    email = data.get('email')
+    password = data.get('password')
+
+    try:
+
+        connection = get_db_connection()
+        cursor = connection.cursor()
+
+        query = "SELECT username, password FROM user WHERE email = %s"
+        cursor.execute(query, (email,))
+
+        user = cursor.fetchone()
+
+        cursor.close()
+        connection.close()
+
+        # Check if user exists and password matches
+        if user and check_password_hash(user[1], password):
+            session['username'] = user[0]
+            return jsonify({'message': 'Login successful', 'username': user[0]}), 200
+        else:
+            return jsonify({'error': 'Invalid email or password'}), 401
+
+    except mysql.connector.Error as err:
+       
+        print(f"Error occurred: {err}")  
+        return jsonify({'error': str(err)}), 500
+    
+# Add the logout route
+@user_blueprint.route('/logout', methods=['POST'])
+def logout():
+    session.pop('username', None)  # Clear the session
+    return jsonify({'message': 'Logout successful'}), 200

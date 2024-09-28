@@ -2,6 +2,7 @@ from flask import Flask, jsonify, Response, render_template
 from flask_cors import CORS
 import mysql.connector
 from typing import List, Dict, Optional
+import os
 
 # from graphviz import render
 
@@ -11,7 +12,8 @@ from user_routes import user_blueprint # Import the blueprint
 
 
 app = Flask(__name__)
-CORS(app)  # Enable Cross-Origin Resource Sharing (CORS)
+app.secret_key = os.urandom(24)
+CORS(app, supports_credentials=True)  # Enable Cross-Origin Resource Sharing (CORS)
 
 # Register the user blueprint
 app.register_blueprint(user_blueprint)
