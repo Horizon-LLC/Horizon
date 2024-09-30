@@ -2,8 +2,9 @@
 # This file handles:
 # 1. Create user
 
-from flask import Blueprint, jsonify, request, session
+from flask import Blueprint, jsonify, request, session, render_template, Response
 from werkzeug.security import generate_password_hash, check_password_hash
+from typing import List, Dict, Optional, Union, Tuple
 import mysql.connector
 from database.db import get_db_connection
 
@@ -21,7 +22,7 @@ def create_user():
     username = data.get('username')
     email = data.get('email')
     date_of_birth = data.get('date_of_birth')
-    password = generate_password_hash(data.get('password'))  # Hash the password
+    password = data.get('password')  # No Hash the password
     security_question = data.get('security_question')
     security_answer = data.get('security_answer')
     is_verified = False  # Default to False until verification
@@ -67,31 +68,39 @@ def create_user():
         return jsonify({'error': str(err)}), 500
 
 
+#Route to serve the login form to test login functionality.
+#Test user, email: fastfox@example.com,  password: password123
+@user_blueprint.route('/login-form')
+def login_form() ->str: # Display mock-login form
+    return render_template('mock_login.html')
+
 # Route to log in a user
 @user_blueprint.route('/login', methods=['POST'])
-def login_user():
-    data = request.json
+def login_user()-> Union[Response, Tuple[Response, int]]:
+    # Use get_json to parse JSON from the request
+    data = request.get_json()
 
-    email = data.get('email')
-    password = data.get('password')
+    email: str = data.get('email')
+    password: str = data.get('password')
 
     try:
 
         connection = get_db_connection()
         cursor = connection.cursor()
 
-        query = "SELECT username, password FROM user WHERE email = %s"
+        query = "SELECT user_id, username, password FROM user WHERE email = %s"
         cursor.execute(query, (email,))
 
-        user = cursor.fetchone()
+        user: Optional[Tuple[str,str]] = cursor.fetchone()
 
         cursor.close()
         connection.close()
 
         # Check if user exists and password matches
-        if user and check_password_hash(user[1], password):
-            session['username'] = user[0]
-            return jsonify({'message': 'Login successful', 'username': user[0]}), 200
+        if user and user[2] == password:
+            session['username'] = user[1]
+            session['user_id'] = user[0]
+            return jsonify({'message': 'Login successful', 'username': user[1]}), 200
         else:
             return jsonify({'error': 'Invalid email or password'}), 401
 
@@ -102,6 +111,6 @@ def login_user():
     
 # Add the logout route
 @user_blueprint.route('/logout', methods=['POST'])
-def logout():
+def logout() -> Response:
     session.pop('username', None)  # Clear the session
     return jsonify({'message': 'Logout successful'}), 200
