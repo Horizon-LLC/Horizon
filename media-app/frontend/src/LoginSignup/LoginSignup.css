@@ -11,7 +11,7 @@ html, body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color:aliceblue;
+    background-color: aliceblue;
     height: calc(100vh - 64px);
     width: 100vw;
     min-width: 100%;
@@ -23,10 +23,12 @@ html, body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 25vh;
-    width: 20vw;
-    min-width: 400px;
-    min-height: 250px;
+    background-color: white;
+    width: 50vw;  
+    max-width: 800px; 
+    padding: 2rem;  
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);  
+    border-radius: 0.5rem; 
 }
 
 .signup-card {
@@ -34,14 +36,21 @@ html, body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 55vh;
-    width: 20vw;
-    min-width: 400px;
-    max-width: 100vw;
-    min-height: 700px;
+    width: 20vw;  
+    max-width: 400px;
 }
 
+.login-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 
+.input-field {
+    width: 100%;  
+    max-width: 400px;  
+}
 
 .header {
     display: flex;
@@ -51,7 +60,6 @@ html, body {
 }
 
 .header-text {
-    font-size:xx-large;
+    font-size: xx-large;
     font-weight: bolder;
 }
-

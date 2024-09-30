@@ -1,0 +1,64 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body {
+    height: 100%;
+    width: 100%;
+}
+
+.container {
+    position: relative;  
+    display: flex;
+    justify-content: center;  
+    align-items: center; 
+    background-color: #f8f9fa;  
+    height: calc(100vh - 64px);  
+    width: 100vw;
+    min-width: 100%;
+    overflow: hidden;
+}
+
+.profile-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    border: 1px solid #ddd;  
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);  
+    border-radius: 0.5rem;
+    padding: 2rem;
+    width: 25vw;
+    min-width: 400px;
+    min-height: 200px;
+    box-sizing: border-box; 
+}
+
+.profile-header {
+    position: absolute;
+    top: 20px;  
+    left: 20px;  
+    font-size: xx-large;
+    font-weight: bolder;
+}
+
+.logout-button, .placeholder-button {
+    margin-top: 1rem;
+    background-color: #d3d3d3;  
+    color: black;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    width: 100%;  
+}
+
+.logout-button:hover, .placeholder-button:hover {
+    background-color: #a9a9a9; 
+}
+
+.placeholder-button {
+    margin-top: 0.5rem;
+}

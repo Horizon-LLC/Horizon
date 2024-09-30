@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';  // Optional styling
 import UserList from './UserList';  // Import the UserList component
 import EntityList from './EntityListPage/EntityList';
-import LoginPage from './LoginSignup/LoginPage';
-import SignupPage from './LoginSignup/SignupPage';
-import HomePage from './MainPage/HomePage';
+import LoginPage from './Login&Signup/LoginPage';
+import SignupPage from './Login&Signup/SignupPage';
+import ProfilePage from './ProfilePage/ProfilePage';
 
 import {NextUIProvider} from "@nextui-org/react";
 import {Navbar, NavbarBrand, NavbarContent, NavbarItem, Divider} from "@nextui-org/react";
@@ -12,6 +12,8 @@ import {BrowserRouter, Routes, Router, Route, Link } from "react-router-dom";
 
 // Render the UserList component
 function App() {
+  const [loggedInUser, setLoggedInUser] = useState(null);
+  
   return (
       <NextUIProvider>
         <BrowserRouter>
@@ -31,20 +33,31 @@ function App() {
                   </Link>
                 </NavbarItem>
                 <Divider orientation="vertical" />
-                <NavbarItem>
-                  <Link color="foreground" to="/Login">
-                    Login
-                  </Link>
-                </NavbarItem>
+                {loggedInUser ? (
+                  <>
+                    <NavbarItem>
+                      <Link to="/Profile"> {/* Make username clickable */}
+                        {loggedInUser}
+                      </Link>
+                    </NavbarItem>
+                    <Divider orientation="vertical" />
+                  </>
+                ) : (
+                  <NavbarItem>
+                    <Link color="foreground" to="/Login">
+                      Login
+                    </Link>
+                  </NavbarItem>
+                )}
               </NavbarContent>
             </Navbar>
             
             <Routes>
               <Route exact path="/DatabaseTest" element={<UserList />} />
               <Route path="/EntityDatabase" element={<EntityList />} />
-              <Route path="/Login" element={<LoginPage />} />
+              <Route path="/Login" element={<LoginPage setLoggedInUser={setLoggedInUser} />} /> 
               <Route path="/Signup" element={<SignupPage />} />
-              <Route path="/Home" element={<HomePage />} />
+              <Route path="/Profile" element={<ProfilePage setLoggedInUser={setLoggedInUser} />} />
             </Routes>
           </div>
         </BrowserRouter>
