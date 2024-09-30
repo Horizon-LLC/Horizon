@@ -6,7 +6,7 @@ const HomePage = () => {
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
 
     const [message, setMessage] = useState('');  
-    const maxChar = 2000;            
+    const maxChar = 10000;            
     
     const messageLengthCheck = (e) => {
         if (e.target.value.length <= maxChar) {
@@ -42,8 +42,6 @@ const HomePage = () => {
                     <h2>Create a New Post</h2>
                 </ModalHeader>
                 <ModalBody>
-                    <Input label="Title" placeholder="Enter the title of your post" fullWidth />
-                        <Spacer y={2} />
                         <Textarea 
                         label="Message" 
                         placeholder="Write your message here..." 
