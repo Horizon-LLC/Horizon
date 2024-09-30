@@ -34,7 +34,7 @@ const HomePage = () => {
                 </Button>
             </Card>
 
-            <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+            <Modal isOpen={isOpen} onOpenChange={onOpenChange} hideCloseButton={true}>
         <ModalContent>
           {(onClose) => (
             <>
