@@ -1,7 +1,7 @@
 import './LoginSignup.css';
 
 
-import React from "react";
+import React, {useState} from "react";
 import {Button, Card, CardBody, CardHeader, Input, Spacer} from "@nextui-org/react";
 import { LuEye, LuEyeOff } from "react-icons/lu";
 import {BrowserRouter, Routes, Router, Route, Link } from "react-router-dom";
@@ -11,6 +11,13 @@ const LoginPage = () => {
     const [isVisible, setIsVisible] = React.useState(false);
 
     const toggleVisibility = () => setIsVisible(!isVisible);
+
+    const [formData, setFormData] = useState({
+        email: '',
+        password: '',
+    });
+
+
 
     return (
         <div className='container'>
