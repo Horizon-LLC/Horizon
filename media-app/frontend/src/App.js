@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import './App.css';  // Optional styling
 import UserList from './UserList';  // Import the UserList component
 import EntityList from './EntityListPage/EntityList';
-import LoginPage from './Login&Signup/LoginPage';
-import SignupPage from './Login&Signup/SignupPage';
+import LoginPage from './LoginSignup/LoginPage';
+import SignupPage from './LoginSignup/SignupPage';
 import ProfilePage from './ProfilePage/ProfilePage';
+import HomePage from './MainPage/HomePage';
 
 import {NextUIProvider} from "@nextui-org/react";
 import {Navbar, NavbarBrand, NavbarContent, NavbarItem, Divider} from "@nextui-org/react";
@@ -18,9 +19,9 @@ function App() {
       <NextUIProvider>
         <BrowserRouter>
           <div className="App">
-            <Navbar className="dark text-foreground bg-background navbar">
+            <Navbar className="dark text-foreground bg-background w-full navbar">
               <p className="font-bold text-inherit">HORIZON</p>
-              <NavbarContent className="hidden sm:flex gap-4" justify="center">
+              <NavbarContent className="hidden sm:flex gap-4 navbar-content flex-1 justify-end items-center">
                 <NavbarItem>
                   <Link color="foreground" to="/DatabaseTest">
                     Database Test
@@ -58,6 +59,7 @@ function App() {
               <Route path="/Login" element={<LoginPage setLoggedInUser={setLoggedInUser} />} /> 
               <Route path="/Signup" element={<SignupPage />} />
               <Route path="/Profile" element={<ProfilePage setLoggedInUser={setLoggedInUser} />} />
+              <Route path="/Home" element={<HomePage setLoggedInUser={setLoggedInUser} />} />
             </Routes>
           </div>
         </BrowserRouter>

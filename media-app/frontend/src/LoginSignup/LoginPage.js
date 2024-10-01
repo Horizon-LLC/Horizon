@@ -1,9 +1,9 @@
-import './Login&Signup.css';
+import './LoginSignup.css';
 
 import React, { useState } from "react"; 
 import { Button, Card, CardBody, CardHeader, Input, Spacer } from "@nextui-org/react";
 import { LuEye, LuEyeOff } from "react-icons/lu";
-import { BrowserRouter, Link, useNavigate } from "react-router-dom";
+import {Link, useNavigate } from "react-router-dom";
 
 const LoginPage = ({ setLoggedInUser }) => {
     const [isVisible, setIsVisible] = useState(false);
@@ -27,7 +27,7 @@ const LoginPage = ({ setLoggedInUser }) => {
         e.preventDefault();
 
         try {
-            const response = await fetch('http://localhost:5000/login', {
+            const response = await fetch('http://127.0.0.1:5000/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -39,7 +39,7 @@ const LoginPage = ({ setLoggedInUser }) => {
             if (response.ok) {
                 alert('Login successful');
                 setLoggedInUser(result.username);
-                navigate('/EntityDatabase');
+                navigate('/Home');
             } else {
                 alert(result.error);
             }

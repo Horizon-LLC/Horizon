@@ -2,7 +2,7 @@ import './MainPage.css';
 import React, { useState } from 'react';
 import { Button, Card, Spacer, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Input, Textarea } from '@nextui-org/react';
 
-const HomePage = () => {
+const HomePage = ({ setLoggedInUser }) => {
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
 
     const [message, setMessage] = useState('');  
