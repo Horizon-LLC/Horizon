@@ -14,6 +14,7 @@ import {BrowserRouter, Routes, Router, Route, Link } from "react-router-dom";
 
 function App() {
   const [loggedInUser, setLoggedInUser] = useState(null);
+
   
   return (
     <div className="App">
@@ -61,8 +62,8 @@ function App() {
                 <Route path="/EntityDatabase" element={<EntityList />} />
                 <Route path="/Login" element={<LoginPage setLoggedInUser={setLoggedInUser} />} /> 
                 <Route path="/Signup" element={<SignupPage />} />
-                <Route path="/Profile" element={<ProfilePage setLoggedInUser={loggedInUser} />} />
-                <Route path="/Home" element={<HomePage />} />
+                <Route path="/Profile" element={<ProfilePage setLoggedInUser={setLoggedInUser} />} />
+                <Route path="/Home" element={<HomePage loggedInUser={loggedInUser}/>} />
               </Routes>
 
           

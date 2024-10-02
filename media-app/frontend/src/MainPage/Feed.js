@@ -5,23 +5,46 @@ import {Card, CardBody, CardHeader, Input, Spacer, ScrollShadow} from "@nextui-o
 
 
 
-const Feed = () => {
+const Feed = ({loggedInUser}) => {
     const [posts, setPosts] = useState([]);
+
+    const [userData, setUserData] = useState({
+        username: loggedInUser
+    });
+
+   
+
     
 
     useEffect(() => {
         const fetchPosts = async () => {
             try {
-                const response = await fetch('http://127.0.0.1:5000/dashboard');
-        
-                if (!response.ok) {
+                
+                const response = await fetch('http://127.0.0.1:5000/dashboard', {
+                    method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                }
+                );
+                if (response.status === 401) {
+                    console.error('Unauthorized: Please log in to access the dashboard');
+                    return;
+                }
+                const data = await response.json();
+                
+
+                if(response.ok)
+                {
+                    setPosts(data.posts);
+                }
+                else{
                     const errorMessage = await response.json();
                     console.error('Failed to fetch posts:', errorMessage.error);
                     return;
                 }
         
-                const data = await response.json();
-                setPosts(data.posts);
+                
             } catch (error) {
                 console.error('Error fetching posts:', error);
             }

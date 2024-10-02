@@ -4,7 +4,7 @@ import { Button, Card, Spacer, Modal, ModalContent, ModalHeader, ModalBody, Moda
 
 import Feed from './Feed';
 
-const HomePage = () => {
+const HomePage = ({loggedInUser}) => {
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
     const [posts, setPosts] = useState([]);
     const [message, setMessage] = useState('');  
@@ -62,32 +62,6 @@ const HomePage = () => {
             showErrorMess('Something went wrong while creating the post', 'error');
         }
     };
-    /* 
-    fetch("/create-post", {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ content })
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log("Response data:", data);  // Log the response
-            if (data.message === 'Post Created successfully') {
-                // Display the new post
-                const postContainer = document.getElementById('posts-container');
-                const newPost = document.createElement('div');
-                newPost.className = "post";
-                newPost.innerHTML = `<p>${data.post_content}</p><small>Just now</small>`;
-                postContainer.prepend(newPost);  // Add the new post to the top
-                document.getElementById('post-content').value = '';  // Clear the textarea
-            } else {
-                alert('Error creating post');
-            }
-        })
-        .catch(error => console.error('Error:', error));
-    }
-        */
 
     return (
         <div className='main-container'>
@@ -101,7 +75,7 @@ const HomePage = () => {
                 <Button color="primary" className="max-w-xs" onClick={onOpen}>
                     Create Post
                 </Button>
-                <Feed  />
+                <Feed  loggedInUser={loggedInUser} />
             </Card>
             <Spacer x={5} />
             <Card className='side-container'>
