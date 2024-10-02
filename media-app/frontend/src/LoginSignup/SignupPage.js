@@ -77,7 +77,7 @@ const SignupPage = () => {
     };
 
     return (
-        <div className='container'>
+        <div className='logsign-container'>
             <Card>
                 <CardHeader className='header'>
                     <h1 className='header-text'>Horizon</h1>

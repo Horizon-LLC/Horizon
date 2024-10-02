@@ -1,15 +1,11 @@
-
-
-
-.container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: aliceblue !important;
-    height: calc(100vh - 64px);
+.logsign-container {
     width: 100vw;
-    min-width: 100%;
-    overflow: hidden;
+    min-width: 100vw;
+    height: 100vh;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .card-container {

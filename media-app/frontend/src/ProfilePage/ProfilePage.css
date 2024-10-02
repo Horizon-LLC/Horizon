@@ -5,7 +5,7 @@ html, body {
     width: 100%;
 }
 
-.container {
+.profile-container {
     position: relative;  
     display: flex;
     justify-content: center;  

@@ -24,7 +24,7 @@ const ProfilePage = ({ setLoggedInUser }) => {
     };
 
     return (
-        <div className="container">
+        <div className="profile-container">
             <div className="profile-header">
                 <h1 className="profile-header-text">Profile Page</h1>
             </div>

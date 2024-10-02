@@ -25,13 +25,15 @@ def dashboard():
             cursor.execute(query, (user_id,))
             posts = cursor.fetchall()
 
+            post_list = [{"content": post[0], "created_at": post[1]} for post in posts]
+
             if boolDebug:
                 print(posts)  # Debugging step to check the structure of the fetched posts
             cursor.close()
             connection.close()
 
             #Render the dashboard template, passing the username and posts
-            return render_template('mock_dashboard.html', username=username, posts=posts)
+            return jsonify({"username": username, "posts": post_list}), 200
         except mysql.connector.Error as err:
             print(f"Error fetching posts: {err}")
             return "Error loading dashboard", 500

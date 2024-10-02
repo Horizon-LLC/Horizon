@@ -37,7 +37,6 @@ const LoginPage = ({ setLoggedInUser }) => {
 
             const result = await response.json();
             if (response.ok) {
-                alert('Login successful');
                 setLoggedInUser(result.username);
                 navigate('/Home');
             } else {
@@ -49,7 +48,7 @@ const LoginPage = ({ setLoggedInUser }) => {
     };
 
     return (
-        <div className='container'>
+        <div className='logsign-container'>
             <Card className="card-container">  
                 <CardHeader className='header'>
                     <h1 className='header-text'>Horizon</h1>
