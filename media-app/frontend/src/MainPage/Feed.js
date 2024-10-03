@@ -18,11 +18,12 @@ const Feed = ({loggedInUser}) => {
 
     useEffect(() => {
         const fetchPosts = async () => {
+            const token = localStorage.getItem('token');
             try {
-                
                 const response = await fetch('http://127.0.0.1:5000/dashboard', {
                     method: 'GET',
                 headers: {
+                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
                 },
                 }

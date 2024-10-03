@@ -37,6 +37,7 @@ const LoginPage = ({ setLoggedInUser }) => {
 
             const result = await response.json();
             if (response.ok) {
+                localStorage.setItem('token', result.token);
                 setLoggedInUser(result.username);
                 navigate('/Home');
             } else {
