@@ -6,7 +6,7 @@ import mysql.connector
 from typing import List, Dict, Optional, Union, Tuple
 import os
 
-from werkzeug.security import check_password_hash
+# from werkzeug.security import check_password_hash
 
 # from graphviz import render
 
