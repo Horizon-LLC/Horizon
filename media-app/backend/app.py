@@ -83,5 +83,13 @@ def get_table_data(table_name) -> Response:
 
 
 
+#Apply CORS to all responses
+def apply_cors(response):
+    response.headers['Access-Control-Allow-Origin'] = "http://localhost:3000"  # Change to frontend's domain
+    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+    response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
+    return response
+
+
 if __name__ == "__main__":
     app.run(debug=True)

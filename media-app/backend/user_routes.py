@@ -1,12 +1,18 @@
 # user_routes.py
 # This file handles:
 # 1. Create user
+# 2. Login authentication
 
 from flask import Blueprint, jsonify, request, session, render_template, Response
-from werkzeug.security import generate_password_hash, check_password_hash
+# from werkzeug.security import generate_password_hash, check_password_hash
+import jwt # Generate a token for user authentication
+import datetime
 from typing import List, Dict, Optional, Union, Tuple
 import mysql.connector
 from database.db import get_db_connection
+
+# Use a secure secret key for JWT encoding
+SECRET_KEY = 'HORIZON'
 
 # Define Blueprint
 user_blueprint = Blueprint('user', __name__)
@@ -79,7 +85,6 @@ def login_form() ->str: # Display mock-login form
 def login_user()-> Union[Response, Tuple[Response, int]]:
     # Use get_json to parse JSON from the request
     data = request.get_json()
-
     email: str = data.get('email')
     password: str = data.get('password')
 
@@ -98,9 +103,13 @@ def login_user()-> Union[Response, Tuple[Response, int]]:
 
         # Check if user exists and password matches
         if user and user[2] == password:
-            session['username'] = user[1]
-            session['user_id'] = user[0]
-            return jsonify({'message': 'Login successful', 'username': user[1]}), 200
+            # Create JWT token
+            token = jwt.encode({
+                'user_id': user[0],
+                'username': user[1],
+                'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=72) # Token expiration
+            }, SECRET_KEY, algorithm='HS256')
+            return jsonify({'token': token, 'username': user[1]}), 200
         else:
             return jsonify({'error': 'Invalid email or password'}), 401
 
