@@ -1,4 +1,4 @@
-import './Login&Signup.css';
+import './LoginSignup.css';
 
 import React, {useState} from "react";
 import {Button, Card, CardBody, CardHeader, Input, Spacer, DateInput, Select, SelectItem, ScrollShadow} from "@nextui-org/react";
@@ -31,11 +31,32 @@ const SignupPage = () => {
         });
     };
 
+    const handleDateChange = (value) => {
+        if (value) {
+            setFormData({
+                ...formData,
+                date_of_birth: value.toString()  
+            });
+        } else {
+            setFormData({
+                ...formData,
+                date_of_birth: '' 
+            });
+        }
+    };
+
+    const handleSelectChange = (choice) => {
+        setFormData({
+            ...formData,
+            security_question: choice.value
+        });
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
-            const response = await fetch('http://localhost:5000/createUser', {
+            const response = await fetch('http://127.0.0.1:5000/createUser', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -56,7 +77,7 @@ const SignupPage = () => {
     };
 
     return (
-        <div className='container'>
+        <div className='logsign-container'>
             <Card>
                 <CardHeader className='header'>
                     <h1 className='header-text'>Horizon</h1>
@@ -74,7 +95,7 @@ const SignupPage = () => {
                         label={"Date of Birth"} 
                         isRequired
                         name="date_of_birth"
-                        onChange={(value) => setFormData({ ...formData, date_of_birth: value.toString() })}
+                        onChange={handleDateChange}
                         minValue={today(getLocalTimeZone()).subtract({years: 100})}
                         maxValue={today(getLocalTimeZone()).subtract({days: 1})}
                         />
@@ -86,7 +107,7 @@ const SignupPage = () => {
                         className="max-w-xs"
                         name="security_question"
                         value={formData.security_question} 
-                        onChange={(e) => setFormData({ ...formData, security_question: e.target.value })}
+                        onChange={handleSelectChange}
                         >
                             {questions.map((question) => (
                                 <SelectItem key={question.key} value={question.label}>

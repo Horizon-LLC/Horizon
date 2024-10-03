@@ -1,0 +1,37 @@
+
+
+.main-container {
+    width: 100vw;
+    min-width: 100vw;
+    height: 100vh;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.center-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 60vh;
+    width: 25vw;
+    min-width: 600px;
+    min-height: 800px;
+}
+.side-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 60vh;
+    width: 15vw;
+    min-width: 400px;
+    min-height: 800px;
+}
+
+.charCountText {
+    color: #808080;
+    font-size: small;
+    font-weight: 500;
+}

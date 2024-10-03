@@ -7,7 +7,7 @@ const ProfilePage = ({ setLoggedInUser }) => {
 
     const handleLogout = async () => {
         try {
-            const response = await fetch('http://localhost:5000/logout', {
+            const response = await fetch('http://127.0.0.1:5000/logout', {
                 method: 'POST',
                 credentials: 'include',  // Include session cookies
             });
@@ -24,7 +24,7 @@ const ProfilePage = ({ setLoggedInUser }) => {
     };
 
     return (
-        <div className="container">
+        <div className="profile-container">
             <div className="profile-header">
                 <h1 className="profile-header-text">Profile Page</h1>
             </div>

@@ -1,5 +1,6 @@
+import './Table.css'
 import React, { useState, useEffect } from 'react';
-import { Card, CardBody } from "@nextui-org/react";
+import { Card, CardBody, ScrollShadow } from "@nextui-org/react";
 import {CircularProgress} from "@nextui-org/react";
 
 const GenericTable = ({ apiEndpoint, title }) => {
@@ -32,9 +33,10 @@ const GenericTable = ({ apiEndpoint, title }) => {
     }, []);
 
     return (
-        <Card>
+        <Card className='data-card'>
             <CardBody>
                 <h2>{title}</h2>
+                <ScrollShadow hideScrollBar>
                 {loading && <CircularProgress aria-label="Loading..." />}
                 {error && <p>{error}</p>}
                 <ul>
@@ -49,6 +51,7 @@ const GenericTable = ({ apiEndpoint, title }) => {
                         </li>
                     ))}
                 </ul>
+                </ScrollShadow>
             </CardBody>
         </Card>
     );
