@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+</head>
+<body>
+    <h2>Welcome to your dashboard, {{ username }}!</h2>
+
+    <!-- Post creation form -->
+    <form id="post-form" onsubmit="submitPost(event)">
+        <textarea id="post-content" rows="4" cols="50" placeholder="Write your post here..."></textarea><br />
+        <button type="submit">Create Post</button>
+    </form>
+
+    <hr />
+
+    <!-- Section to display posts -->
+    <h3>Your Posts:</h3>
+    <div id="posts-container">
+        {% for post in posts %}
+            <div class="post">
+                <p>{{ post[0] }}</p>  <!-- post[0] is content -->
+                <small>Posted on: {{ post[1] }}</small>  <!-- post[1] is created_at -->
+            </div>
+            <hr />
+        {% endfor %}
+    </div>
+
+    <script>
+    function submitPost(event) {
+        event.preventDefault();  // Prevent the form from refreshing the page
+
+        const content = document.getElementById('post-content').value;
+
+        fetch("/create-post", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ content })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log("Response data:", data);  // Log the response
+            if (data.message === 'Post Created successfully') {
+                // Display the new post
+                const postContainer = document.getElementById('posts-container');
+                const newPost = document.createElement('div');
+                newPost.className = "post";
+                newPost.innerHTML = `<p>${data.post_content}</p><small>Just now</small>`;
+                postContainer.prepend(newPost);  // Add the new post to the top
+                document.getElementById('post-content').value = '';  // Clear the textarea
+            } else {
+                alert('Error creating post');
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+    </script>
+</body>
+</html>

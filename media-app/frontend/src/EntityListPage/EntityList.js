@@ -1,3 +1,4 @@
+import './EntityList.css';
 //TODO need to replace with notification
 // import GroupRoleTable from './GroupRoleTable';
 import {CommentTable, UserTable, ERDiagram, FriendshipTable, MessageTable, GroupTable, 
@@ -6,7 +7,7 @@ import {Tabs, Tab} from "@nextui-org/react";
 
 const EntityList = () => {
     return (
-        <div>
+        <div className='entity-container'>
              <Tabs aria-label="Options">
                 <Tab key="erdiag" title="ER Diagram">
                     <ERDiagram />

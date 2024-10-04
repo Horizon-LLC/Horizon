@@ -1,7 +1,7 @@
+import './UserList.css';
 import React, { useState } from 'react';
 
 import {Button} from "@nextui-org/button";
-import {Chip} from "@nextui-org/chip";
 
 
 const UserList = () => {
@@ -38,7 +38,7 @@ const UserList = () => {
     };
 
     return (
-        <div>
+        <div className='userlist-container'>
             <h1>Click to Get All Users</h1>
             <Button color="primary" onClick={fetchData}>Get User Data</Button>
 

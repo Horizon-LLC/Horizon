@@ -1,15 +1,19 @@
-from flask import Flask, jsonify, Response, render_template
+from urllib import request
+
+from flask import Flask, jsonify, redirect, Response, render_template, session, url_for
 from flask_cors import CORS
 import mysql.connector
-from typing import List, Dict, Optional
+from typing import List, Dict, Optional, Union, Tuple
 import os
+
+# from werkzeug.security import check_password_hash
 
 # from graphviz import render
 
 from database.db import get_db_connection
 from database.test_routes import test_blueprint  # Import test blueprint
 from user_routes import user_blueprint # Import the blueprint
-
+from dashboard_route import dashboard_blueprint # Import the dashboard blueprint
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
@@ -18,6 +22,7 @@ CORS(app, supports_credentials=True)  # Enable Cross-Origin Resource Sharing (CO
 # Register the user blueprint
 app.register_blueprint(user_blueprint)
 app.register_blueprint(test_blueprint)  # Register the test routes blueprint
+app.register_blueprint(dashboard_blueprint)
 
 # Route to test the database connection
 @app.route('/test-db', methods=['GET'])
@@ -77,6 +82,13 @@ def get_table_data(table_name) -> Response:
         return jsonify({"error": str(err)})
 
 
+
+#Apply CORS to all responses
+def apply_cors(response):
+    response.headers['Access-Control-Allow-Origin'] = "http://localhost:3000"  # Change to frontend's domain
+    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+    response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
+    return response
 
 
 if __name__ == "__main__":

@@ -1,21 +1,11 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-html, body {
-    height: 100%;
-    width: 100%;
-}
-
-.container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: aliceblue;
-    height: calc(100vh - 64px);
+.logsign-container {
     width: 100vw;
-    min-width: 100%;
-    overflow: hidden;
+    min-width: 100vw;
+    height: 100vh;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .card-container {
@@ -25,7 +15,7 @@ html, body {
     align-items: center;
     background-color: white;
     width: 50vw;  
-    max-width: 800px; 
+    max-width: 600px; 
     padding: 2rem;  
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);  
     border-radius: 0.5rem; 
@@ -36,8 +26,9 @@ html, body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 20vw;  
-    max-width: 400px;
+    width: 20vw;
+    min-width: 400px;  
+    max-width: 600px;
 }
 
 .login-card {

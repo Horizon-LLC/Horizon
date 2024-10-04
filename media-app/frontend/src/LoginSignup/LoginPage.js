@@ -1,14 +1,13 @@
-import './Login&Signup.css';
-
+import './LoginSignup.css';
 import React, { useState } from "react"; 
 import { Button, Card, CardBody, CardHeader, Input, Spacer } from "@nextui-org/react";
 import { LuEye, LuEyeOff } from "react-icons/lu";
-import { BrowserRouter, Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const LoginPage = ({ setLoggedInUser }) => {
     const [isVisible, setIsVisible] = useState(false);
-    const navigate = useNavigate(); 
-    
+    const navigate = useNavigate();
+
     const toggleVisibility = () => setIsVisible(!isVisible);
 
     const [loginData, setLoginData] = useState({
@@ -27,7 +26,7 @@ const LoginPage = ({ setLoggedInUser }) => {
         e.preventDefault();
 
         try {
-            const response = await fetch('http://localhost:5000/login', {
+            const response = await fetch('http://127.0.0.1:5000/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -37,9 +36,9 @@ const LoginPage = ({ setLoggedInUser }) => {
 
             const result = await response.json();
             if (response.ok) {
-                alert('Login successful');
+                localStorage.setItem('token', result.token); // Store the JWT token
                 setLoggedInUser(result.username);
-                navigate('/EntityDatabase');
+                navigate('/Home');
             } else {
                 alert(result.error);
             }
@@ -49,8 +48,8 @@ const LoginPage = ({ setLoggedInUser }) => {
     };
 
     return (
-        <div className='container'>
-            <Card className="card-container">  
+        <div className='logsign-container'>
+            <Card className="card-container">
                 <CardHeader className='header'>
                     <h1 className='header-text'>Horizon</h1>
                 </CardHeader>
@@ -88,7 +87,7 @@ const LoginPage = ({ setLoggedInUser }) => {
                             onChange={handleChange}
                         />
                         <Spacer y={5} />
-                        <Button color="primary" type="submit" className="input-field">  
+                        <Button color="primary" type="submit" className="input-field">
                             Login
                         </Button>
                         <Spacer y={2} />
