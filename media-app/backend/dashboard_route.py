@@ -89,7 +89,7 @@ def create_post(user_id, username):
 
         if(boolDebug):
             print(f"Attempting to insert post content: {content} for user: {user_id} created at: {created_at}")  # Use 'user_id' from the JWT token
-        query = "INSERT INTO post (content, created_at, user_id) VALUES (%s, %s)"
+        query = "INSERT INTO post (content, created_at, user_id) VALUES (%s, %s, %s)"
         cursor.execute(query, (content, created_at, user_id))
 
         connection.commit()
