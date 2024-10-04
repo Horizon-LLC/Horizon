@@ -76,6 +76,7 @@ def create_post(user_id, username):
 
     data = request.get_json()
     content = data.get('content')
+    created_at = data.get('created_at')
 
 
     if not content:
@@ -87,15 +88,15 @@ def create_post(user_id, username):
         cursor = connection .cursor()
 
         if(boolDebug):
-            print(f"Attempting to insert post content: {content} for user: {user_id}")  # Use 'user_id' from the JWT token
-        query = "INSERT INTO post (content, user_id) VALUES (%s, %s)"
-        cursor.execute(query, (content, user_id))
+            print(f"Attempting to insert post content: {content} for user: {user_id} created at: {created_at}")  # Use 'user_id' from the JWT token
+        query = "INSERT INTO post (content, created_at, user_id) VALUES (%s, %s)"
+        cursor.execute(query, (content, created_at, user_id))
 
         connection.commit()
         cursor.close()
         connection.close()
 
-        return jsonify({"message": "Post Created successfully", "post_content": content}), 201
+        return jsonify({"message": "Post Created successfully", "post_content": content, "created_at": created_at}), 201
     except mysql.connector.Error as err:
         if boolDebug:
             print(f"Database Error: {err}")  # Output error to your terminal for debugging

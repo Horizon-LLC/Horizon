@@ -1,15 +1,15 @@
 import './MainPage.css';
-import React, { useState } from 'react';
-import { Button, Card, Spacer, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Textarea } from '@nextui-org/react';
+import React, { useState, useRef } from 'react';
+import { Button, Card, Spacer, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Textarea, ScrollShadow } from '@nextui-org/react';
 
 import Feed from './Feed';
 
 const HomePage = ({loggedInUser}) => {
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
-    const [posts, setPosts] = useState([]);
     const [message, setMessage] = useState('');  
     const [alertModal, setAlertModal] = useState({ isOpen: false, text: '', type: '' });
-    const maxChar = 10000;            
+    const maxChar = 10000;         
+    const feedRefresh = useRef(null);   
     
     const messageLengthCheck = (e) => {
         if (e.target.value.length <= maxChar) {
@@ -21,7 +21,7 @@ const HomePage = ({loggedInUser}) => {
         setAlertModal({ isOpen: true, text, type });
     };
 
-    const formatDate = (dateString) => {
+    const formatDate = (date) => {
         const options = {
             year: 'numeric',
             month: '2-digit',
@@ -31,7 +31,7 @@ const HomePage = ({loggedInUser}) => {
             second: '2-digit',
             hour12: false
         };
-        return new Date(dateString).toLocaleString(undefined, options);
+        return new Date(date).toLocaleString(undefined, options);
     };
 
     const createPost = async () => {
@@ -39,21 +39,25 @@ const HomePage = ({loggedInUser}) => {
             showErrorMess('Post content cannot be empty', 'error');
             return;
         }
+        const token = localStorage.getItem('token'); 
 
         try {
+            const currentDateTime = formatDate(new Date());
+            console.log(currentDateTime);
             const response = await fetch('http://127.0.0.1:5000/create-post', {
                 method: 'POST',
                 headers: {
+                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ content: message }),
+                
+                body: JSON.stringify({ content: message, created_at: currentDateTime }),
             });
 
             const data = await response.json();
             if (response.ok) {
-                const currentDateTime = formatDate(new Date().toISOString());
-                setPosts([{ content: message, created_at: currentDateTime }, ...posts]); 
                 setMessage('');
+                feedRefresh.current.refresh();
             } else {
                 showErrorMess(data.error || 'Failed to create post', 'error');
             }
@@ -63,19 +67,22 @@ const HomePage = ({loggedInUser}) => {
         }
     };
 
+
+
+
     return (
         <div className='main-container'>
-            <Card className='side-container'>
-                <Button color="primary" className="max-w-xs">
-                    List
-                </Button>
-            </Card>
-            <Spacer x={5} />
             <Card className='center-container'>
-                <Button color="primary" className="max-w-xs" onClick={onOpen}>
-                    Create Post
-                </Button>
-                <Feed  loggedInUser={loggedInUser} />
+                <div className='feed-top'>
+                    <Button color="primary" className="max-w-xs" onClick={onOpen}>
+                        Create Post
+                    </Button>
+                </div>
+                <div className='feed-bottom'>
+                    <ScrollShadow hideScrollBar>
+                    <Feed ref={feedRefresh} />
+                    </ScrollShadow>
+                </div>
             </Card>
             <Spacer x={5} />
             <Card className='side-container'>

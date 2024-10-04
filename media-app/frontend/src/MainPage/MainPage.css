@@ -1,8 +1,7 @@
-
-
 .main-container {
-    width: 100vw;
-    min-width: 100vw;
+    width: calc(100vw - 300px);
+    min-width: calc(100vw - 200px);
+    max-width: calc(100vw - 400px);
     height: 100vh;
     min-height: 100vh;
     display: flex;
@@ -12,12 +11,50 @@
 .center-container {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
+    align-items: center;
+    height: 70vh;
+    width: 40vw;
+    min-width: 800px;
+    min-height: 700px;
+    max-height: 1000px;
+}
+.feed-top {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-end;
+    height: 10vh;
+    width: 40vw;
+    min-width: 800px;
+    min-height: 130px;
+    max-height: 200px;
+    padding: 1vh;
+}
+.feed-bottom {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
     align-items: center;
     height: 60vh;
-    width: 25vw;
-    min-width: 600px;
-    min-height: 800px;
+    width: 40vw;
+    min-width: 800px;
+    min-height: 470px;
+    max-height: 800px;
+    overflow: auto;
+}
+.post-card {
+    width: 40vw;
+    height: 10vh;
+    min-height: 130px;
+    min-width: 800px;
+    border-radius: 0%;
+}
+.feed-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
 }
 .side-container {
     display: flex;
@@ -35,3 +72,4 @@
     font-size: small;
     font-weight: 500;
 }
+

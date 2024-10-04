@@ -5,7 +5,7 @@ import {Button, Card, CardBody, CardHeader, Input, Spacer, DateInput, Select, Se
 import { LuEye, LuEyeOff } from "react-icons/lu";
 import {getLocalTimeZone, CalendarDate, today} from "@internationalized/date";
 import {questions} from './questions';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate, Link } from 'react-router-dom'; 
 
 const SignupPage = () => {
     const [isVisible, setIsVisible] = React.useState(false);
@@ -143,6 +143,11 @@ const SignupPage = () => {
                             Signup
                         </Button>
                         </form>
+                        <div className='header'>
+                            <p>Return to </p>
+                            <Spacer />
+                            <Link style={{ color: "#0000EE" }} to="/Login"> Login Page</Link>
+                        </div>
                 </CardBody>
             </Card>
         </div>

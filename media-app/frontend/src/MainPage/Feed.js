@@ -1,64 +1,55 @@
-import './MainPage.css'
-import React, {useEffect, useState} from 'react';
-import {Card, CardBody, CardHeader, Input, Spacer, ScrollShadow} from "@nextui-org/react";
+import './MainPage.css';
+import React, { useEffect, useState, forwardRef, useImperativeHandle  } from 'react';
+import { Card, CardBody, CardHeader, CircularProgress} from "@nextui-org/react";
 
-
-
-
-const Feed = ({loggedInUser}) => {
+const Feed = forwardRef((props, ref) => {
     const [posts, setPosts] = useState([]);
+    const [loading, setLoading] = useState(false);
 
-    const [userData, setUserData] = useState({
-        username: loggedInUser
-    });
-
-   
-
-    
-
-    useEffect(() => {
-        const fetchPosts = async () => {
-            const token = localStorage.getItem('token');
-            try {
-                const response = await fetch('http://127.0.0.1:5000/dashboard', {
-                    method: 'GET',
+    const fetchPosts = async () => {
+        setLoading(true);
+        const token = localStorage.getItem('token'); // Get the token from local storage
+        try {
+            const response = await fetch('http://127.0.0.1:5000/dashboard', {
+                method: 'GET',
                 headers: {
-                    'Authorization': `Bearer ${token}`,
+                    'Authorization': `Bearer ${token}`,  // Use the actual token
                     'Content-Type': 'application/json',
                 },
-                }
-                );
-                if (response.status === 401) {
-                    console.error('Unauthorized: Please log in to access the dashboard');
-                    return;
-                }
-                const data = await response.json();
-                
+            });
 
-                if(response.ok)
-                {
-                    setPosts(data.posts);
-                }
-                else{
-                    const errorMessage = await response.json();
-                    console.error('Failed to fetch posts:', errorMessage.error);
-                    return;
-                }
-        
-                
-            } catch (error) {
-                console.error('Error fetching posts:', error);
+            if (response.status === 401) {
+                console.error('Unauthorized: Please log in to access the dashboard');
+                return;
             }
-        };
 
-        fetchPosts();
+            const data = await response.json();
+
+            if (response.ok) {
+                setPosts(data.posts);
+            } else {
+                console.error('Failed to fetch posts:', data.error);
+            }
+        } catch (error) {
+            console.error('Error fetching posts:', error);
+        }finally {
+            setLoading(false);
+        }
+    };
+
+    useImperativeHandle(ref, () => ({
+        refresh: fetchPosts, 
+    }));
+
+    useEffect(() => {
+        fetchPosts(); 
     }, []);
 
     return (
         <div className="feed-container">
-            <h3>Your Posts:</h3>
+            {loading && <CircularProgress aria-label="Loading..." />}
             {posts.length === 0 ? (
-                <p>No posts available</p>
+                <></>
             ) : (
                 posts.map((post, index) => (
                     <Card key={index} className="post-card" style={{ marginVertical: 10 }}>
@@ -67,13 +58,13 @@ const Feed = ({loggedInUser}) => {
                         </CardHeader>
                         <CardBody>
                             <p>{post.content}</p>
-                            <p small style={{ color: 'gray' }}>Posted on: {new Date(post.created_at).toLocaleString()}</p>
+                            <p style={{ color: 'gray' }}>Posted on: {new Date(post.created_at).toLocaleString()}</p>
                         </CardBody>
                     </Card>
                 ))
             )}
         </div>
-    )
-};
+    );
+});
 
 export default Feed;

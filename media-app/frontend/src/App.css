@@ -19,7 +19,7 @@ html, body {
 }
 
 .navbar {
-  width: 300px; 
+  width: 15vw; 
   min-width: 200px;
   max-width: 400px;
   height: 100vh;
@@ -28,7 +28,7 @@ html, body {
   flex-direction: column;
   justify-content: flex-start;
   padding-top: 5vh;
-  background-color: aliceblue;
+  background-color: rgb(210, 235, 255);
   border-right: 1px solid  #c0d6e8;
 }
 
@@ -43,7 +43,7 @@ html, body {
 .navbar-title {
   font-weight: bold;
   color: black;
-  
+  background-color: rgb(210, 235, 255);
 }
 
 .navbar-item {
@@ -59,6 +59,15 @@ html, body {
   min-height: 100vh;
   max-height: 100vh;
   overflow: auto;
+}
+
+.main-container {
+  width: calc(100vw - 15vw); 
+  min-width: calc(100vw - 200px);
+  max-width: calc(100vw - 400px);
+  height: 100vh;
+  position: fixed;
+  padding-left: 15vw;
 }
 
 .App-logo {
