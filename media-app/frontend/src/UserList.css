@@ -1,6 +1,7 @@
 .userlist-container {         
-    width: 100vw;
-    min-width: 100vw;
+    width: calc(100vw - 15vw);
+    min-width: calc(100vw - 200px);
+    max-width: calc(100vw - 400px);
     height: 100vh;
     display: flex;
     flex-direction: column;

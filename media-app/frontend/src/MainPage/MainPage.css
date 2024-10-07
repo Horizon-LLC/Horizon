@@ -1,5 +1,6 @@
-.main-container {
-    width: calc(100vw - 300px);
+
+.home-container {
+    width: calc(100vw - 15vw);
     min-width: calc(100vw - 200px);
     max-width: calc(100vw - 400px);
     height: 100vh;
@@ -7,6 +8,21 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-wrap: wrap;
+    padding: 20px;
+}
+.side-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 60vh;
+    min-height: 600px;
+    max-height: 900px;
+    width: 100%;
+    max-width: 20vw; 
+    min-width: 200px;
+    min-width: 400px;
 }
 .center-container {
     display: flex;
@@ -14,19 +30,23 @@
     justify-content: flex-start;
     align-items: center;
     height: 70vh;
-    width: 40vw;
-    min-width: 800px;
     min-height: 700px;
     max-height: 1000px;
+    width: 100%; 
+    max-width: 40vw;
+    min-width: 300px; 
+    margin: 10px;
 }
+
 .feed-top {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-end;
     height: 10vh;
-    width: 40vw;
-    min-width: 800px;
+    width: 100%; 
+    max-width: 40vw;
+    min-width: 300px; 
     min-height: 130px;
     max-height: 200px;
     padding: 1vh;
@@ -37,8 +57,9 @@
     justify-content: flex-start;
     align-items: center;
     height: 60vh;
-    width: 40vw;
-    min-width: 800px;
+    width: 100%; 
+    max-width: 40vw;
+    min-width: 300px; 
     min-height: 470px;
     max-height: 800px;
     overflow: auto;
@@ -55,16 +76,10 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-}
-.side-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 60vh;
-    width: 15vw;
-    min-width: 400px;
-    min-height: 800px;
+    width: 100%; 
+    max-width: 40vw;
+    min-width: 300px; 
+    
 }
 
 .charCountText {

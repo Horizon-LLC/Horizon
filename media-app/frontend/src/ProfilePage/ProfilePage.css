@@ -11,9 +11,10 @@ html, body {
     justify-content: center;  
     align-items: center; 
     background-color: aliceblue;  
-    height: calc(100vh - 64px);  
-    width: 100vw;
-    min-width: 100%;
+    height: 100vh;  
+    width: calc(100vw - 15vw);
+    min-width: calc(100vw - 200px);
+    max-width: calc(100vw - 400px);
     overflow: hidden;
 }
 

@@ -6,6 +6,7 @@ import LoginPage from './LoginSignup/LoginPage';
 import SignupPage from './LoginSignup/SignupPage';
 import ProfilePage from './ProfilePage/ProfilePage';
 import HomePage from './MainPage/HomePage';
+import ChatPage from './ChatPage/ChatPage';
 
 
 import {Navbar, NavbarBrand, NavbarContent, NavbarItem, NextUIProvider, Spacer} from "@nextui-org/react";
@@ -48,6 +49,11 @@ function App() {
             </Link>
           </NavbarItem>
           <NavbarItem>
+            <Link className='navbar-item' color="foreground" to="/ChatTest">
+              Chat Page
+            </Link>
+          </NavbarItem>
+          <NavbarItem>
             <Link className='navbar-item' color="foreground" to="/DatabaseTest">
               Database Test
             </Link>
@@ -81,15 +87,18 @@ function App() {
       <NextUIProvider>
         <BrowserRouter>
             <WebNavbar />
-          <Routes>
-            <Route path="/" element={<Navigate to="/Login" />} />
-            <Route exact path="/DatabaseTest" element={<UserList />} />
-            <Route path="/EntityDatabase" element={<EntityList />} />
-            <Route path="/Login" element={<LoginPage setLoggedInUser={setLoggedInUser} />} /> 
-            <Route path="/Signup" element={<SignupPage />} />
-            <Route path="/Profile" element={<ProfilePage setLoggedInUser={setLoggedInUser} />} />
-            <Route path="/Home" element={<HomePage loggedInUser={loggedInUser}/>} />
-          </Routes>
+            <div className='main-container'>
+              <Routes>
+                <Route path="/" element={<Navigate to="/Login" />} />
+                <Route exact path="/DatabaseTest" element={<UserList />} />
+                <Route path="/EntityDatabase" element={<EntityList />} />
+                <Route path="/Login" element={<LoginPage setLoggedInUser={setLoggedInUser} />} /> 
+                <Route path="/Signup" element={<SignupPage />} />
+                <Route path="/Profile" element={<ProfilePage setLoggedInUser={setLoggedInUser} />} />
+                <Route path="/Home" element={<HomePage loggedInUser={loggedInUser}/>} />
+                <Route path="/ChatTest" element={<ChatPage loggedInUser={loggedInUser}/>} />
+              </Routes>
+            </div>
 
           
         </BrowserRouter>

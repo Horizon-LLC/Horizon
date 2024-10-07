@@ -62,7 +62,7 @@ const HomePage = ({loggedInUser}) => {
 
 
     return (
-        <div className='main-container'>
+        <div className='home-container'>
             <Card className='center-container'>
                 <div className='feed-top'>
                     <Button color="primary" className="max-w-xs" onClick={onOpen}>
