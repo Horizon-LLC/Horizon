@@ -102,3 +102,33 @@ def get_messages(user_id, username):
         return jsonify({"messages": message_list}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+
+# Fetch all messages for a chatbox, sorted by newest first
+@message_blueprint.route('/get-chatbox-messages', methods=['GET'])
+@token_required
+def get_chatbox_messages(user_id, username):
+    chatbox_id = request.args.get('chatbox_id')
+
+    connection = get_db_connection()
+    cursor = connection.cursor()
+
+    try:
+        # Fetch all messages for the given chatbox, sorted by time (newest first)
+        query = """
+            SELECT sender_id, receiver_id, content, time 
+            FROM message 
+            WHERE chatbox_id = %s 
+            ORDER BY time DESC
+        """
+        cursor.execute(query, (chatbox_id,))
+        messages = cursor.fetchall()
+
+        # Create a list of message dictionaries
+        message_list = [{"sender_id": m[0], "receiver_id": m[1], "content": m[2], "time": m[3]} for m in messages]
+        cursor.close()
+        connection.close()
+
+        return jsonify({"messages": message_list}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500

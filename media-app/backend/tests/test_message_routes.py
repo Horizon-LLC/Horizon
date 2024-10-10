@@ -47,5 +47,16 @@ class MessageRoutesTestCase(unittest.TestCase):
         data = json.loads(response.data)
         self.assertIsInstance(data['messages'], list)
 
+    def test_get_chatbox_messages(self):
+        token = generate_test_token(1, 'testuser')  # Use a valid token
+        response = self.app.get('/get-chatbox-messages?chatbox_id=1', headers={
+            'Authorization': f'Bearer {token}'
+        })
+        self.assertEqual(response.status_code, 200)
+        data = json.loads(response.data)
+        self.assertIsInstance(data['messages'], list)
+        self.assertGreaterEqual(len(data['messages']), 0)  # Ensure messages are fetched
+
+
 if __name__ == '__main__':
     unittest.main()
