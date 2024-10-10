@@ -3,7 +3,7 @@ import mysql.connector
 import jwt
 from functools import wraps
 from graphviz import render
-from database.db import get_db_connection
+from backend.database.db import get_db_connection
 
 boolDebug = True
 
