@@ -11,9 +11,11 @@ load_dotenv()
 # Function to establish the database connection
 def get_db_connection() -> Optional[MySQLConnection]:
     connection: Optional[MySQLConnection] = mysql.connector.connect(
-        host=os.getenv('DB_HOST'),
-        user=os.getenv('DB_USER'),
-        password=os.getenv('DB_PASSWORD'),
-        database=os.getenv('DB_NAME')
+        host='horizon-llc.cdcgg8uief43.us-east-1.rds.amazonaws.com',
+        user='admin',
+        password='horizon4800',
+        database='horizon',
+        port=3306,
+        use_pure=True
     )
     return connection

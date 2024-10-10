@@ -24,6 +24,9 @@ app.register_blueprint(user_blueprint)
 app.register_blueprint(test_blueprint)  # Register the test routes blueprint
 app.register_blueprint(dashboard_blueprint)
 
+# Allow SQL Alchemy
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://admin:admin@horizon-llc.cdcgg8uief43.us-east-1.rds.amazonaws.com/horizon'
+
 # Route to test the database connection
 @app.route('/test-db', methods=['GET'])
 def test_db() -> str:
@@ -81,6 +84,7 @@ def get_table_data(table_name) -> Response:
     except mysql.connector.Error as err:
         return jsonify({"error": str(err)})
 
+# This will be used to add a friend
 
 
 #Apply CORS to all responses
