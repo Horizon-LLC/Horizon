@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';  
 import './ProfilePage.css'; 
 
-const ProfilePage = ({ setLoggedInUser }) => {
+const ProfilePage = ({ setLoggedInUser, setLoggedInUserId }) => {
     const navigate = useNavigate();
 
     const handleLogout = async () => {
@@ -14,6 +14,7 @@ const ProfilePage = ({ setLoggedInUser }) => {
 
             if (response.ok) {
                 setLoggedInUser(null);
+                setLoggedInUserId(null);
                 navigate('/Login');
             } else {
                 alert('Logout failed');

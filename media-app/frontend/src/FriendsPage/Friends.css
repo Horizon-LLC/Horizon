@@ -1,0 +1,41 @@
+.friendpage-container {
+    width: calc(100vw - 15vw);
+    min-width: calc(100vw - 200px);
+    max-width: calc(100vw - 400px);
+    height: 100vh;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+.friends-container {
+    right: 0;           /* Aligns the container to the right side of the screen */
+    top: 60px;          /* Adds some space from the top to avoid the navbar */
+    width: 600px;       /* Sets a fixed width for the container */
+    padding: 20px;
+    background-color: #f9f9f9;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+  }
+  
+  .friend-input {
+    display: block;
+    margin-bottom: 10px;
+    padding: 10px;
+    width: 100%;
+    font-size: 16px;
+  }
+  
+  .addfriend-button {
+    padding: 10px;
+    width: 100%;
+    font-size: 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .addfriend-button:hover {
+    background-color: #45a049;
+  }

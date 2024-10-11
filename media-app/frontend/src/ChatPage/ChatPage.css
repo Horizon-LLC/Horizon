@@ -1,0 +1,89 @@
+.chat-container {
+    height: 100%;
+    min-height: 100vh;
+    width: 100%;
+    min-width: 100vw;
+    display: flex;
+    flex-direction: column;
+    margin-right: 5vw;
+
+}
+.chat-header {
+    width: 100%;
+    min-width: 100vw;
+    height: 10%;
+    min-height: 10vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.username-text {
+    margin-right: 10vw;
+    font-size:xx-large;
+    font-weight: bold;
+}
+.chat-content {
+    width: 100%;
+    min-width: 100vw;
+    height: 80%;
+    min-height: 80vh;
+    border-top: 1px solid  #c0d6e8;
+    border-bottom: 1px solid  #c0d6e8;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.message-header {
+    font-weight: 600;
+}
+.message-content {
+    font-weight: 400;
+
+}
+.message-footer {
+    font-weight: 300;
+    font-size: small;
+}
+.user-message {
+    width: 20vw;
+    min-width: 200px;
+    max-width: 20vw;
+    align-self: center; 
+    justify-self: center;
+    background-color: #e1ffc7;
+    margin-top: 1vh;
+    margin-bottom: 1vh;
+    margin-left: 60vw;
+}
+
+.otheruser-message {
+    width: 20vw;
+    min-width: 200px;
+    max-width: 20vw;
+    align-self: flex-start; 
+    background-color: #d1d1d1; 
+    margin-top: 1vh;
+    margin-bottom: 1vh;
+    margin-left: 5vw;
+}
+.chat-footer {
+    width: 100%;
+    min-width: 100vw;
+    height: 10%;
+    min-height: 10vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-items: row;
+}
+
+.message-input {
+    width: 50%;
+    min-width: 50vw;
+    height: 50%;
+    min-height: 5vh;
+    margin-right: 10vw;
+    margin-top: 1vh;
+}
+    

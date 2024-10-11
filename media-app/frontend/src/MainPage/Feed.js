@@ -1,6 +1,6 @@
 import './MainPage.css';
 import React, { useEffect, useState, forwardRef, useImperativeHandle  } from 'react';
-import { Card, CardBody, CardHeader, CircularProgress} from "@nextui-org/react";
+import { Card, CardBody, CardFooter, CardHeader, CircularProgress} from "@nextui-org/react";
 
 const Feed = forwardRef((props, ref) => {
     const [posts, setPosts] = useState([]);
@@ -52,14 +52,16 @@ const Feed = forwardRef((props, ref) => {
                 <></>
             ) : (
                 posts.map((post, index) => (
-                    <Card key={index} className="post-card" style={{ marginVertical: 10 }}>
+                    <Card key={index} className="post-card" style={{ marginVertical: 10 }} shadow='none'>
                         <CardHeader>
                             <p>{post.userid}</p>
                         </CardHeader>
                         <CardBody>
                             <p>{post.content}</p>
-                            <p style={{ color: 'gray' }}>Posted on: {new Date(post.created_at).toLocaleString()}</p>
                         </CardBody>
+                        <CardFooter>
+                            <p style={{ color: 'gray' }}>Posted on: {new Date(post.created_at).toLocaleString()}</p>
+                        </CardFooter>
                     </Card>
                 ))
             )}

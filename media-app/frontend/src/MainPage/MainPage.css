@@ -1,34 +1,97 @@
-.main-container {
-    width: calc(100vw - 300px);
+
+.home-container {
+    width: 100%;
     min-width: calc(100vw - 200px);
     max-width: calc(100vw - 400px);
-    height: 100vh;
+    height: 100%;
     min-height: 100vh;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
+    flex-direction: row;
+    margin-top: 5vh;
+}
+
+.search-box {
+    width: 20vw;
+    max-width: 20vw; 
+    min-width: 200px;
+    min-width: 400px;
+    height: 10vh;
+    min-height: 10vh;
+}
+
+.side-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    margin-right: 5vw;
+    height: 100%;
+    min-height: 100vh;
+    padding: 1vh;
+}
+.profile-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    height: 52vh;
+    min-height: 600px;
+    max-height: 900px;
+    width: 100%;
+    max-width: 20vw; 
+    min-width: 200px;
+    min-width: 400px;
+    background-color: hsl(208, 100%, 92%);
+}
+.user-card {
+    width: 18vw; 
+    max-width: 18vw;
+    height: 13vh;
+    min-height: 150px;
+    margin-top: 1vh;
+    margin-bottom: 1vh;
+    background-color: hsl(0, 0%, 99%);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2vw;
+}
+.usercard-text {
+    font-size: medium;
+    font-weight: bold;
+}
+.addfriend-button {
+    background-color: #4CAF50;
+    width: 3vw;
+    min-width: 100px;
+    max-width: 3vw;
 }
 .center-container {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    height: 70vh;
-    width: 40vw;
-    min-width: 800px;
-    min-height: 700px;
-    max-height: 1000px;
+    height: 100%;
+    min-height: 100vh;
+    width: 100%; 
+    max-width: 40vw;
+    min-width: 300px; 
+    margin: 10px;
 }
+
 .feed-top {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-end;
-    height: 10vh;
-    width: 40vw;
-    min-width: 800px;
-    min-height: 130px;
-    max-height: 200px;
+    height: 10%;
+    min-height: 10vh;
+    width: 100%; 
+    max-width: 40vw;
+    min-width: 300px; 
     padding: 1vh;
 }
 .feed-bottom {
@@ -36,35 +99,30 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    height: 60vh;
-    width: 40vw;
-    min-width: 800px;
-    min-height: 470px;
-    max-height: 800px;
+    height: 80%;
+    min-height: 80vh;
+    width: 100%; 
+    max-width: 40vw;
+    min-width: 300px; 
     overflow: auto;
 }
 .post-card {
-    width: 40vw;
-    height: 10vh;
+    width: 100%; 
+    max-width: 40vw;
+    min-width: 300px; 
+    height: 25vh;
     min-height: 130px;
-    min-width: 800px;
-    border-radius: 0%;
+    margin-bottom: 2vh;
+    background-color: hsl(0, 0%, 99%);
 }
 .feed-container {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-}
-.side-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 60vh;
-    width: 15vw;
-    min-width: 400px;
-    min-height: 800px;
+    width: 100%; 
+    max-width: 40vw;
+    min-width: 300px; 
 }
 
 .charCountText {
