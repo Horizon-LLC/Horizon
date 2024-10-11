@@ -10,15 +10,18 @@ const Friends = () => {
   };
 
   return (
-    <div className="friends-container">
-      <h1>Add Friend</h1>
-      <input
-        type="text"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-        placeholder="Enter friend's username"
-      />
-      <button onClick={handleAddFriend}>Add Friend</button>
+    <div className='friendpage-container'>
+      <div className="friends-container">
+        <h1>Add Friend</h1>
+        <input
+          className='friend-input'
+          type="text"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          placeholder="Enter friend's username"
+        />
+        <button  className='addfriend-button' onClick={handleAddFriend}>Add Friend</button>
+      </div>
     </div>
   );
 };

@@ -7,6 +7,7 @@ import SignupPage from './LoginSignup/SignupPage';
 import ProfilePage from './ProfilePage/ProfilePage';
 import HomePage from './MainPage/HomePage';
 import ChatPage from './ChatPage/ChatPage';
+import FriendsPage from './FriendsPage/Friends';
 
 
 import {Navbar, NavbarBrand, NavbarContent, NavbarItem, NextUIProvider, Spacer} from "@nextui-org/react";
@@ -39,7 +40,7 @@ function App() {
             </Link>
           </NavbarItem>
           <NavbarItem>
-            <Link className='navbar-item' color="foreground" to="/Home">
+            <Link className='navbar-item' color="foreground" to="/Friends">
               Friends
             </Link>
           </NavbarItem>
@@ -92,6 +93,7 @@ function App() {
                 <Route path="/Profile" element={<ProfilePage setLoggedInUser={setLoggedInUser} />} />
                 <Route path="/Home" element={<HomePage loggedInUser={loggedInUser}/>} />
                 <Route path="/ChatTest" element={<ChatPage loggedInUser={loggedInUser}/>} />
+                <Route path="/Friends" element={<FriendsPage />} />
               </Routes>
             </div>
 
