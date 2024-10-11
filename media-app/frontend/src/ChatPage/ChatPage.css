@@ -29,6 +29,43 @@
     min-height: 80vh;
     border-top: 1px solid  #c0d6e8;
     border-bottom: 1px solid  #c0d6e8;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.message-header {
+    font-weight: 600;
+}
+.message-content {
+    font-weight: 400;
+
+}
+.message-footer {
+    font-weight: 300;
+    font-size: small;
+}
+.user-message {
+    width: 20vw;
+    min-width: 200px;
+    max-width: 20vw;
+    align-self: center; 
+    justify-self: center;
+    background-color: #e1ffc7;
+    margin-top: 1vh;
+    margin-bottom: 1vh;
+    margin-left: 60vw;
+}
+
+.otheruser-message {
+    width: 20vw;
+    min-width: 200px;
+    max-width: 20vw;
+    align-self: flex-start; 
+    background-color: #d1d1d1; 
+    margin-top: 1vh;
+    margin-bottom: 1vh;
+    margin-left: 5vw;
 }
 .chat-footer {
     width: 100%;

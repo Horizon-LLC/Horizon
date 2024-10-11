@@ -4,7 +4,7 @@ import { Button, Card, CardBody, CardHeader, Input, Spacer } from "@nextui-org/r
 import { LuEye, LuEyeOff } from "react-icons/lu";
 import { Link, useNavigate } from "react-router-dom";
 
-const LoginPage = ({ setLoggedInUser }) => {
+const LoginPage = ({ setLoggedInUser, setLoggedInUserId } ) => {
     const [isVisible, setIsVisible] = useState(false);
     const navigate = useNavigate();
 
@@ -35,9 +35,11 @@ const LoginPage = ({ setLoggedInUser }) => {
             });
 
             const result = await response.json();
+            console.log(result);
             if (response.ok) {
                 localStorage.setItem('token', result.token); // Store the JWT token
                 setLoggedInUser(result.username);
+                setLoggedInUserId(result.user_id);
                 navigate('/Home');
             } else {
                 alert(result.error);

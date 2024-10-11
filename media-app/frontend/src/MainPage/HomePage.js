@@ -1,6 +1,7 @@
 import './MainPage.css';
-import React, { useState, useRef } from 'react';
-import { Input, Button, Card, Spacer, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Textarea, ScrollShadow } from '@nextui-org/react';
+import React, { useState, useRef, useEffect } from 'react';
+import { Link } from "react-router-dom";
+import { Input, Button, Card, CardHeader, CardBody, CardFooter, Spacer, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Textarea, ScrollShadow } from '@nextui-org/react';
 import { CiSearch } from "react-icons/ci";
 import Feed from './Feed';
 
@@ -8,6 +9,7 @@ const HomePage = ({loggedInUser}) => {
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
     const [message, setMessage] = useState('');  
     const [alertModal, setAlertModal] = useState({ isOpen: false, text: '', type: '' });
+    const [users, setUsers] = useState([]);
     const maxChar = 10000;         
     const feedRefresh = useRef(null);   
     
@@ -58,8 +60,33 @@ const HomePage = ({loggedInUser}) => {
         }
     };
 
+    const getAllUsers = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await fetch('http://127.0.0.1:5000/users', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+                setUsers(data);
+            } else {
+                showErrorMess(data.error || 'Failed to get users', 'error');
+            }
+        } catch (error) {
+            console.error('Error creating post:', error);
+            showErrorMess('Something went wrong while getting users', 'error');
+        }
+    };
 
 
+    useEffect(() => {
+        getAllUsers(); 
+    }, []);
 
     return (
         <div className='home-container'>
@@ -109,9 +136,22 @@ const HomePage = ({loggedInUser}) => {
                         }
                     />
                 <Card className='profile-container'>
-                    <Button color="primary" className="max-w-xs">
-                        User Page
-                    </Button>
+                    <ScrollShadow hideScrollBar>
+                        {users.length > 0 ? (
+                                users.map((user) => (
+                                    <Card className='user-card' key={user.user_id} shadow='none'>
+                                        <Link to={`/user/${user.user_id}`}>
+                                        <p className='usercard-text'>{user.username}</p>
+                                        </Link>
+                                        <Button className='addfriend-button'>
+                                            Friend
+                                        </Button>
+                                    </Card>
+                                ))
+                            ) : (
+                                <p>No users found</p>
+                            )}
+                    </ScrollShadow>
                 </Card>
             </div>
 

@@ -11,16 +11,23 @@ boolDebug = True;
 @message_blueprint.route('/create-or-fetch-chatbox', methods=['POST'])
 def create_or_fetch_chatbox():
     data = request.get_json()
-    user1_id = min(data['user1_id'], data['user2_id'])
-    user2_id = max(data['user1_id'], data['user2_id'])
+    user1_id = data.get('user1_id')
+    user2_id = data.get('user2_id')
+
+
 
     connection = get_db_connection()
     cursor = connection.cursor()
 
     try:
         # Check if the chatbox already exists
-        query = "SELECT chatbox_id FROM chatbox WHERE user_id_1 = %s AND user_id_2 = %s"
-        cursor.execute(query, (user1_id, user2_id))
+        query = """
+            SELECT chatbox_id 
+            FROM chatbox 
+            WHERE (user_id_1 = %s AND user_id_2 = %s) 
+               OR (user_id_1 = %s AND user_id_2 = %s)
+        """ 
+        cursor.execute(query, (user1_id, user2_id, user2_id, user1_id))
         result = cursor.fetchone()
 
         if result:
@@ -114,6 +121,7 @@ def get_chatbox_messages(user_id, username):
     cursor = connection.cursor()
 
     try:
+        
         # Fetch all messages for the given chatbox, sorted by time (newest first)
         query = """
             SELECT sender_id, receiver_id, content, time 

@@ -8,6 +8,7 @@ import ProfilePage from './ProfilePage/ProfilePage';
 import HomePage from './MainPage/HomePage';
 import ChatPage from './ChatPage/ChatPage';
 import FriendsPage from './FriendsPage/Friends';
+import UserProfile from './UserPage/UserProfile';
 
 
 import {Navbar, NavbarBrand, NavbarContent, NavbarItem, NextUIProvider, Spacer} from "@nextui-org/react";
@@ -16,6 +17,7 @@ import {BrowserRouter, Routes, Router, Route, Link, Navigate, useLocation } from
 
 function App() {
   const [loggedInUser, setLoggedInUser] = useState(null);
+  const [loggedInUserId, setLoggedInUserId] = useState(null);
 
   const WebNavbar = () => {
     const location = useLocation(); // Get the current location
@@ -42,11 +44,6 @@ function App() {
           <NavbarItem>
             <Link className='navbar-item' color="foreground" to="/Friends">
               Friends
-            </Link>
-          </NavbarItem>
-          <NavbarItem>
-            <Link className='navbar-item' color="foreground" to="/ChatTest">
-              Chat Page
             </Link>
           </NavbarItem>
           <NavbarItem>
@@ -88,12 +85,15 @@ function App() {
                 <Route path="/" element={<Navigate to="/Login" />} />
                 <Route exact path="/DatabaseTest" element={<UserList />} />
                 <Route path="/EntityDatabase" element={<EntityList />} />
-                <Route path="/Login" element={<LoginPage setLoggedInUser={setLoggedInUser} />} /> 
+                <Route path="/Login" element={<LoginPage setLoggedInUser={setLoggedInUser} setLoggedInUserId={setLoggedInUserId} />} /> 
                 <Route path="/Signup" element={<SignupPage />} />
-                <Route path="/Profile" element={<ProfilePage setLoggedInUser={setLoggedInUser} />} />
+                <Route path="/Profile" element={<ProfilePage setLoggedInUser={setLoggedInUser} setLoggedInUserId={setLoggedInUserId} />} />
                 <Route path="/Home" element={<HomePage loggedInUser={loggedInUser}/>} />
                 <Route path="/ChatTest" element={<ChatPage loggedInUser={loggedInUser}/>} />
                 <Route path="/Friends" element={<FriendsPage />} />
+                <Route path="/user/:userId" element={<UserProfile loggedInUser={loggedInUser} loggedInUserId={loggedInUserId}/>} />
+                <Route path="/chat/:chatboxId" element={<ChatPage loggedInUser={loggedInUser} loggedInUserId={loggedInUserId}/>} />
+                
               </Routes>
             </div>
 

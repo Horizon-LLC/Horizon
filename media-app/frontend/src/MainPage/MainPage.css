@@ -34,7 +34,7 @@
 .profile-container {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     height: 52vh;
     min-height: 600px;
@@ -44,6 +44,30 @@
     min-width: 200px;
     min-width: 400px;
     background-color: hsl(208, 100%, 92%);
+}
+.user-card {
+    width: 18vw; 
+    max-width: 18vw;
+    height: 13vh;
+    min-height: 150px;
+    margin-top: 1vh;
+    margin-bottom: 1vh;
+    background-color: hsl(0, 0%, 99%);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2vw;
+}
+.usercard-text {
+    font-size: medium;
+    font-weight: bold;
+}
+.addfriend-button {
+    background-color: #4CAF50;
+    width: 3vw;
+    min-width: 100px;
+    max-width: 3vw;
 }
 .center-container {
     display: flex;

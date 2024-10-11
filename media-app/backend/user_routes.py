@@ -110,7 +110,7 @@ def login_user()-> Union[Response, Tuple[Response, int]]:
                 'username': user[1],
                 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=72) # Token expiration
             }, SECRET_KEY, algorithm='HS256')
-            return jsonify({'token': token, 'username': user[1]}), 200
+            return jsonify({'token': token, 'username': user[1], 'user_id': user[0]}), 200
         else:
             return jsonify({'error': 'Invalid email or password'}), 401
 
@@ -137,6 +137,7 @@ def get_all_users_light():
         query = "SELECT user_id, username FROM user"
         cursor.execute(query)
         users = cursor.fetchall()
+
 
         cursor.close()
         connection.close()
