@@ -40,11 +40,6 @@ function App() {
           </NavbarItem>
           <NavbarItem>
             <Link className='navbar-item' color="foreground" to="/Home">
-              Search
-            </Link>
-          </NavbarItem>
-          <NavbarItem>
-            <Link className='navbar-item' color="foreground" to="/Home">
               Friends
             </Link>
           </NavbarItem>

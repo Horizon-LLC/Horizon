@@ -6,32 +6,52 @@
     height: 100vh;
     min-height: 100vh;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
-    flex-wrap: wrap;
-    padding: 20px;
+    flex-direction: row;
+    margin-top: 5vh;
 }
+
+.search-box {
+    width: 20vw;
+    max-width: 20vw; 
+    min-width: 200px;
+    min-width: 400px;
+    height: 10vh;
+    min-height: 10vh;
+}
+
 .side-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    margin-right: 5vw;
+    height: 100%;
+    min-height: 100vh;
+    padding: 1vh;
+}
+.profile-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 60vh;
+    height: 52vh;
     min-height: 600px;
     max-height: 900px;
     width: 100%;
     max-width: 20vw; 
     min-width: 200px;
     min-width: 400px;
+    background-color: hsl(208, 100%, 92%);
 }
 .center-container {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    height: 70vh;
-    min-height: 700px;
-    max-height: 1000px;
+    height: 100%;
+    min-height: 100vh;
     width: 100%; 
     max-width: 40vw;
     min-width: 300px; 
@@ -43,12 +63,11 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-end;
-    height: 10vh;
+    height: 10%;
+    min-height: 10vh;
     width: 100%; 
     max-width: 40vw;
     min-width: 300px; 
-    min-height: 130px;
-    max-height: 200px;
     padding: 1vh;
 }
 .feed-bottom {
@@ -56,20 +75,21 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    height: 60vh;
+    height: 80%;
+    min-height: 80vh;
     width: 100%; 
     max-width: 40vw;
     min-width: 300px; 
-    min-height: 470px;
-    max-height: 800px;
     overflow: auto;
 }
 .post-card {
-    width: 40vw;
-    height: 10vh;
+    width: 100%; 
+    max-width: 40vw;
+    min-width: 300px; 
+    height: 25vh;
     min-height: 130px;
-    min-width: 800px;
-    border-radius: 0%;
+    margin-bottom: 2vh;
+    background-color: hsl(0, 0%, 99%);
 }
 .feed-container {
     display: flex;
@@ -79,7 +99,6 @@
     width: 100%; 
     max-width: 40vw;
     min-width: 300px; 
-    
 }
 
 .charCountText {

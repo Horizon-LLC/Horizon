@@ -6,7 +6,7 @@ const ChatPage = ({loggedInUser}) => {
     return(
         <div className='chat-container'>
             <div className='chat-header'>
-                <h1>USER FRIEND</h1>
+                <h1 className='username-text'>USER FRIEND</h1>
             </div>
             <div className='chat-content'>
                 
@@ -14,7 +14,6 @@ const ChatPage = ({loggedInUser}) => {
             <div className='chat-footer'>
                 <Input
                     label="Message"
-                    isClearable
                     radius="lg"
                     className='message-input'
                     placeholder="Message..."
