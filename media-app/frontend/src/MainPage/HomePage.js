@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { Input, Button, Card, CardHeader, CardBody, CardFooter, Spacer, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Textarea, ScrollShadow } from '@nextui-org/react';
 import { CiSearch } from "react-icons/ci";
 import Feed from './Feed';
+import API_BASE_URL from '../config';
 
 const HomePage = ({loggedInUser}) => {
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
@@ -37,7 +38,7 @@ const HomePage = ({loggedInUser}) => {
         try {
             const currentDateTime = formatDate(new Date());
             console.log(currentDateTime);
-            const response = await fetch('http://127.0.0.1:5000/create-post', {
+            const response = await fetch(`${API_BASE_URL}/create-post`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -63,7 +64,7 @@ const HomePage = ({loggedInUser}) => {
     const getAllUsers = async () => {
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch('http://127.0.0.1:5000/users', {
+            const response = await fetch(`${API_BASE_URL}/users`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`,

@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Button, Card, CardBody, CardHeader, Input, Spacer } from "@nextui-org/react";
 import { LuEye, LuEyeOff } from "react-icons/lu";
 import { Link, useNavigate } from "react-router-dom";
+import API_BASE_URL from '../config'; 
 
 const LoginPage = ({ setLoggedInUser, setLoggedInUserId } ) => {
     const [isVisible, setIsVisible] = useState(false);
@@ -26,7 +27,7 @@ const LoginPage = ({ setLoggedInUser, setLoggedInUserId } ) => {
         e.preventDefault();
 
         try {
-            const response = await fetch('http://127.0.0.1:5000/login', {
+            const response = await fetch(`${API_BASE_URL}/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

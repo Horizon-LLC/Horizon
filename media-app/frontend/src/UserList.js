@@ -1,5 +1,6 @@
 import './UserList.css';
 import React, { useState } from 'react';
+import API_BASE_URL from './config';
 
 import {Button} from "@nextui-org/button";
 
@@ -12,7 +13,7 @@ const UserList = () => {
     const fetchData = async () => {
         console.log("Button clicked, fetching data...");  // Check if this logs in the console
         try {
-            const response = await fetch("http://127.0.0.1:5000/allUsers");  // Call Flask API
+            const response = await fetch(`${API_BASE_URL}/allUsers`);  // Call Flask API
             console.log("Response status:", response.status);  // Log the status code
             // Log the raw response to check if it's valid
             console.log("Raw response:", response);

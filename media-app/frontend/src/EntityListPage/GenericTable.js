@@ -2,6 +2,7 @@ import './Table.css'
 import React, { useState, useEffect } from 'react';
 import { Card, CardBody, ScrollShadow } from "@nextui-org/react";
 import {CircularProgress} from "@nextui-org/react";
+import API_BASE_URL from '../config'; 
 
 const GenericTable = ({ apiEndpoint, title }) => {
     const [data, setData] = useState([]);
@@ -14,7 +15,7 @@ const GenericTable = ({ apiEndpoint, title }) => {
         setError(null);
 
         try {
-            const response = await fetch(`http://127.0.0.1:5000/${apiEndpoint}`);
+            const response = await fetch(`${API_BASE_URL}/${apiEndpoint}`);
             if (!response.ok) {
                 throw new Error("Network response was not ok");
             }

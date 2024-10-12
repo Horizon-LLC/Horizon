@@ -2,6 +2,7 @@ import './UserPage.css';
 import { useParams, useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import { Button, Card, CardHeader, CardBody, CardFooter, ScrollShadow } from '@nextui-org/react';
+import API_BASE_URL from '../config'; 
 
 const UserProfile = ({loggedInUser, loggedInUserId}) => {
     const { userId } = useParams();  
@@ -12,7 +13,7 @@ const UserProfile = ({loggedInUser, loggedInUserId}) => {
     const fetchUserData = async () => {
         try {
           const token = localStorage.getItem('token');
-          const response = await fetch(`http://127.0.0.1:5000/user/${userId}`, {
+          const response = await fetch(`${API_BASE_URL}/user/${userId}`, {
             method: 'GET',
             headers: {
               'Authorization': `Bearer ${token}`,
@@ -34,7 +35,7 @@ const UserProfile = ({loggedInUser, loggedInUserId}) => {
     const chatboxDirect = async () => {
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch('http://127.0.0.1:5000/create-or-fetch-chatbox', {
+            const response = await fetch(`${API_BASE_URL}/create-or-fetch-chatbox`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,

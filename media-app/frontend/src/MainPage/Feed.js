@@ -1,6 +1,7 @@
 import './MainPage.css';
 import React, { useEffect, useState, forwardRef, useImperativeHandle  } from 'react';
 import { Card, CardBody, CardFooter, CardHeader, CircularProgress} from "@nextui-org/react";
+import API_BASE_URL from '../config'; 
 
 const Feed = forwardRef((props, ref) => {
     const [posts, setPosts] = useState([]);
@@ -10,7 +11,7 @@ const Feed = forwardRef((props, ref) => {
         setLoading(true);
         const token = localStorage.getItem('token'); // Get the token from local storage
         try {
-            const response = await fetch('http://127.0.0.1:5000/dashboard', {
+            const response = await fetch(`${API_BASE_URL}/dashboard`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`,  // Use the actual token

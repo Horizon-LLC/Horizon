@@ -1,13 +1,14 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';  
 import './ProfilePage.css'; 
+import API_BASE_URL from '../config'; 
 
 const ProfilePage = ({ setLoggedInUser, setLoggedInUserId }) => {
     const navigate = useNavigate();
 
     const handleLogout = async () => {
         try {
-            const response = await fetch('http://127.0.0.1:5000/logout', {
+            const response = await fetch(`${API_BASE_URL}/logout`, {
                 method: 'POST',
                 credentials: 'include',  // Include session cookies
             });
