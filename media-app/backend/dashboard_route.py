@@ -55,8 +55,6 @@ def dashboard(user_id, username):
 
         post_list = [{"content": post[0], "created_at": post[1]} for post in posts]
 
-        if boolDebug:
-            print(posts)  # Debugging step to check the structure of the fetched posts
         cursor.close()
         connection.close()
 

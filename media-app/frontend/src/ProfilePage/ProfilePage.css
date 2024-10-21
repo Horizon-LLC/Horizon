@@ -144,3 +144,60 @@
     padding: 20px; /* Padding around the dropdown */
     z-index: 10; /* Ensure it appears above other elements */
 }
+
+/* Modal */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    max-width: 100%;
+}
+
+/* Modal header */
+.modal-header {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+/* Friend list */
+.friend-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.friend-item {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Close button */
+.modal-close-button {
+    background-color: #db1d1d;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 1rem;
+}
+
+.modal-close-button:hover {
+    background-color: #b71c1c;
+}

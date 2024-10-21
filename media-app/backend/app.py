@@ -22,6 +22,8 @@ from backend.user_routes import user_blueprint # Import the blueprint
 from backend.dashboard_route import dashboard_blueprint # Import the dashboard blueprint
 from backend.message_route import message_blueprint
 from backend.profilepage_route import profile_blueprint
+from backend.friendpage_route import friend_blueprint
+
 
 
 
@@ -31,6 +33,7 @@ app.register_blueprint(test_blueprint)  # Register the test routes blueprint
 app.register_blueprint(dashboard_blueprint)
 app.register_blueprint(message_blueprint)
 app.register_blueprint(profile_blueprint)
+app.register_blueprint(friend_blueprint)
 
 # Route to test the database connection
 @app.route('/test-db', methods=['GET'])
