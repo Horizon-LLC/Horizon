@@ -5,18 +5,21 @@ import defaultProfilePic from '../images/defaultprofilepicture.jpg';
 import API_BASE_URL from '../config';
 
 const ProfilePage = ({ setLoggedInUser }) => {
-    const [username, setUsername] = useState(''); // State to store the username
-    const [totalPosts, setTotalPosts] = useState(0); // State to store total posts
-    const [totalFollowers, setTotalFollowers] = useState(0); // State to store total followers
-    const [totalFollowing, setTotalFollowing] = useState(0); // State to store total following
-    const [isMenuOpen, setIsMenuOpen] = useState(false); // State to manage dropdown visibility
+    const [username, setUsername] = useState(''); 
+    const [totalPosts, setTotalPosts] = useState(0); 
+    const [totalFollowers, setTotalFollowers] = useState(0); 
+    const [totalFollowing, setTotalFollowing] = useState(0); 
+    const [totalFriends, setTotalFriends] = useState(0); 
+    const [friends, setFriends] = useState([]); 
+    const [isFriendsModalOpen, setIsFriendsModalOpen] = useState(false); 
+    const [isMenuOpen, setIsMenuOpen] = useState(false); 
     const navigate = useNavigate();
 
     const handleLogout = async () => {
         try {
             const response = await fetch(`${API_BASE_URL}/logout`, {
                 method: 'POST',
-                credentials: 'include',  // Include session cookies
+                credentials: 'include',  
             });
 
             if (response.ok) {
@@ -31,25 +34,24 @@ const ProfilePage = ({ setLoggedInUser }) => {
     };
 
     const toggleMenu = () => {
-        setIsMenuOpen(!isMenuOpen); // Toggle the dropdown menu visibility
+        setIsMenuOpen(!isMenuOpen); 
     };
 
-    // Fetch user profile
     const fetchUserProfile = async () => {
-        const token = localStorage.getItem('token'); // Get the token from local storage
+        const token = localStorage.getItem('token'); 
         try {
             const response = await fetch(`${API_BASE_URL}/profile`, {
                 method: 'GET',
                 headers: {
-                    'Authorization': `Bearer ${token}`,  // Use the actual token
+                    'Authorization': `Bearer ${token}`, 
                     'Content-Type': 'application/json',
                 },
             });
 
             if (response.ok) {
                 const data = await response.json();
-                setUsername(data.username); // Set the username
-                setTotalPosts(data.total_posts); // Set total posts
+                setUsername(data.username); 
+                setTotalPosts(data.total_posts); 
                 setTotalFollowers(data.total_followers); 
                 setTotalFollowing(data.total_following); 
             } else {
@@ -60,9 +62,33 @@ const ProfilePage = ({ setLoggedInUser }) => {
         }
     };
 
+    const fetchFriends = async () => {
+        const token = localStorage.getItem('token'); 
+        try {
+            const response = await fetch(`${API_BASE_URL}/get-friends`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`, 
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                setFriends(data.friends); 
+                setTotalFriends(data.total_friends); 
+            } else {
+                console.error('Failed to fetch friends:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Error fetching friends:', error);
+        }
+    };
+
     useEffect(() => {
-        fetchUserProfile(); // Fetch the user profile
-    }, []);
+        fetchUserProfile(); 
+        fetchFriends(); 
+    }, []); 
 
     return (
         <div className="profile-container">
@@ -74,18 +100,20 @@ const ProfilePage = ({ setLoggedInUser }) => {
                     <div className="info">
                         <span className="username-text">{username}</span> 
                         <button className="settings-button" onClick={toggleMenu}>
-                            &#9776; {/* Three-line hamburger icon */}
+                            &#9776; 
                         </button>
                         <div className="info-line">
                             <span className="info-text">{totalPosts} Posts</span> 
                             <span className="info-text">{totalFollowers} Followers</span> 
                             <span className="info-text">{totalFollowing} Following</span> 
+                            <span className="info-text" onClick={() => setIsFriendsModalOpen(true)} style={{ cursor: 'pointer' }}>
+                                {totalFriends} Friends
+                            </span> 
                         </div>
                         <div className="bio">Yo soy Dora.</div>
                     </div>
                 </div>
 
-                {/* Dropdown Menu for Settings */}
                 {isMenuOpen && (
                     <div className="dropdown-menu">
                         <div className="profile-card1">
@@ -106,6 +134,20 @@ const ProfilePage = ({ setLoggedInUser }) => {
                 <div className="profile-header">
                     <h1 className="profile-header-text">Profile Page</h1>
                 </div>
+
+                {isFriendsModalOpen && (
+                    <div className="modal">
+                        <div className="modal-content">
+                            <h3 className="modal-header">Friends List</h3>
+                            <ul className="friend-list">
+                                {friends.map(friend => (
+                                    <li key={friend.user_id} className="friend-item">{friend.username}</li>
+                                ))}
+                            </ul>
+                            <button className="modal-close-button" onClick={() => setIsFriendsModalOpen(false)}>Close</button>
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );
