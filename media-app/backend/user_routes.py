@@ -104,6 +104,7 @@ def login_user()-> Union[Response, Tuple[Response, int]]:
 
         # Check if user exists and password matches
         if user and user[2] == password:
+
             # Create JWT token
             token = jwt.encode({
                 'user_id': user[0],
@@ -122,7 +123,6 @@ def login_user()-> Union[Response, Tuple[Response, int]]:
 # Add the logout route
 @user_blueprint.route('/logout', methods=['POST'])
 def logout() -> Response:
-    session.pop('username', None)  # Clear the session
     return jsonify({'message': 'Logout successful'}), 200
 
 

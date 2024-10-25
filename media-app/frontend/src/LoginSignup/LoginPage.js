@@ -26,6 +26,15 @@ const LoginPage = ({ setLoggedInUser, setLoggedInUserId } ) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        // Check if a token exists in localStorage
+        const existingToken = localStorage.getItem('token');
+
+        if (existingToken) {
+            // User is already logged in, block the login request
+            alert('Another user already logged in. Please log out first to switch users.');
+            return;  // Prevent further login attempts
+        }
+
         try {
             const response = await fetch(`${API_BASE_URL}/login`, {
                 method: 'POST',

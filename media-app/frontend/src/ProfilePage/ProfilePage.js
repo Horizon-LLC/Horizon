@@ -23,6 +23,8 @@ const ProfilePage = ({ setLoggedInUser }) => {
             });
 
             if (response.ok) {
+                // Remove token from localStorage
+                localStorage.removeItem('token');
                 setLoggedInUser(null);
                 navigate('/Login');
             } else {
