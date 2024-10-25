@@ -11,6 +11,7 @@ import datetime
 from typing import List, Dict, Optional, Union, Tuple
 import mysql.connector
 from backend.database.db import get_db_connection
+from backend.dashboard_route import token_required
 
 # Use a secure secret key for JWT encoding
 SECRET_KEY = 'HORIZON'
@@ -169,3 +170,11 @@ def get_single_user(user_id):
     except mysql.connector.Error as err:
         print(f"Error fetching user: {err}")
         return jsonify({'error': str(err)}), 500
+    
+@user_blueprint.route('/check-user-login', methods=['GET'])
+@token_required
+def get_user(current_user):
+    return jsonify({
+        "username": current_user['username'],
+        "user_id": current_user['user_id']
+    }), 200

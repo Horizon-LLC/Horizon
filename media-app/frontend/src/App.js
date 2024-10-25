@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import API_BASE_URL from './config'; 
 import './App.css';  // Optional styling
 import UserList from './UserList';  // Import the UserList component
 import EntityList from './EntityListPage/EntityList';
@@ -12,12 +13,14 @@ import UserProfile from './UserPage/UserProfile';
 
 
 import {Navbar, NavbarBrand, NavbarContent, NavbarItem, NextUIProvider, Spacer} from "@nextui-org/react";
-import {BrowserRouter, Routes, Router, Route, Link, Navigate, useLocation } from "react-router-dom";
+import {BrowserRouter, Routes, Router, Route, Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 
 
 function App() {
   const [loggedInUser, setLoggedInUser] = useState(null);
   const [loggedInUserId, setLoggedInUserId] = useState(null);
+
+  
 
   const WebNavbar = () => {
     const location = useLocation(); // Get the current location

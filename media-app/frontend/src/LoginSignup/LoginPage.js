@@ -36,7 +36,6 @@ const LoginPage = ({ setLoggedInUser, setLoggedInUserId } ) => {
             });
 
             const result = await response.json();
-            console.log(result);
             if (response.ok) {
                 localStorage.setItem('token', result.token); // Store the JWT token
                 setLoggedInUser(result.username);

@@ -90,11 +90,6 @@ const ChatPage = ({loggedInUser, loggedInUserId}) => {
         socket.emit('join_room', {chatbox_id: chatboxId});
 
         socket.on('receive_message', (message) => {
-            setMessages(messages => {
-                return [...messages, message];
-            });
-            console.log(message);
-            console.log(messages);
             fetchMessages();
         }, );
 

@@ -13,8 +13,8 @@ from flask_socketio import SocketIO, join_room
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
-CORS(app, supports_credentials=True, origins='http://localhost:3000')  # Enable Cross-Origin Resource Sharing (CORS)
-socketio = SocketIO(app, cors_allowed_origins="*", manage_session=False)
+CORS(app, supports_credentials=True, origins='http://localhost:3000', allow_headers='http://localhost:3000')  # Enable Cross-Origin Resource Sharing (CORS)
+socketio = SocketIO(app, cors_allowed_origins='*', manage_session=False)
 
 from backend.database.db import get_db_connection
 from backend.database.test_routes import test_blueprint  # Import test blueprint
