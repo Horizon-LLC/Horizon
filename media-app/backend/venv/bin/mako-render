@@ -1,0 +1,8 @@
+#!/Users/keita-katsumi/Dropbox/Academic/CalPolyPomona/2024/Fall2024/CS4800/Horizon_GitHub_Repo/Horizon/media-app/backend/venv/bin/python3
+# -*- coding: utf-8 -*-
+import re
+import sys
+from mako.cmd import cmdline
+if __name__ == '__main__':
+    sys.argv[0] = re.sub(r'(-script\.pyw|\.exe)?$', '', sys.argv[0])
+    sys.exit(cmdline())
