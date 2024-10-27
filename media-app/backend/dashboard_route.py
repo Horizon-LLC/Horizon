@@ -3,42 +3,16 @@ import mysql.connector
 import jwt
 from functools import wraps
 from graphviz import render
-from backend.database.db import get_db_connection
+from database.db import get_db_connection
+from auth import token_required
 
-boolDebug = True
+boolDebug = False
 
-SECRET_KEY = 'HORIZON'
+# SECRET_KEY = 'HORIZON'
 
 #Define the blueprint for the dashboard
 dashboard_blueprint = Blueprint('dashboard', __name__)
 
-
-# Utility function to verify JWT token
-def token_required(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        token = None
-
-        #JWT is passed in the request headers
-        if 'Authorization' in request.headers:
-            token = request.headers['Authorization'].split(" ")[1]
-
-        if not token:
-            return jsonify({'message': 'Token is missing'}), 401
-
-        try:
-            # Decode the token
-            data = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
-            user_id = data['user_id']
-            username = data['username']
-        except jwt.ExpiredSignatureError:
-            return jsonify({'message': 'Token is expired'}), 401
-        except jwt.InvalidTokenError:
-            return jsonify({'message': 'Token is invalid'}), 401
-
-        return f(user_id, username, *args, **kwargs)
-
-    return decorated
 
 # Dashboard route
 @dashboard_blueprint.route('/dashboard', methods=['GET'])

@@ -5,9 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3cac7565-d00b-411e-a1c2-8b203b9b9d85" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/pyvenv.cfg" beforeDir="false" afterPath="$PROJECT_DIR$/venv/pyvenv.cfg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/auth.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dashboard_route.py" beforeDir="false" afterPath="$PROJECT_DIR$/dashboard_route.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/friendpage_route.py" beforeDir="false" afterPath="$PROJECT_DIR$/friendpage_route.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/message_route.py" beforeDir="false" afterPath="$PROJECT_DIR$/message_route.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/profilepage_route.py" beforeDir="false" afterPath="$PROJECT_DIR$/profilepage_route.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user_routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/user_routes.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/package-lock.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -82,7 +86,7 @@
       <option name="presentableId" value="Default" />
       <updated>1729829976383</updated>
       <workItem from="1729829977518" duration="3507000" />
-      <workItem from="1730053126087" duration="973000" />
+      <workItem from="1730053126087" duration="2835000" />
     </task>
     <servers />
   </component>

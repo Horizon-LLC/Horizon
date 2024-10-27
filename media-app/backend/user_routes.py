@@ -10,7 +10,7 @@ import jwt # Generate a token for user authentication
 import datetime
 from typing import List, Dict, Optional, Union, Tuple
 import mysql.connector
-from backend.database.db import get_db_connection
+from database.db import get_db_connection
 
 # Use a secure secret key for JWT encoding
 SECRET_KEY = 'HORIZON'
