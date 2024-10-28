@@ -1,14 +1,9 @@
 from flask import Blueprint, request, jsonify
 from datetime import datetime
-<<<<<<< HEAD
-from auth import token_required
-from database.db import get_db_connection
-=======
 from backend.database.db import get_db_connection
-from backend.dashboard_route import token_required
+from auth import token_required
 from backend.app import socketio
 
->>>>>>> 8982396c2b478e3a60263263f5cdf1c023b9b472
 
 
 message_blueprint = Blueprint('message', __name__)
@@ -17,7 +12,7 @@ boolDebug = False
 # Create or fetch a chatbox for two users
 @message_blueprint.route('/create-or-fetch-chatbox', methods=['POST'])
 @token_required
-def create_or_fetch_chatbox():
+def create_or_fetch_chatbox(user_id, username):
     data = request.get_json()
     user1_id = data.get('user1_id')
     user2_id = data.get('user2_id')

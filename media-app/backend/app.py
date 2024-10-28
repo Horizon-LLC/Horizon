@@ -10,11 +10,15 @@ from flask_socketio import SocketIO, join_room
 # from werkzeug.security import check_password_hash
 
 # from graphviz import render
-
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
-CORS(app, supports_credentials=True, origins='http://localhost:3000', allow_headers='http://localhost:3000')  # Enable Cross-Origin Resource Sharing (CORS)
-socketio = SocketIO(app, cors_allowed_origins='*', manage_session=False)
+CORS(
+    app, 
+    supports_credentials=True, 
+    origins=['http://localhost:3000'],  # List your allowed origins here
+    allow_headers=['Content-Type', 'Authorization']  # List allowed headers
+)   # Enable Cross-Origin Resource Sharing (CORS)
+socketio = SocketIO(app, cors_allowed_origins='http://localhost:3000', manage_session=False)
 
 from backend.database.db import get_db_connection
 from backend.database.test_routes import test_blueprint  # Import test blueprint
@@ -92,7 +96,10 @@ def get_table_data(table_name) -> Response:
     except mysql.connector.Error as err:
         return jsonify({"error": str(err)})
 
-
+@socketio.on('join_room')
+def join_room(data):
+    chatbox_id = data.get('chatbox_id')
+    join_room(chatbox_id)
 
 #Apply CORS to all responses
 def apply_cors(response):
@@ -101,12 +108,6 @@ def apply_cors(response):
     response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
     return response
 
-@socketio.on('join_room')
-def join_room(data):
-    chatbox_id = data.get('chatbox_id')
-    join_room(chatbox_id)
 
-
-    
 if __name__ == "__main__":
     socketio.run(app, debug=True)

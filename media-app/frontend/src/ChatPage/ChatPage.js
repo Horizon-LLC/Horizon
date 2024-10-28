@@ -3,18 +3,15 @@ import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { IoSendSharp } from "react-icons/io5";
 import { Button, Card, CardBody, CardFooter, CardHeader, Input, ScrollShadow } from '@nextui-org/react';
 import React, { useState, useEffect, useRef } from 'react';
-import {io} from 'socket.io-client';
-
 import API_BASE_URL from '../config'; 
+import {io} from 'socket.io-client';
 
 const socket = io(`${API_BASE_URL}`, {
     transports: ['websocket']
 });
 
-
 const ChatPage = ({loggedInUser, loggedInUserId}) => {
 
-    
     const { chatboxId } = useParams(); 
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState('');
@@ -59,7 +56,7 @@ const ChatPage = ({loggedInUser, loggedInUserId}) => {
 
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch(`${API_BASE_URL}/send-message`, {
+            const response = await fetch('http://127.0.0.1:5000/send-message', {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -90,6 +87,11 @@ const ChatPage = ({loggedInUser, loggedInUserId}) => {
         socket.emit('join_room', {chatbox_id: chatboxId});
 
         socket.on('receive_message', (message) => {
+            setMessages(messages => {
+                return [...messages, message];
+            });
+            console.log(message);
+            console.log(messages);
             fetchMessages();
         }, );
 

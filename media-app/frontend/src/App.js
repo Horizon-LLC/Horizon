@@ -1,10 +1,5 @@
-<<<<<<< HEAD
 // import React, { useState } from 'react';
 import React, { useState, useEffect } from 'react';
-=======
-import React, { useState, useEffect, useCallback } from 'react';
-import API_BASE_URL from './config'; 
->>>>>>> 8982396c2b478e3a60263263f5cdf1c023b9b472
 import './App.css';  // Optional styling
 import UserList from './UserList';  // Import the UserList component
 import EntityList from './EntityListPage/EntityList';
@@ -25,7 +20,6 @@ function App() {
   const [loggedInUser, setLoggedInUser] = useState(null);
   const [loggedInUserId, setLoggedInUserId] = useState(null);
 
-<<<<<<< HEAD
   // Initialize user from localStorage if available
   useEffect(() => {
     const storedUser = localStorage.getItem('username');
@@ -37,9 +31,6 @@ function App() {
       setLoggedInUserId(storedUserId);
     }
   }, []);
-=======
-  
->>>>>>> 8982396c2b478e3a60263263f5cdf1c023b9b472
 
   const WebNavbar = () => {
     const location = useLocation(); // Get the current location
