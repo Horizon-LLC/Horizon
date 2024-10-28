@@ -1,18 +1,50 @@
 import './MainPage.css';
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Link } from "react-router-dom";
-import { Input, Button, Card, ScrollShadow, Spacer, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Textarea } from '@nextui-org/react';
+import { Input, Button, Card, ScrollShadow, Spacer, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Textarea } from '@nextui-org/react';  // Ensure Textarea is included
 import { CiSearch } from "react-icons/ci";
 import Feed from './Feed';
 import API_BASE_URL from '../config';
 
-const HomePage = ({ loggedInUser }) => {
+const HomePage = ({ loggedInUser, setLoggedInUser, setLoggedInUserId }) => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const [message, setMessage] = useState('');  
     const [alertModal, setAlertModal] = useState({ isOpen: false, text: '', type: '' });
     const [users, setUsers] = useState([]);
     const maxChar = 10000;         
     const feedRefresh = useRef(null);   
+
+    const fetchUser = useCallback(async () => {
+        const token = localStorage.getItem('token');
+        
+        if (!token) {
+          localStorage.removeItem('token');
+          return;
+        }
+    
+        try {
+          const response = await fetch(`${API_BASE_URL}/check-user-login`, {
+            method: 'GET',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          });
+    
+          if (response.ok) {
+            const data = await response.json();
+            setLoggedInUser(data.username);
+            setLoggedInUserId(data.user_id);
+          } else {
+            console.error('Failed to fetch profile:', response.statusText);
+            localStorage.removeItem('token');
+          }
+        } catch (error) {
+          console.error('Error fetching profile:', error);
+          localStorage.removeItem('token');
+        }
+    }, [setLoggedInUser, setLoggedInUserId]);  // Include functions as dependencies
+    
     
     const messageLengthCheck = (e) => {
         if (e.target.value.length <= maxChar) {
@@ -109,7 +141,8 @@ const HomePage = ({ loggedInUser }) => {
 
     useEffect(() => {
         getAllUsers(); 
-    }, [getAllUsers]);
+        fetchUser();
+    }, [getAllUsers, fetchUser]);
 
     return (
         <div className='home-container'>

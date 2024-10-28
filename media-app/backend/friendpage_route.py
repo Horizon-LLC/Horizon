@@ -1,33 +1,12 @@
 from flask import Blueprint, request, jsonify
 from functools import wraps
-import jwt
+from backend.auth import token_required
 from backend.database.db import get_db_connection
 import mysql.connector
-
-SECRET_KEY = 'HORIZON'  # Ensure this matches your JWT secret
 
 # Define the blueprint for friends
 friend_blueprint = Blueprint('friend', __name__)
 
-# Reuse the token_required decorator
-def token_required(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        token = None
-        if 'Authorization' in request.headers:
-            token = request.headers['Authorization'].split(" ")[1]
-        if not token:
-            return jsonify({'message': 'Token is missing'}), 401
-        try:
-            data = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
-            user_id = data['user_id']
-            username = data['username']
-        except jwt.ExpiredSignatureError:
-            return jsonify({'message': 'Token is expired'}), 401
-        except jwt.InvalidTokenError:
-            return jsonify({'message': 'Token is invalid'}), 401
-        return f(user_id, username, *args, **kwargs)
-    return decorated
 
 @friend_blueprint.route('/add-friend', methods=['POST'])
 @token_required

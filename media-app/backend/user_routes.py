@@ -11,6 +11,7 @@ import datetime
 from typing import List, Dict, Optional, Union, Tuple
 import mysql.connector
 from backend.database.db import get_db_connection
+from backend.auth import token_required
 
 # Use a secure secret key for JWT encoding
 SECRET_KEY = 'HORIZON'
@@ -122,8 +123,10 @@ def login_user()-> Union[Response, Tuple[Response, int]]:
 # Add the logout route
 @user_blueprint.route('/logout', methods=['POST'])
 def logout() -> Response:
-    session.pop('username', None)  # Clear the session
+    # Just return a successful logout response for token-based logout
     return jsonify({'message': 'Logout successful'}), 200
+
+
 
 
 # Route to fetch all users with only username and user_id
@@ -169,3 +172,11 @@ def get_single_user(user_id):
     except mysql.connector.Error as err:
         print(f"Error fetching user: {err}")
         return jsonify({'error': str(err)}), 500
+    
+@user_blueprint.route('/check-user-login', methods=['GET'])
+@token_required
+def get_user(user_id, username):
+    return jsonify({
+        "username": username,
+        "user_id": user_id
+    }), 200

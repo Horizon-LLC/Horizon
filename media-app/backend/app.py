@@ -1,14 +1,23 @@
 from urllib import request
 
-from flask import Flask, jsonify, redirect, Response, render_template, session, url_for
+from flask import Flask, json, jsonify, redirect, Response, render_template, session, url_for
 from flask_cors import CORS
 import mysql.connector
 from typing import List, Dict, Optional, Union, Tuple
 import os
+from flask_socketio import SocketIO, join_room
 
 # from werkzeug.security import check_password_hash
 
 # from graphviz import render
+
+app = Flask(__name__)
+app.secret_key = os.urandom(24)
+from flask_cors import CORS
+
+app = Flask(__name__)
+CORS(app, supports_credentials=True, origins=["http://localhost:3000"])
+socketio = SocketIO(app, cors_allowed_origins='*', manage_session=False)
 
 from backend.database.db import get_db_connection
 from backend.database.test_routes import test_blueprint  # Import test blueprint
@@ -19,9 +28,7 @@ from backend.profilepage_route import profile_blueprint
 from backend.friendpage_route import friend_blueprint
 
 
-app = Flask(__name__)
-app.secret_key = os.urandom(24)
-CORS(app, supports_credentials=True)  # Enable Cross-Origin Resource Sharing (CORS)
+
 
 # Register the user blueprint
 app.register_blueprint(user_blueprint)
@@ -90,13 +97,44 @@ def get_table_data(table_name) -> Response:
 
 
 
-#Apply CORS to all responses
+@app.after_request
 def apply_cors(response):
-    response.headers['Access-Control-Allow-Origin'] = "http://localhost:3000"  # Change to frontend's domain
+    response.headers['Access-Control-Allow-Origin'] = "http://localhost:3000"
     response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
     response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
+    response.headers['Access-Control-Allow-Credentials'] = 'true'
+    return response
+
+# Allow OPTIONS requests
+@app.route('/profile/posts', methods=['OPTIONS'])
+def handle_options():
+    response = jsonify({"message": "Options OK"})
+    response.headers['Access-Control-Allow-Origin'] = "http://localhost:3000"
+    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+    response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
+    response.headers['Access-Control-Allow-Credentials'] = 'true'
     return response
 
 
+@socketio.on('join_room')
+def join_room_handler(data):
+    # Ensure `data` is in dictionary form
+    if isinstance(data, str):
+        try:
+            data = json.loads(data)
+        except ValueError:
+            print("Invalid data format:", data)
+            return
+
+    chatbox_id = data.get('chatbox_id')
+    if chatbox_id:
+        join_room(chatbox_id)
+        print(f"User joined room: {chatbox_id}")
+    else:
+        print("chatbox_id not provided in join_room data:", data)
+
+
+
+    
 if __name__ == "__main__":
-    app.run(debug=True)
+    socketio.run(app, host="127.0.0.1", port=5000, debug=True)
