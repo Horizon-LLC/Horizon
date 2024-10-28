@@ -1,7 +1,14 @@
 from flask import Blueprint, request, jsonify
 from datetime import datetime
+<<<<<<< HEAD
 from auth import token_required
 from database.db import get_db_connection
+=======
+from backend.database.db import get_db_connection
+from backend.dashboard_route import token_required
+from backend.app import socketio
+
+>>>>>>> 8982396c2b478e3a60263263f5cdf1c023b9b472
 
 
 message_blueprint = Blueprint('message', __name__)
@@ -81,6 +88,15 @@ def send_message(user_id, username):
         """
         cursor.execute(query, (sender_id, receiver_id, chatbox_id, content, current_time, False))
         connection.commit()
+
+        message_data = {
+            "sender_id": sender_id,
+            "receiver_id": receiver_id,
+            "chatbox_id": chatbox_id,
+            "content": content,
+            "time": current_time
+        }
+        socketio.emit('receive_message', message_data, room=chatbox_id)
         cursor.close()
         connection.close()
 

@@ -24,6 +24,7 @@ const ProfilePage = ({ setLoggedInUser }) => {
 
             if (response.ok) {
                 setLoggedInUser(null);
+                localStorage.removeItem('token'); 
                 navigate('/Login');
             } else {
                 alert('Logout failed');

@@ -5,10 +5,16 @@ from flask_cors import CORS
 import mysql.connector
 from typing import List, Dict, Optional, Union, Tuple
 import os
+from flask_socketio import SocketIO, join_room
 
 # from werkzeug.security import check_password_hash
 
 # from graphviz import render
+
+app = Flask(__name__)
+app.secret_key = os.urandom(24)
+CORS(app, supports_credentials=True, origins='http://localhost:3000', allow_headers='http://localhost:3000')  # Enable Cross-Origin Resource Sharing (CORS)
+socketio = SocketIO(app, cors_allowed_origins='*', manage_session=False)
 
 from backend.database.db import get_db_connection
 from backend.database.test_routes import test_blueprint  # Import test blueprint
@@ -19,9 +25,7 @@ from backend.profilepage_route import profile_blueprint
 from backend.friendpage_route import friend_blueprint
 
 
-app = Flask(__name__)
-app.secret_key = os.urandom(24)
-CORS(app, supports_credentials=True)  # Enable Cross-Origin Resource Sharing (CORS)
+
 
 # Register the user blueprint
 app.register_blueprint(user_blueprint)
@@ -97,6 +101,12 @@ def apply_cors(response):
     response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
     return response
 
+@socketio.on('join_room')
+def join_room(data):
+    chatbox_id = data.get('chatbox_id')
+    join_room(chatbox_id)
 
+
+    
 if __name__ == "__main__":
-    app.run(debug=True)
+    socketio.run(app, debug=True)
