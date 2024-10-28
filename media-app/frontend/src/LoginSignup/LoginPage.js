@@ -45,7 +45,8 @@ const LoginPage = ({ setLoggedInUser, setLoggedInUserId } ) => {
                 alert(result.error);
             }
         } catch (error) {
-            console.error('Error:', error);
+            console.error('Fetch error:', error);
+            alert("There was an error connecting to the server. Please try again.");
         }
     };
 

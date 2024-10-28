@@ -1,37 +1,45 @@
 import './ChatPage.css';
-import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import { IoSendSharp } from "react-icons/io5";
 import { Button, Card, CardBody, CardFooter, CardHeader, Input, ScrollShadow } from '@nextui-org/react';
 import React, { useState, useEffect, useRef } from 'react';
-import {io} from 'socket.io-client';
+import { io } from 'socket.io-client';
+import API_BASE_URL from '../config';
 
-import API_BASE_URL from '../config'; 
-
-const socket = io(`${API_BASE_URL}`, {
-    transports: ['websocket']
+// Initialize WebSocket client with necessary configurations
+const socket = io(API_BASE_URL, { 
+    transports: ['websocket'], 
+    withCredentials: true 
 });
 
-
-const ChatPage = ({loggedInUser, loggedInUserId}) => {
-
-    
+const ChatPage = ({ loggedInUser, loggedInUserId }) => {
     const { chatboxId } = useParams(); 
+    const location = useLocation();
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState('');
     const [error, setError] = useState(null);
-    const navigate = useNavigate();
-    const location = useLocation();
     const messagesEndRef = useRef(null);
     const userId = location.state?.userId;
     const username = location.state?.username;
 
+    // Reset the state and refetch messages on load
+    const initializeChat = async () => {
+        setMessages([]);  // Reset messages
+        setNewMessage('');  // Clear the message input
+        setError(null);  // Clear errors
+        fetchMessages();  // Fetch fresh data from the server
+        socket.emit('join_room', { chatbox_id: chatboxId });
+    };
 
-    const scrollToBottom = () => {
-        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }
+    // Fetch messages from the server
     const fetchMessages = async () => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            setError('Authorization token is missing.');
+            return;
+        }
+
         try {
-            const token = localStorage.getItem('token');
             const response = await fetch(`${API_BASE_URL}/get-chatbox-messages?chatbox_id=${chatboxId}`, {
                 method: 'GET',
                 headers: {
@@ -41,24 +49,26 @@ const ChatPage = ({loggedInUser, loggedInUserId}) => {
             });
 
             const data = await response.json();
-            if (response.ok) {
+            if (response.ok && data.messages) {
                 setMessages(data.messages);
             } else {
-                setError(data.error || 'Unauthorized access');
-                // Redirect to unauthorized page or handle error
-                navigate('/unauthorized');
+                setError(data.error || 'No messages found');
             }
         } catch (error) {
             setError('Failed to fetch messages');
         }
     };
 
+    // Send message to the server
     const sendMessage = async () => {
-        
-        if (newMessage.trim() === '') return; // Prevent empty messages
+        if (newMessage.trim() === '') return;
+        const token = localStorage.getItem('token');
+        if (!token) {
+            setError('Authorization token is missing.');
+            return;
+        }
 
         try {
-            const token = localStorage.getItem('token');
             const response = await fetch(`${API_BASE_URL}/send-message`, {
                 method: 'POST',
                 headers: {
@@ -66,16 +76,16 @@ const ChatPage = ({loggedInUser, loggedInUserId}) => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    sender_id: loggedInUserId, // The ID of the logged-in user
-                    receiver_id: userId, // You need to pass the correct receiver_id
+                    sender_id: loggedInUserId,
+                    receiver_id: userId,
                     chatbox_id: chatboxId,
                     content: newMessage,
                 }),
             });
 
             if (response.ok) {
-                setNewMessage(''); // Clear the input after sending
-                fetchMessages(); // Refresh the messages after sending
+                setNewMessage('');
+                fetchMessages();  // Refetch messages to reflect the new one sent
             } else {
                 const data = await response.json();
                 setError(data.error || 'Failed to send message');
@@ -85,25 +95,28 @@ const ChatPage = ({loggedInUser, loggedInUserId}) => {
         }
     };
 
+    // Effect to initialize chat and fetch messages on mount or refresh
     useEffect(() => {
-        fetchMessages();
-        socket.emit('join_room', {chatbox_id: chatboxId});
+        initializeChat();
 
+        // Listen for incoming messages in real-time
         socket.on('receive_message', (message) => {
-            fetchMessages();
-        }, );
+            setMessages((prevMessages) => [...prevMessages, message]);
+        });
 
+        // Cleanup on unmount
         return () => {
             socket.off('receive_message');
             socket.disconnect();
-        }
-    }, [messages, chatboxId]);
+        };
+    }, [chatboxId, loggedInUserId]);
 
+    // Scroll to bottom of messages
     useEffect(() => {
-        scrollToBottom();
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, [messages]);
 
-    return(
+    return (
         <div className='chat-container'>
             <div className='chat-header'>
                 <h1 className='username-text'>{username}</h1>
@@ -125,10 +138,9 @@ const ChatPage = ({loggedInUser, loggedInUserId}) => {
                                             {message.content}
                                         </CardBody>
                                         <CardFooter className='message-footer'>
-                                            {message.time}
+                                            {new Date(message.time).toLocaleString()}
                                         </CardFooter>
                                     </Card>
-
                                 ) : (
                                     <Card className='otheruser-message' shadow='none'>
                                         <CardHeader className='message-header'>
@@ -138,11 +150,10 @@ const ChatPage = ({loggedInUser, loggedInUserId}) => {
                                             {message.content}
                                         </CardBody>
                                         <CardFooter className='message-footer'>
-                                            {message.time}
+                                            {new Date(message.time).toLocaleString()}
                                         </CardFooter>
                                     </Card>
                                 )}
-                                 
                             </ScrollShadow>
                         ))}
                         <div ref={messagesEndRef} />
@@ -157,13 +168,13 @@ const ChatPage = ({loggedInUser, loggedInUserId}) => {
                     className='message-input'
                     placeholder="Message..."
                     value={newMessage}
-                    onChange={(e) => setNewMessage(e.target.value)} // Track the input value
+                    onChange={(e) => setNewMessage(e.target.value)}
                     endContent={
                         <Button
                             auto
                             onClick={sendMessage}
                             className='send-button'
-                            disabled={!newMessage.trim()} // Disable if input is empty
+                            disabled={!newMessage.trim()}
                         >
                             <IoSendSharp className="text-black/50 mb-0.5 dark:text-white/90 text-slate-400" />
                         </Button>

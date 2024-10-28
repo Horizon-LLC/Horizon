@@ -1,9 +1,9 @@
 import './MainPage.css';
-import React, { useEffect, useState, forwardRef, useImperativeHandle  } from 'react';
-import { Card, CardBody, CardFooter, CardHeader, CircularProgress} from "@nextui-org/react";
-import API_BASE_URL from '../config'; 
+import React, { useEffect, useState, forwardRef, useImperativeHandle } from 'react';
+import { Card, CardBody, CardFooter, CardHeader, CircularProgress } from "@nextui-org/react";
+import API_BASE_URL from '../config';
 
-const Feed = forwardRef((props, ref) => {
+const Feed = forwardRef(({ userId }, ref) => {
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(false);
 
@@ -11,16 +11,21 @@ const Feed = forwardRef((props, ref) => {
         setLoading(true);
         const token = localStorage.getItem('token'); // Get the token from local storage
         try {
-            const response = await fetch(`${API_BASE_URL}/dashboard`, {
+            // If userId is provided, fetch posts for that user; otherwise, fetch for logged-in user
+            const url = userId 
+                ? `${API_BASE_URL}/profile/${userId}/posts`
+                : `${API_BASE_URL}/dashboard`;
+
+            const response = await fetch(url, {
                 method: 'GET',
                 headers: {
-                    'Authorization': `Bearer ${token}`,  // Use the actual token
+                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
                 },
             });
 
             if (response.status === 401) {
-                console.error('Unauthorized: Please log in to access the dashboard');
+                console.error('Unauthorized: Please log in to access the posts');
                 return;
             }
 
@@ -33,18 +38,18 @@ const Feed = forwardRef((props, ref) => {
             }
         } catch (error) {
             console.error('Error fetching posts:', error);
-        }finally {
+        } finally {
             setLoading(false);
         }
     };
 
     useImperativeHandle(ref, () => ({
-        refresh: fetchPosts, 
+        refresh: fetchPosts,
     }));
 
     useEffect(() => {
-        fetchPosts(); 
-    }, []);
+        fetchPosts();
+    }, [userId]);  // Re-fetch posts when userId changes
 
     return (
         <div className="feed-container">

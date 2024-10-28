@@ -1,10 +1,9 @@
 from flask import Blueprint, session, request, jsonify, render_template
 import mysql.connector
-import jwt
 from functools import wraps
 from graphviz import render
-from database.db import get_db_connection
-from auth import token_required
+from backend.database.db import get_db_connection
+from backend.auth import token_required
 
 boolDebug = False
 

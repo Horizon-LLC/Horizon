@@ -1,12 +1,6 @@
-<<<<<<< HEAD
-// import React, { useState } from 'react';
-import React, { useState, useEffect } from 'react';
-=======
-import React, { useState, useEffect, useCallback } from 'react';
-import API_BASE_URL from './config'; 
->>>>>>> 8982396c2b478e3a60263263f5cdf1c023b9b472
-import './App.css';  // Optional styling
-import UserList from './UserList';  // Import the UserList component
+import React, { useState } from 'react';
+import './App.css';
+import UserList from './UserList';
 import EntityList from './EntityListPage/EntityList';
 import LoginPage from './LoginSignup/LoginPage';
 import SignupPage from './LoginSignup/SignupPage';
@@ -16,35 +10,16 @@ import ChatPage from './ChatPage/ChatPage';
 import FriendsPage from './FriendsPage/Friends';
 import UserProfile from './UserPage/UserProfile';
 
-
-import {Navbar, NavbarBrand, NavbarContent, NavbarItem, NextUIProvider, Spacer} from "@nextui-org/react";
-import {BrowserRouter, Routes, Router, Route, Link, Navigate, useLocation, useNavigate } from "react-router-dom";
-
+import { Navbar, NavbarContent, NavbarItem, NextUIProvider, Spacer } from "@nextui-org/react";
+import { BrowserRouter, Routes, Route, Link, Navigate, useLocation } from "react-router-dom";
 
 function App() {
   const [loggedInUser, setLoggedInUser] = useState(null);
   const [loggedInUserId, setLoggedInUserId] = useState(null);
 
-<<<<<<< HEAD
-  // Initialize user from localStorage if available
-  useEffect(() => {
-    const storedUser = localStorage.getItem('username');
-    const storedToken = localStorage.getItem('token');
-    const storedUserId = localStorage.getItem('user_id');
-
-    if (storedUser && storedToken) {
-      setLoggedInUser(storedUser);
-      setLoggedInUserId(storedUserId);
-    }
-  }, []);
-=======
-  
->>>>>>> 8982396c2b478e3a60263263f5cdf1c023b9b472
-
   const WebNavbar = () => {
-    const location = useLocation(); // Get the current location
+    const location = useLocation();
   
-    // Do not render the navbar for the Login page
     if (location.pathname === '/Login' || location.pathname === '/Signup') {
       return null;
     }
@@ -96,33 +71,29 @@ function App() {
     );
   };
 
-  
   return (
     <div className="App">
       <NextUIProvider>
         <BrowserRouter>
-            <WebNavbar />
-            <div className='main-container'>
-              <Routes>
-                <Route path="/" element={<Navigate to="/Login" />} />
-                <Route exact path="/DatabaseTest" element={<UserList />} />
-                <Route path="/EntityDatabase" element={<EntityList />} />
-                <Route path="/Login" element={<LoginPage setLoggedInUser={setLoggedInUser} setLoggedInUserId={setLoggedInUserId} />} /> 
-                <Route path="/Signup" element={<SignupPage />} />
-                <Route path="/Profile" element={<ProfilePage setLoggedInUser={setLoggedInUser} setLoggedInUserId={setLoggedInUserId} />} />
-                <Route path="/Home" element={<HomePage loggedInUser={loggedInUser}/>} />
-                <Route path="/ChatTest" element={<ChatPage loggedInUser={loggedInUser}/>} />
-                <Route path="/Friends" element={<FriendsPage />} />
-                <Route path="/user/:userId" element={<UserProfile loggedInUser={loggedInUser} loggedInUserId={loggedInUserId}/>} />
-                <Route path="/chat/:chatboxId" element={<ChatPage loggedInUser={loggedInUser} loggedInUserId={loggedInUserId}/>} />
-                
-              </Routes>
-            </div>
-
-          
+          <WebNavbar />
+          <div className='main-container'>
+            <Routes>
+              <Route path="/" element={<Navigate to="/Login" />} />
+              <Route path="/DatabaseTest" element={<UserList />} />
+              <Route path="/EntityDatabase" element={<EntityList />} />
+              <Route path="/Login" element={<LoginPage setLoggedInUser={setLoggedInUser} setLoggedInUserId={setLoggedInUserId} />} /> 
+              <Route path="/Signup" element={<SignupPage />} />
+              <Route path="/Profile" element={<ProfilePage setLoggedInUser={setLoggedInUser} loggedInUserId={loggedInUserId} />} />
+              <Route path="/Home" element={<HomePage loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser} setLoggedInUserId={setLoggedInUserId} />} />
+              <Route path="/ChatTest" element={<ChatPage loggedInUser={loggedInUser}/>} />
+              <Route path="/Friends" element={<FriendsPage />} />
+              <Route path="/user/:userId" element={<UserProfile loggedInUser={loggedInUser} loggedInUserId={loggedInUserId}/>} />
+              <Route path="/chat/:chatboxId" element={<ChatPage loggedInUser={loggedInUser} loggedInUserId={loggedInUserId}/>} />
+            </Routes>
+          </div>
         </BrowserRouter>
       </NextUIProvider>
-      </div>
+    </div>
   );
 }
 

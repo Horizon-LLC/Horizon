@@ -1,12 +1,12 @@
 import './MainPage.css';
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Link } from "react-router-dom";
-import { Input, Button, Card, ScrollShadow, Spacer, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Textarea } from '@nextui-org/react';
+import { Input, Button, Card, ScrollShadow, Spacer, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Textarea } from '@nextui-org/react';  // Ensure Textarea is included
 import { CiSearch } from "react-icons/ci";
 import Feed from './Feed';
 import API_BASE_URL from '../config';
 
-const HomePage = ({ loggedInUser }) => {
+const HomePage = ({ loggedInUser, setLoggedInUser, setLoggedInUserId }) => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const [message, setMessage] = useState('');  
     const [alertModal, setAlertModal] = useState({ isOpen: false, text: '', type: '' });
@@ -38,14 +38,12 @@ const HomePage = ({ loggedInUser }) => {
           } else {
             console.error('Failed to fetch profile:', response.statusText);
             localStorage.removeItem('token');
-      
           }
         } catch (error) {
           console.error('Error fetching profile:', error);
           localStorage.removeItem('token');
-    
         }
-      });
+    }, [setLoggedInUser, setLoggedInUserId]);  // Include functions as dependencies
     
     
     const messageLengthCheck = (e) => {
