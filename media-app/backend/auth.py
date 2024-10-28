@@ -10,7 +10,7 @@ def token_required(f):
     def decorated(*args, **kwargs):
         token = None
 
-        #JWT is passed in the request headers
+        # JWT is passed in the request headers
         if 'Authorization' in request.headers:
             token = request.headers['Authorization'].split(" ")[1]
 

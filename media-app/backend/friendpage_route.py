@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from functools import wraps
-from auth import token_required
-from database.db import get_db_connection
+from backend.auth import token_required
+from backend.database.db import get_db_connection
 import mysql.connector
 
 # Define the blueprint for friends
