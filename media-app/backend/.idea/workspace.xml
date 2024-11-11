@@ -4,15 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3cac7565-d00b-411e-a1c2-8b203b9b9d85" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/auth.py" afterDir="false" />
+    <list default="true" id="29f69daa-2cdd-4953-9112-19d9ef9ed38d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard_route.py" beforeDir="false" afterPath="$PROJECT_DIR$/dashboard_route.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/friendpage_route.py" beforeDir="false" afterPath="$PROJECT_DIR$/friendpage_route.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/message_route.py" beforeDir="false" afterPath="$PROJECT_DIR$/message_route.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/profilepage_route.py" beforeDir="false" afterPath="$PROJECT_DIR$/profilepage_route.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user_routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/user_routes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,19 +16,21 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
   </component>
-  <component name="ProjectColorInfo">{
-  &quot;associatedIndex&quot;: 5
-}</component>
-  <component name="ProjectId" id="2nujhhjGyJdxNFnLIAvwE5PzKjg" />
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": 5
+}]]></component>
+  <component name="ProjectId" id="2oibOXH6tf4MQoYR5LzW5sFSQ2C" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "backend-token-auth-refactor",
-    "last_opened_file_path": "/Users/keita-katsumi/Dropbox/Academic/CalPolyPomona/2024/Fall2024/CS4800/Horizon_GitHub_Repo/Horizon/media-app/backend",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "backend-unit-test",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -80,28 +76,16 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="3cac7565-d00b-411e-a1c2-8b203b9b9d85" name="Changes" comment="" />
-      <created>1729829976383</created>
+      <changelist id="29f69daa-2cdd-4953-9112-19d9ef9ed38d" name="Changes" comment="" />
+      <created>1731355312538</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1729829976383</updated>
-      <workItem from="1729829977518" duration="3507000" />
-      <workItem from="1730053126087" duration="2835000" />
+      <updated>1731355312538</updated>
+      <workItem from="1731355314149" duration="3331000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/user_routes.py</url>
-          <line>6</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

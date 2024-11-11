@@ -1,7 +1,7 @@
 # test_routes.py
 from flask import Blueprint
 from mysql.connector import Error
-from .db import get_db_connection
+from backend.database.db import get_db_connection
 from typing import Optional
 
 # Define Blueprint
