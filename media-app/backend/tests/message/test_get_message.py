@@ -5,7 +5,6 @@ from backend.app import app
 
 SECRET_KEY = 'HORIZON'
 
-
 # Function to generate a JWT token for testing
 def generate_test_token(user_id, username):
     payload = {'user_id': user_id, 'username': username}
@@ -23,6 +22,10 @@ class TestGetMessages(unittest.TestCase):
         response = self.app.get('/get-messages?chatbox_id=1', headers={
             'Authorization': f'Bearer {token}'
         })
+
+        # Print response for debugging
+        print("Status Code:", response.status_code)
+        print("Response Data:", response.data.decode())
 
         # Assert the response is successful
         self.assertEqual(response.status_code, 200)
