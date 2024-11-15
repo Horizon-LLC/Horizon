@@ -49,7 +49,7 @@ const Feed = forwardRef(({ userId }, ref) => {
 
     useEffect(() => {
         fetchPosts();
-    }, [userId]);  // Re-fetch posts when userId changes
+    }, []);  // Re-fetch posts when userId changes
 
     return (
         <div className="feed-container">

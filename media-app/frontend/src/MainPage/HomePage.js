@@ -2,16 +2,13 @@
 import './MainPage.css';
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Link } from "react-router-dom";
-<<<<<<< Updated upstream
-import { Input, Button, Card, ScrollShadow, Spacer, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Textarea } from '@nextui-org/react';  // Ensure Textarea is included
-=======
 import { Input, Button, Card, ScrollShadow, Spacer, useDisclosure } from '@nextui-org/react';
->>>>>>> Stashed changes
 import { CiSearch } from "react-icons/ci";
 import Feed from './Feed';
 import PostModal from '../assets/components/PostModal';
 import AlertModal from '../assets/components/AlertModal';
 import SearchBar from '../assets/components/SearchBar';
+import AllUserList from '../assets/components/AllUserList';
 import API_BASE_URL from '../config';
 
 const HomePage = ({ loggedInUser, setLoggedInUser, setLoggedInUserId }) => {
@@ -22,7 +19,6 @@ const HomePage = ({ loggedInUser, setLoggedInUser, setLoggedInUserId }) => {
     const maxChar = 10000;         
     const feedRefresh = useRef(null);   
 
-<<<<<<< Updated upstream
     const fetchUser = useCallback(async () => {
         const token = localStorage.getItem('token');
         
@@ -55,8 +51,6 @@ const HomePage = ({ loggedInUser, setLoggedInUser, setLoggedInUserId }) => {
     }, [setLoggedInUser, setLoggedInUserId]);  // Include functions as dependencies
     
     
-=======
->>>>>>> Stashed changes
     const messageLengthCheck = (e) => {
         if (e.target.value.length <= maxChar) {
             setMessage(e.target.value);
@@ -171,27 +165,7 @@ const HomePage = ({ loggedInUser, setLoggedInUser, setLoggedInUserId }) => {
             <Spacer x={5} />
             <div className='side-container'>
                 <SearchBar className="search-box" />
-                <Card className='profile-container'>
-                    <ScrollShadow hideScrollBar>
-                        {users.length > 0 ? (
-                            users.map((user) => (
-                                <Card className='user-card' key={user.user_id} shadow='none'>
-                                    <Link to={`/user/${user.user_id}`}>
-                                        <p className='usercard-text'>{user.username}</p>
-                                    </Link>
-                                    <Button 
-                                        className='addfriend-button' 
-                                        onClick={() => followUser(user.user_id)}
-                                    >
-                                        Follow
-                                    </Button>
-                                </Card>
-                            ))
-                        ) : (
-                            <p>No users found</p>
-                        )}
-                    </ScrollShadow>
-                </Card>
+                <AllUserList users={users} followUser={followUser} />
             </div>
 
             <PostModal 
