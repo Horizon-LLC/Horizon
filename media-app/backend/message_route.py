@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from datetime import datetime
 from backend.database.db import get_db_connection
-from auth import token_required
+from backend.auth import token_required
 from backend.app import socketio
 
 
