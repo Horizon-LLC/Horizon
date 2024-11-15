@@ -28,7 +28,7 @@ describe('SearchBar', () => {
         );
     
         const searchInput = screen.getByPlaceholderText(/Search for a user/i); 
-        fireEvent.change(searchInput, { target: { value: 'Jane Smith' } });
+        fireEvent.change(searchInput, { target: { value: 'fastfox' } });
     
 
         expect(screen.getByText('Jane Smith')).toBeInTheDocument(); 
