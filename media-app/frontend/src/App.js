@@ -13,7 +13,7 @@ import WebNavbar from './assets/components/WebNavbar';
 
 
 import {NextUIProvider} from "@nextui-org/react";
-import {BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import {BrowserRouter, Routes, Route, Navigate, useNavigate } from "react-router-dom";
 
 
 function App() {
@@ -29,6 +29,11 @@ function App() {
     if (storedUser && storedToken) {
       setLoggedInUser(storedUser);
       setLoggedInUserId(storedUserId);
+    }
+    else {
+      localStorage.removeItem('token');    // Remove token from local storage
+      localStorage.removeItem('username');
+      localStorage.removeItem('user_id');
     }
   }, []);
 

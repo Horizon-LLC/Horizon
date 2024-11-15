@@ -9,6 +9,7 @@ import PostModal from '../assets/components/PostModal';
 import AlertModal from '../assets/components/AlertModal';
 import SearchBar from '../assets/components/SearchBar';
 import AllUserList from '../assets/components/AllUserList';
+import CreatePostButton from '../assets/components/CreatePostButton';
 import API_BASE_URL from '../config';
 
 const HomePage = ({ loggedInUser, setLoggedInUser, setLoggedInUserId }) => {
@@ -19,36 +20,6 @@ const HomePage = ({ loggedInUser, setLoggedInUser, setLoggedInUserId }) => {
     const maxChar = 10000;         
     const feedRefresh = useRef(null);   
 
-    const fetchUser = useCallback(async () => {
-        const token = localStorage.getItem('token');
-        
-        if (!token) {
-          localStorage.removeItem('token');
-          return;
-        }
-    
-        try {
-          const response = await fetch(`${API_BASE_URL}/check-user-login`, {
-            method: 'GET',
-            headers: {
-              'Authorization': `Bearer ${token}`,
-              'Content-Type': 'application/json',
-            },
-          });
-    
-          if (response.ok) {
-            const data = await response.json();
-            setLoggedInUser(data.username);
-            setLoggedInUserId(data.user_id);
-          } else {
-            console.error('Failed to fetch profile:', response.statusText);
-            localStorage.removeItem('token');
-          }
-        } catch (error) {
-          console.error('Error fetching profile:', error);
-          localStorage.removeItem('token');
-        }
-    }, [setLoggedInUser, setLoggedInUserId]);  // Include functions as dependencies
     
     
     const messageLengthCheck = (e) => {
@@ -65,7 +36,7 @@ const HomePage = ({ loggedInUser, setLoggedInUser, setLoggedInUserId }) => {
         return new Date(date).toISOString();  // Use ISO format for consistency
     };
 
-    const createPost = async () => {
+    const createPost = async (message) => {
         if (!message) {
             showErrorMess('Post content cannot be empty', 'error');
             return;
@@ -145,16 +116,13 @@ const HomePage = ({ loggedInUser, setLoggedInUser, setLoggedInUserId }) => {
 
     useEffect(() => {
         getAllUsers(); 
-        fetchUser();
-    }, [getAllUsers, fetchUser]);
+    }, [getAllUsers]);
 
     return (
-        <div className='home-container'>
+        <div className='home-container' >
             <div className='center-container'>
                 <div className='feed-top'>
-                    <Button color="primary" className="max-w-xs" onClick={onOpen}>
-                        Create Post
-                    </Button>
+                    <CreatePostButton onOpen={onOpen} />
                 </div>
                 <div className='feed-bottom'>
                     <ScrollShadow hideScrollBar>

@@ -14,7 +14,7 @@ const PostModal = ({ isOpen, onOpenChange, message, setMessage, maxChar, createP
             <ModalContent>
                 {(onClose) => (
                     <>
-                        <ModalHeader>
+                        <ModalHeader >
                             <h2>Create a New Post</h2>
                         </ModalHeader>
                         <ModalBody>
@@ -33,7 +33,7 @@ const PostModal = ({ isOpen, onOpenChange, message, setMessage, maxChar, createP
                                 Cancel
                             </Button>
                             <Button auto color='primary' onClick={() => {
-                                createPost();
+                                createPost(message);
                                 onClose();
                             }}>
                                 Post

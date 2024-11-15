@@ -33,6 +33,8 @@ const ProfilePage = ({ setLoggedInUser, loggedInUserId }) => {
             if (response.ok) {
                 setLoggedInUser(null);              // Clear logged-in user state
                 localStorage.removeItem('token');    // Remove token from local storage
+                localStorage.removeItem('username');
+                localStorage.removeItem('user_id');
                 navigate('/Login');                  // Redirect to login page
             } else {
                 console.error('Logout failed:', response.statusText || 'Unknown error');

@@ -38,6 +38,8 @@ const LoginPage = ({ setLoggedInUser, setLoggedInUserId } ) => {
             const result = await response.json();
             if (response.ok) {
                 localStorage.setItem('token', result.token); // Store the JWT token
+                localStorage.setItem('username', result.username);
+                localStorage.setItem('user_id', result.user_id);
                 setLoggedInUser(result.username);
                 setLoggedInUserId(result.user_id);
                 navigate('/Home');
