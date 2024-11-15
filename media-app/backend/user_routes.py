@@ -34,6 +34,24 @@ def create_user():
     security_answer = data.get('security_answer')
     is_verified = False  # Default to False until verification
 
+    # Check if any required fields are blank
+    required_fields = {
+        "first_name": first_name,
+        "last_name": last_name,
+        "username": username,
+        "email": email,
+        "date_of_birth": date_of_birth,
+        "password": password,
+        "security_question": security_question,
+        "security_answer": security_answer,
+    }
+
+    missing_fields = [field for field, value in required_fields.items() if not value]
+    if missing_fields:
+        return jsonify({
+            'error': 'One or more blank fields'
+        }), 400
+    
     try:
         # Establish database connection
         connection = get_db_connection()
