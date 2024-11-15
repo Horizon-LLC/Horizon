@@ -1,9 +1,17 @@
+// HomePage.js
 import './MainPage.css';
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Link } from "react-router-dom";
+<<<<<<< Updated upstream
 import { Input, Button, Card, ScrollShadow, Spacer, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Textarea } from '@nextui-org/react';  // Ensure Textarea is included
+=======
+import { Input, Button, Card, ScrollShadow, Spacer, useDisclosure } from '@nextui-org/react';
+>>>>>>> Stashed changes
 import { CiSearch } from "react-icons/ci";
 import Feed from './Feed';
+import PostModal from '../assets/components/PostModal';
+import AlertModal from '../assets/components/AlertModal';
+import SearchBar from '../assets/components/SearchBar';
 import API_BASE_URL from '../config';
 
 const HomePage = ({ loggedInUser, setLoggedInUser, setLoggedInUserId }) => {
@@ -14,6 +22,7 @@ const HomePage = ({ loggedInUser, setLoggedInUser, setLoggedInUserId }) => {
     const maxChar = 10000;         
     const feedRefresh = useRef(null);   
 
+<<<<<<< Updated upstream
     const fetchUser = useCallback(async () => {
         const token = localStorage.getItem('token');
         
@@ -46,6 +55,8 @@ const HomePage = ({ loggedInUser, setLoggedInUser, setLoggedInUserId }) => {
     }, [setLoggedInUser, setLoggedInUserId]);  // Include functions as dependencies
     
     
+=======
+>>>>>>> Stashed changes
     const messageLengthCheck = (e) => {
         if (e.target.value.length <= maxChar) {
             setMessage(e.target.value);
@@ -91,7 +102,6 @@ const HomePage = ({ loggedInUser, setLoggedInUser, setLoggedInUserId }) => {
         }
     };
 
-    // Memoize getAllUsers to avoid recreating the function
     const getAllUsers = useCallback(async () => {
         try {
             const token = localStorage.getItem('token');
@@ -160,37 +170,7 @@ const HomePage = ({ loggedInUser, setLoggedInUser, setLoggedInUserId }) => {
             </div>
             <Spacer x={5} />
             <div className='side-container'>
-                <Input
-                    label="Search"
-                    isClearable
-                    radius="lg"
-                    className='search-box'
-                    classNames={{
-                    label: "text-black/50 dark:text-white/90",
-                    input: [
-                        "bg-transparent",
-                        "text-black/90 dark:text-white/90",
-                        "placeholder:text-default-700/50 dark:placeholder:text-white/60",
-                    ],
-                    innerWrapper: "bg-transparent",
-                    inputWrapper: [
-                        "shadow-xl",
-                        "bg-default-200/50",
-                        "dark:bg-default/60",
-                        "backdrop-blur-xl",
-                        "backdrop-saturate-200",
-                        "hover:bg-default-200/70",
-                        "dark:hover:bg-default/70",
-                        "group-data-[focus=true]:bg-default-200/50",
-                        "dark:group-data-[focus=true]:bg-default/60",
-                        "!cursor-text",
-                    ],
-                    }}
-                    placeholder="Type to search..."
-                    startContent={
-                    <CiSearch className="text-black/50 mb-0.5 dark:text-white/90 text-slate-400 pointer-events-none flex-shrink-0" />
-                    }
-                />
+                <SearchBar className="search-box" />
                 <Card className='profile-container'>
                     <ScrollShadow hideScrollBar>
                         {users.length > 0 ? (
@@ -214,55 +194,21 @@ const HomePage = ({ loggedInUser, setLoggedInUser, setLoggedInUserId }) => {
                 </Card>
             </div>
 
-            <Modal isOpen={isOpen} onOpenChange={onOpenChange} hideCloseButton={true}>
-                <ModalContent>
-                {(onClose) => (
-                    <>
-                        <ModalHeader>
-                            <h2>Create a New Post</h2>
-                        </ModalHeader>
-                        <ModalBody>
-                            <Textarea 
-                                label="Message"
-                                placeholder="Write your message here..." 
-                                fullWidth 
-                                value={message}
-                                onChange={messageLengthCheck}
-                                maxLength={maxChar}
-                            />
-                            <p className='charCountText'>{message.length} / {maxChar} characters</p>
-                        </ModalBody>
-                        <ModalFooter>
-                            <Button auto flat color="danger" onClick={onClose}>
-                                Cancel
-                            </Button>
-                            <Button auto color='primary' onClick={() => {
-                                createPost();
-                                onClose();
-                            }}>
-                                Post
-                            </Button>
-                        </ModalFooter>
-                    </>
-                )}
-                </ModalContent>
-            </Modal>
+            <PostModal 
+                isOpen={isOpen} 
+                onOpenChange={onOpenChange} 
+                message={message} 
+                setMessage={setMessage} 
+                maxChar={maxChar} 
+                createPost={createPost} 
+            />
 
-            <Modal isOpen={alertModal.isOpen} onOpenChange={() => setAlertModal({ ...alertModal, isOpen: false })} hideCloseButton>
-                <ModalContent>
-                    <ModalHeader>
-                        <h2>{alertModal.type === 'error' ? 'Error' : 'Success'}</h2>
-                    </ModalHeader>
-                    <ModalBody>
-                        <p>{alertModal.text}</p>
-                    </ModalBody>
-                    <ModalFooter>
-                        <Button auto onClick={() => setAlertModal({ ...alertModal, isOpen: false })}>
-                            Close
-                        </Button>
-                    </ModalFooter>
-                </ModalContent>
-            </Modal>
+            <AlertModal 
+                isOpen={alertModal.isOpen} 
+                text={alertModal.text} 
+                type={alertModal.type} 
+                onClose={() => setAlertModal({ ...alertModal, isOpen: false })}
+            />
         </div>
     );
 };

@@ -9,14 +9,23 @@ import HomePage from './MainPage/HomePage';
 import ChatPage from './ChatPage/ChatPage';
 import FriendsPage from './FriendsPage/Friends';
 import UserProfile from './UserPage/UserProfile';
+import WebNavbar from './assets/components/WebNavbar';
 
+<<<<<<< Updated upstream
 import { Navbar, NavbarContent, NavbarItem, NextUIProvider, Spacer } from "@nextui-org/react";
 import { BrowserRouter, Routes, Route, Link, Navigate, useLocation } from "react-router-dom";
+=======
+
+import {NextUIProvider} from "@nextui-org/react";
+import {BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+
+>>>>>>> Stashed changes
 
 function App() {
   const [loggedInUser, setLoggedInUser] = useState(null);
   const [loggedInUserId, setLoggedInUserId] = useState(null);
 
+<<<<<<< Updated upstream
   const WebNavbar = () => {
     const location = useLocation();
   
@@ -71,6 +80,22 @@ function App() {
     );
   };
 
+=======
+  // Initialize user from localStorage if available
+  useEffect(() => {
+    const storedUser = localStorage.getItem('username');
+    const storedToken = localStorage.getItem('token');
+    const storedUserId = localStorage.getItem('user_id');
+
+    if (storedUser && storedToken) {
+      setLoggedInUser(storedUser);
+      setLoggedInUserId(storedUserId);
+    }
+  }, []);
+
+  
+  
+>>>>>>> Stashed changes
   return (
     <div className="App">
       <NextUIProvider>
