@@ -6,16 +6,30 @@ import mysql.connector
 from typing import List, Dict, Optional, Union, Tuple
 import os
 from flask_socketio import SocketIO, join_room
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
+from dotenv import load_dotenv
+import os
+from backend.models import db
+
+load_dotenv()
 
 # from werkzeug.security import check_password_hash
 
 # from graphviz import render
 
 app = Flask(__name__)
-app.secret_key = os.urandom(24)
-from flask_cors import CORS
 
-app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = (
+    f"mysql+pymysql://{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD')}@"
+    f"{os.getenv('DB_HOST')}/{os.getenv('DB_NAME')}"
+)
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# Initialize SQLAlchemy
+db.init_app(app)
+migrate = Migrate(app, db)
+app.secret_key = os.urandom(24)
 CORS(app, supports_credentials=True, origins=["http://localhost:3000"])
 socketio = SocketIO(app, cors_allowed_origins='*', manage_session=False)
 
@@ -134,7 +148,7 @@ def join_room_handler(data):
         print("chatbox_id not provided in join_room data:", data)
 
 
-
-    
 if __name__ == "__main__":
+    with app.app_context():
+        db.create_all()  # Ensure all tables are created
     socketio.run(app, host="127.0.0.1", port=5000, debug=True)
