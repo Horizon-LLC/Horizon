@@ -1,36 +1,53 @@
 from flask import Blueprint, request, jsonify
-from functools import wraps
 from backend.auth import token_required
 from backend.database.db import get_db_connection
 import mysql.connector
 
-# Define the blueprint for friends
 friend_blueprint = Blueprint('friend', __name__)
-
 
 @friend_blueprint.route('/add-friend', methods=['POST'])
 @token_required
 def add_friend(user_id, username):
+    """
+    Adds a friend (follower) to the database.
+    """
     data = request.get_json()
     if not data or 'userId' not in data:
         return jsonify({'error': 'Invalid request data'}), 400
 
-    user_id_2 = data['userId']  # Get friend's user ID from the request
+    friend_id = data['userId']
 
+    connection = None
     try:
+        print("Debug: Establishing database connection")
         connection = get_db_connection()
+        print("Debug: Connection established")
+
         with connection.cursor() as cursor:
             sql_query = "INSERT INTO friendship (user_id_1, user_id_2, status) VALUES (%s, %s, %s)"
-            cursor.execute(sql_query, (user_id, user_id_2, 1))  # Use user_id from token
+            print(f"Debug: Executing query: {sql_query}")
+            cursor.execute(sql_query, (user_id, friend_id, 1))
             connection.commit()
+            print("Debug: Query executed successfully")
 
         return jsonify({'message': 'Friendship created successfully!'}), 200
 
+    except mysql.connector.Error as db_err:
+        print(f"Debug: Database error - {str(db_err)}")
+        return jsonify({'error': f'Database error: {str(db_err)}'}), 500
     except Exception as e:
-        return jsonify({'error': 'Failed to create friendship: ' + str(e)}), 500
-
+        print(f"Debug: Unexpected error - {str(e)}")
+        return jsonify({'error': f'Unexpected error: {str(e)}'}), 500
     finally:
-        connection.close()
+        if connection:
+            try:
+                connection.close()
+                print("Debug: Connection closed")
+            except Exception as close_err:
+                print(f"Debug: Error closing connection - {str(close_err)}")
+
+
+
 
 
 @friend_blueprint.route('/get-friends', methods=['GET'])

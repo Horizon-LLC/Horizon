@@ -9,7 +9,9 @@
     align-items: flex-start;
     justify-content: center;
     flex-direction: row;
-    margin-top: 5vh;
+    margin-top: 3vh;
+    background-color: #fcd8b6;
+    padding: 2vh;
 }
 
 .search-box {
@@ -19,6 +21,8 @@
     min-width: 400px;
     height: 10vh;
     min-height: 10vh;
+    margin-left: 4vw;
+    background-color: #fcd8b6;
 }
 
 .side-container {
@@ -29,9 +33,11 @@
     margin-right: 5vw;
     height: 100%;
     min-height: 100vh;
+    width: 20vw;
+    max-width: 20vw; 
+    min-width: 200px;
+    min-width: 400px;
     padding: 1vh;
-    position: relative; /* Enable relative positioning */
-    right: 100px; /* Move it 50px to the right */
 }
 .profile-container {
     display: flex;
@@ -45,16 +51,18 @@
     max-width: 20vw; 
     min-width: 200px;
     min-width: 400px;
-    background-color: hsl(208, 30%, 89%);
+    margin-right: 25vw;
+    background-color: #fcd8b6;
 }
 .user-card {
-    width: 18vw; 
-    max-width: 18vw;
+    width: 100%;
+    max-width: 20vw; 
+    min-width: 200px;
     height: 13vh;
     min-height: 150px;
     margin-top: 1vh;
     margin-bottom: 1vh;
-    background-color: hsl(0, 0%, 99%);
+    background-color: #fcd8b6;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -64,9 +72,11 @@
 .usercard-text {
     font-size: medium;
     font-weight: bold;
+    color: #450b00;
 }
 .addfriend-button {
-    background-color: #4CAF50;
+    background-color: #450b00;
+    color: #450b00;
     width: 3vw;
     min-width: 100px;
     max-width: 3vw;
@@ -82,8 +92,6 @@
     max-width: 40vw;
     min-width: 300px; 
     margin: 10px;
-    position: relative; /* Enable relative positioning */
-    left: 100px; /* Move it 50px to the right */
 }
 
 .feed-top {
@@ -109,23 +117,21 @@
     max-width: 40vw;
     min-width: 300px; 
     overflow: auto;
+    border-radius: 2vh;
 }
 .post-card {
     width: 100%; 
     max-width: 40vw;
     min-width: 300px; 
-    height: auto; /* Let the card height adjust to the content */
-    margin-bottom: 2vh;
-    background-color: hsl(0, 0%, 99%);
-    padding: 10px; /* Add padding to prevent text from touching the edges */
-    overflow: visible; /* Ensure content isn't cut off */
-    word-wrap: break-word; /* Handle long words by wrapping */
-    box-sizing: border-box; /* Include padding in width/height calculations */
-    border-radius: 5px; /* Optional: Make the card look better */
-    position: relative; /* Enable relative positioning */
-    left: 100px; /* Move it 50px to the right */
+    height: 25vh;
+    min-height: 130px;
+    background-color: #fcd8b6;
+    border-radius: 0%;
+    border: 1px solid  hsl(29, 92%, 75%);
+    font-family: 'Nunito', sans-serif;
+    color: #450b00;
+    font-size: 14pt;
 }
-
 .feed-container {
     display: flex;
     flex-direction: column;

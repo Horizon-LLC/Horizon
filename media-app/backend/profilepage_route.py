@@ -104,8 +104,6 @@ def get_user_friends(user_id, username):
         print(f"Error fetching friends: {err}")
         return jsonify({"error": "Error loading friends"}), 500
     
-
-    
 @profile_blueprint.route('/profile/followers-following', methods=['GET'])
 @token_required
 def get_followers_and_following(user_id, username):
