@@ -56,3 +56,4 @@ export const WebNavbar = ({loggedInUser}) => {
   };
 
 export default WebNavbar;
+

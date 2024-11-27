@@ -1,13 +1,13 @@
-// PostModal.js
-import React from 'react';
+import React, { useState } from 'react';
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Textarea } from '@nextui-org/react';
+import { messageLengthCheck, createPost } from '../../handlers/PostHandler';
 
-const PostModal = ({ isOpen, onOpenChange, message, setMessage, maxChar, createPost }) => {
-    const messageLengthCheck = (e) => {
-        if (e.target.value.length <= maxChar) {
-            setMessage(e.target.value);
-        }
-    };
+
+
+const PostModal = ({ isOpen, onOpenChange, feedRefresh, setAlertModal }) => {
+    const maxChar = 10000; 
+       
+    const [message, setMessage] = useState('');   
 
     return (
         <Modal isOpen={isOpen} onOpenChange={onOpenChange} hideCloseButton={true}>
@@ -23,7 +23,7 @@ const PostModal = ({ isOpen, onOpenChange, message, setMessage, maxChar, createP
                                 placeholder="Write your message here..." 
                                 fullWidth 
                                 value={message}
-                                onChange={messageLengthCheck}
+                                onChange={(e) => messageLengthCheck(e, maxChar, setMessage)}
                                 maxLength={maxChar}
                             />
                             <p className='charCountText'>{message.length} / {maxChar} characters</p>
@@ -33,7 +33,7 @@ const PostModal = ({ isOpen, onOpenChange, message, setMessage, maxChar, createP
                                 Cancel
                             </Button>
                             <Button auto color='primary' onClick={() => {
-                                createPost(message);
+                                createPost(message, setMessage, feedRefresh, setAlertModal);
                                 onClose();
                             }}>
                                 Post

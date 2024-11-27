@@ -1,6 +1,6 @@
 import './MainPage.css';
 import React, { useEffect, useState, forwardRef, useImperativeHandle } from 'react';
-import { Card, CardBody, CardFooter, CardHeader, CircularProgress } from "@nextui-org/react";
+import {CircularProgress } from "@nextui-org/react";
 import Post from '../assets/components/Post';
 import API_BASE_URL from '../config';
 

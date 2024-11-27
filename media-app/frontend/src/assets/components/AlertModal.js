@@ -23,3 +23,4 @@ const AlertModal = ({ isOpen, text, type, onClose }) => {
 };
 
 export default AlertModal;
+
