@@ -30,6 +30,8 @@
     height: 100%;
     min-height: 100vh;
     padding: 1vh;
+    position: relative; /* Enable relative positioning */
+    right: 100px; /* Move it 50px to the right */
 }
 .profile-container {
     display: flex;
@@ -43,7 +45,7 @@
     max-width: 20vw; 
     min-width: 200px;
     min-width: 400px;
-    background-color: hsl(208, 100%, 92%);
+    background-color: hsl(208, 30%, 89%);
 }
 .user-card {
     width: 18vw; 
@@ -80,6 +82,8 @@
     max-width: 40vw;
     min-width: 300px; 
     margin: 10px;
+    position: relative; /* Enable relative positioning */
+    left: 100px; /* Move it 50px to the right */
 }
 
 .feed-top {
@@ -110,11 +114,18 @@
     width: 100%; 
     max-width: 40vw;
     min-width: 300px; 
-    height: 25vh;
-    min-height: 130px;
+    height: auto; /* Let the card height adjust to the content */
     margin-bottom: 2vh;
     background-color: hsl(0, 0%, 99%);
+    padding: 10px; /* Add padding to prevent text from touching the edges */
+    overflow: visible; /* Ensure content isn't cut off */
+    word-wrap: break-word; /* Handle long words by wrapping */
+    box-sizing: border-box; /* Include padding in width/height calculations */
+    border-radius: 5px; /* Optional: Make the card look better */
+    position: relative; /* Enable relative positioning */
+    left: 100px; /* Move it 50px to the right */
 }
+
 .feed-container {
     display: flex;
     flex-direction: column;

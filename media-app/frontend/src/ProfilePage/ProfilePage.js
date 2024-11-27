@@ -22,6 +22,35 @@ const ProfilePage = ({ setLoggedInUser, loggedInUserId }) => {
     const maxChar = 10000;
     const feedRefresh = useRef(null);
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const [currentPage, setCurrentPage] = useState(1);
+    const postsPerPage = 8 // 3x3 grid
+    const [bio, setBio] = useState('About Me. I love to sleep.'); // Default bio set to "About Me"
+    const [isBioModalOpen, setIsBioModalOpen] = useState(false); // For the modal
+    const [bioInput, setBioInput] = useState(''); // To handle new bio input
+    const [selectedPost, setSelectedPost] = useState(null); // Track the selected post
+
+
+    // Handle opening the bio modal
+    const handleOpenBioModal = () => {
+        setBioInput(bio); // Pre-fill the modal with the current bio
+        setIsBioModalOpen(true); // Open modal
+    };
+
+    // Handle updating the bio
+    const handleUpdateBio = () => {
+        setBio(bioInput); // Update the bio in state
+        setIsBioModalOpen(false); // Close the modal
+    };
+
+    // Handle opening the full post modal
+    const handleViewPost = (post) => {
+        setSelectedPost(post);
+    };
+
+    // Handle closing the full post modal
+    const handleClosePostModal = () => {
+        setSelectedPost(null);
+    };
 
     const handleLogout = async () => {
         try {
@@ -43,6 +72,7 @@ const ProfilePage = ({ setLoggedInUser, loggedInUserId }) => {
             alert('An error occurred while logging out.');
         }
     };
+
     
     
     
@@ -76,17 +106,17 @@ const ProfilePage = ({ setLoggedInUser, loggedInUserId }) => {
         }
     };
 
-    const fetchUserPosts = async () => {
+    const fetchUserPosts = async (page) => {
         const token = localStorage.getItem('token');
         try {
-            const response = await fetch(`${API_BASE_URL}/profile/posts`, {
+            const response = await fetch(`${API_BASE_URL}/profile/posts?page=${page}&limit=${postsPerPage}`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
                 },
             });
-    
+
             if (response.ok) {
                 const data = await response.json();
                 setPosts(data);
@@ -97,6 +127,14 @@ const ProfilePage = ({ setLoggedInUser, loggedInUserId }) => {
             console.error('Error fetching posts:', error);
         }
     };
+
+    const nextPage = () => setCurrentPage((prev) => prev + 1);
+    const prevPage = () => setCurrentPage((prev) => Math.max(prev - 1, 1));
+
+    useEffect(() => {
+        fetchUserPosts(currentPage);
+    }, [currentPage]);
+
 
     const fetchCombinedFollowList = async () => {
         const token = localStorage.getItem('token');
@@ -237,7 +275,7 @@ const ProfilePage = ({ setLoggedInUser, loggedInUserId }) => {
                                 {totalFriends} Friends
                             </span>
                         </div>
-                        <div className="bio">Yo soy Dora.</div>
+                        <div className="bio">{bio}</div>
                     </div>
                 </div>
 
@@ -246,27 +284,51 @@ const ProfilePage = ({ setLoggedInUser, loggedInUserId }) => {
                         <div className="profile-card1">
                             <button className="logout-button" onClick={handleLogout}>Log Out</button>
                             <button className="placeholder-button">Change Profile Picture</button>
-                            <button className="placeholder-button">Update Bio</button>
+                            <button className="placeholder-button" onClick={handleOpenBioModal}>
+                                Change Bio
+                            </button>
                             <button className="deleteaccount-button">Delete Account</button>
                         </div>
                     </div>
                 )}
 
                 {/* Posts section */}
-                <div className="posts" style={{ maxHeight: '300px', overflowY: 'scroll' }}>
-                    {posts.length === 0 ? (
-                        <p>No posts yet</p>
-                    ) : (
-                        posts.map((post, index) => (
+                <div className="posts-grid">
+                    {posts
+                        .slice((currentPage - 1) * postsPerPage, currentPage * postsPerPage)
+                        .map((post, index) => (
                             <div key={index} className="post">
-                                <p>{post.content}</p>
-                                <p style={{ color: 'gray', fontSize: 'small' }}>
-                                    {new Date(post.created_at).toLocaleString()}
-                                </p>
+                                <div
+                                    className="post-content"
+                                    onClick={() => handleViewPost(post)}
+                                >
+                                    {post.content}
+                                </div>
+                                <div className="post-date">
+                                    {new Date(post.created_at).toLocaleDateString()}&nbsp;
+                                    {new Date(post.created_at).toLocaleTimeString([], {
+                                        hour: '2-digit',
+                                        minute: '2-digit',
+                                    })}
+                                </div>
                             </div>
-                        ))
-                    )}
+                        ))}
+                    <div className="pagination-controls">
+                        <button onClick={prevPage} disabled={currentPage === 1}>
+                            ←
+                        </button>
+                        <button
+                            onClick={nextPage}
+                            disabled={(currentPage * postsPerPage) >= totalPosts || posts.length < postsPerPage}
+                        >
+                            →
+                        </button>
+                    </div>
                 </div>
+
+
+
+
 
                 {/* Options section */}
                 <div className="options">
@@ -308,6 +370,57 @@ const ProfilePage = ({ setLoggedInUser, loggedInUserId }) => {
                         )}
                     </ModalContent>
                 </Modal>
+
+                <Modal isOpen={!!selectedPost} onOpenChange={handleClosePostModal}>
+                    <ModalContent>
+                        <ModalHeader>
+                            <h2>Full Post</h2>
+                        </ModalHeader>
+                        <ModalBody>
+                            <p>{selectedPost?.content}</p>
+                        </ModalBody>
+                        <ModalFooter>
+                            <Button auto flat color="danger" onClick={handleClosePostModal}>
+                                Close
+                            </Button>
+                        </ModalFooter>
+                    </ModalContent>
+                </Modal>
+
+
+                <Modal isOpen={isBioModalOpen} onOpenChange={() => setIsBioModalOpen(false)} hideCloseButton={true}>
+                    <ModalContent>
+                        {(onClose) => (
+                            <>
+                                <ModalHeader>
+                                    <h2>Update Bio</h2>
+                                </ModalHeader>
+                                <ModalBody>
+                                    <Textarea
+                                        label="New Bio"
+                                        placeholder="Enter your new bio (max 150 characters)..."
+                                        fullWidth
+                                        value={bioInput}
+                                        onChange={(e) => setBioInput(e.target.value)}
+                                        maxLength={150}
+                                    />
+                                    <p className="charCountText">{bioInput.length} / 150 characters</p>
+                                </ModalBody>
+                                <ModalFooter>
+                                    <Button auto flat color="danger" onClick={onClose}>
+                                        Cancel
+                                    </Button>
+                                    <Button auto color="primary" onClick={handleUpdateBio}>
+                                        Update
+                                    </Button>
+                                </ModalFooter>
+                            </>
+                        )}
+                    </ModalContent>
+                </Modal>
+
+
+
 
                 {/* Followers/Following Modal */}
                 {isFollowModalOpen && (

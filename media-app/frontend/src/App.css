@@ -12,10 +12,10 @@ html, body {
 
 .App {
   background-color: aliceblue !important;
-  height: 100vh;
-  width: 100vw;
-  display: flex;
-  flex-direction: row;
+    display: flex;
+    flex-direction: row; /* Navbar and content side by side */
+    width: 100vw;
+    height: 100vh;
   
 }
 
@@ -29,37 +29,69 @@ html, body {
   flex-direction: column;
   justify-content: flex-start;
   padding-top: 5vh;
-  background-color: rgb(210, 235, 255);
-  border-right: 1px solid  #c0d6e8;
+  background-image: url('./images/navbar_sun.png'); /* Relative path */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-right: 1px solid #c0d6e8;
+  box-sizing: border-box; /* Ensure padding and border fit inside width */
 }
-
 
 .navbar-content {
   display: flex;
-  flex-direction: column;
+  flex-direction: column; /* Stack items vertically */
+  width: 100%; /* Match the full width of the .navbar */
   align-items: flex-start;
   gap: 20px;
+
 }
 
 .navbar-title {
-  font-weight: bold;
-  color: black;
-  background-color: rgb(210, 235, 255);
+  color: #000000; /* Makes the text fully black */
+  text-align: left; /* Aligns the text to the left */
+  text-decoration: none; /* Removes underline from links */
+  font-weight: bold; /* Makes the text bold for better visibility */
+  font-size: 1.8rem; /* Increases the font size (adjust as needed) */
+  padding: 10px 0; /* Adds vertical spacing inside each item */
+  width: 100%; /* Ensures the item spans the full width of the parent */
+  cursor: pointer; /* Makes the pointer appear on hover */
 }
 
 .navbar-item {
-  color: gray;
-  text-align: left;
+  color: #000000; /* Makes the text fully black */
+  text-align: left; /* Aligns the text to the left */
+  text-decoration: none; /* Removes underline from links */
+  font-weight: bold; /* Makes the text bold for better visibility */
+  font-size: 1.2rem; /* Increases the font size (adjust as needed) */
+  padding: 10px 0; /* Adds vertical spacing inside each item */
+  width: 100%; /* Ensures the item spans the full width of the parent */
+  cursor: pointer; /* Makes the pointer appear on hover */
 }
 
+.navbar-item:hover {
+  text-decoration: underline; /* Optional: Underlines text on hover for emphasis */
+}
+
+
+
+
+
 .main-container {
-  width: calc(100% - 15vw); 
+  width: calc(100% - 15vw); /* Adjusts for the navbar width */
   min-width: calc(100% - 200px);
   max-width: calc(100% - 400px);
   height: 100vh;
   position: fixed;
-  margin-left: 15%;
+  margin-left: 15%; /* Adds space for the navbar */
+  z-index: 1; /* Below the .logsign-container */
 }
+
+/* When the login/signup page is active */
+.no-margin .main-container {
+  margin-left: 0; /* Override navbar margin */
+  width: 100%; /* Full width */
+}
+
 
 .App-logo {
   height: 40vmin;
@@ -75,4 +107,10 @@ html, body {
 
 .App-link {
   color: #61dafb;
+}
+
+/* Removes the margin-left for login and signup pages */
+.no-margin {
+  margin-left: 0;
+  width: 100%; /* Ensures full width for the main container */
 }

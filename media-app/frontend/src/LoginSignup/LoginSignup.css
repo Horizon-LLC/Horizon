@@ -1,12 +1,21 @@
 .logsign-container {
-    width: 100vw;
-    height: 100vh;
-    min-height: 100vh;
+    position: absolute; /* Ensures it overlaps everything */
+    top: 0;
+    left: 0;
+    z-index: 100; /* Higher than the navbar */
+    width: 100vw; /* Full width */
+    height: 100vh; /* Full height */
     display: flex;
     align-items: center;
     justify-content: center;
-    padding-right: 30vw;
+    background-image: url('../images/sunrise_mountains.png'); 
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat; 
 }
+
+
+
 
 .card-container {
     display: flex;
@@ -19,7 +28,9 @@
     padding: 2rem;  
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);  
     border-radius: 0.5rem; 
+    border: 1px solid black; /* Adds a black outline with a thickness of 2px */
 }
+
 
 .signup-card {
     display: flex;

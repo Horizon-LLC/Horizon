@@ -1,38 +1,92 @@
 .profile-container {
-    width: calc(100vw - 15vw); 
-    min-width: calc(100vw - 200px); 
-    max-width: calc(100vw - 400px); 
     height: 100vh;
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    margin-left: 30vw;
+    margin-left: 32vw;
+    width: 1500px
 }
 
 .profile-page {
-    top: 60px;
-    padding: 20px;
-    background-color: #f9f9f9;
+    top: 10px;
+    bottom: 0px;
+    padding: 90px;
+    background-color: #f1eaea;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     display: flex;
     flex-direction: column;
     align-items: center;
     position: relative;
-
-    width: 250%; 
-    
+    width: 1700px;
 }
 
 .profile-head {
-    width: 100%; /* Full width for the head section */
-    background-color: rgb(96, 166, 247);
-    padding: 20px; /* Add padding for spacing */
+    position: relative; /* Ensure it respects the `top` property */
+    top: -150px;
+    width: 1700px;
+    background-color: #f1eaea;
+    border-bottom: 2px solid #000000;
+    padding: 100px; /* Add padding for spacing */
     display: flex; /* Use flexbox for layout */
     align-items: center; /* Center align items */
     justify-content: space-between; /* Space between elements */
 }
+
+
+.posts-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Maintain 4 columns */
+    gap: 15px; /* Space between posts */
+    width: 100%; /* Reduce the width */
+    max-width: 900px; /* Limit the grid's maximum width */
+    margin: 10px auto; /* Move it closer to the top and center it horizontally */
+    padding: 10px; /* Add padding inside the grid */
+    background-color: #f0f0f0; /* Light background for visibility */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a shadow for better appearance */
+    position: relative;
+    top: -120px;
+}
+
+/* Style for each post */
+.post {
+    background-color: hsl(0, 0%, 99%);
+    border-radius: 5px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column; /* Allows date and content to stack */
+    align-items: center;
+    justify-content: center;
+    height: 150px;
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    overflow: hidden; /* Ensures overflow is clipped */
+    position: relative; /* For absolute positioning of the date */
+}
+
+.post-content {
+    text-align: center;
+    font-size: 1rem;
+    white-space: nowrap; /* Prevents wrapping */
+    overflow: hidden; /* Clips overflow */
+    text-overflow: ellipsis; /* Adds ellipsis for clipped text */
+    width: 100%; /* Makes the content take the full width */
+    cursor: pointer; /* Indicate clickable content */
+}
+
+.post-date {
+    position: absolute;
+    bottom: 5px; /* Positioned at the bottom */
+    right: 10px; /* Positioned to the right */
+    font-size: 0.7rem; /* Smaller font size */
+    color: gray;
+    pointer-events: none; /* Prevent interfering with clicks */
+    text-align: right; /* Align text to the right */
+}
+
 
 .pfp {
     border-radius: 100%;
@@ -41,6 +95,7 @@
     overflow: hidden; 
     border: 2px solid #000000;
     margin-right: 20px; /* Space between profile picture and info */
+    margin-bottom: -60px; /* Space below the username */
 }
 
 .info {
@@ -48,6 +103,7 @@
     flex-direction: column; /* Stack info vertically */
     flex: 1; /* Allow info to take remaining space */
     align-items: flex-start; /* Align items to the left */
+    margin-bottom: -40px; /* Space below the username */
 }
 
 .username-text {
@@ -60,11 +116,11 @@
     background: none; /* No background */
     border: none; /* No border */
     cursor: pointer; /* Pointer cursor */
-    font-size: 2.0rem; /* Larger font size for the icon */
+    font-size: 3.0rem; /* Larger font size for the icon */
     color: #000; /* Black color for the icon */
     position: absolute; /* Position it absolutely within the profile-head */
-    top: 20px; /* Distance from the top */
-    right: 40px; /* Align to the right */
+    top: 70px; /* Distance from the top */
+    right: 70px; /* Align to the right */
 }
 
 .info-line {
@@ -85,23 +141,6 @@
     margin-top: 10px; /* Add margin for spacing */
 }
 
-.posts {
-    margin: 25px 0; /* Add vertical spacing around posts */
-    display: grid; /* Use grid layout for posts */
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Responsive grid */
-    gap: 15px; /* Space between posts */
-    width: 100%; /* Full width for posts section */
-}
-
-.post {
-    background-color: hsl(0, 0%, 99%);
-    border-radius: 5px; /* Rounded corners for post cards */
-    padding: 20px; /* Padding for post content */
-    display: flex;
-    align-items: center; /* Center items inside post */
-    justify-content: center; /* Center content inside post */
-    min-height: 130px; /* Minimum height for post cards */
-}
 
 .profile-card1 {
     display: flex;
@@ -205,23 +244,12 @@
 }
 
 
-.posts {
-    margin: 25px 0;
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 300px; /* Fixed height for scrollable area */
-    overflow-y: auto; /* Enable vertical scrolling */
-    background-color: #f9f9f9;
-    padding: 15px;
-    border-radius: 5px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-}
+
 
 .options {
     display: flex;
     gap: 15px;
-    margin-top: 20px;
+    margin-top: -55px;
 }
 
 .option-button {
@@ -237,4 +265,34 @@
 
 .option-button:hover {
     background-color: #357ab7;
+}
+
+
+
+.pagination-controls {
+    display: flex; /* Align items inside flex container */
+    justify-content: center; /* Center the buttons horizontally */
+    align-items: center; /* Center the buttons vertically */
+    gap: 10px; /* Add space between the buttons */
+    padding: 10px; /* Add padding around the controls */
+    grid-column: span 4; /* Ensure the controls span all 4 columns of the grid */
+    background-color: #f0f0f0; /* Match the grid's background color */
+    border-radius: 8px; /* Rounded corners to match the grid */
+    margin-top: 7px; /* Space above the controls */
+}
+
+
+.pagination-controls button {
+    padding: 8px 15px; /* Adjust padding for smaller buttons */
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.2rem; /* Slightly larger font for arrow buttons */
+}
+
+.pagination-controls button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
 }

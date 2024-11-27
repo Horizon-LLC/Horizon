@@ -15,52 +15,45 @@ profile_blueprint = Blueprint('profile', __name__)
 @token_required
 def profile(user_id, username):
     try:
-        # Fetch user details
-        user = User.query.filter_by(user_id=user_id).first()
-        if not user:
-            return jsonify({"error": "User not found"}), 404
+        connection = get_db_connection()
+        cursor = connection.cursor()
 
-        # Total posts
-        total_posts = db.session.query(func.count(Post.post_id)).filter_by(user_id=user_id).scalar()
+        # Total posts by the user
+        cursor.execute("SELECT COUNT(*) FROM post WHERE user_id = %s", (user_id,))
+        total_posts = cursor.fetchone()[0]
 
-        # Total followers
-        total_followers = db.session.query(func.count(Friendship.friendship_id)).filter(
-            Friendship.user_id_2 == user_id,
-            Friendship.status.is_(True)
-        ).scalar()
+        # Total followers (where other users follow the logged-in user)
+        cursor.execute("SELECT COUNT(*) FROM friendship WHERE user_id_2 = %s AND status = 1", (user_id,))
+        total_followers = cursor.fetchone()[0]
 
-        # Total following
-        total_following = db.session.query(func.count(Friendship.friendship_id)).filter(
-            Friendship.user_id_1 == user_id,
-            Friendship.status.is_(True)
-        ).scalar()
+        # Total following (where the logged-in user follows other users)
+        cursor.execute("SELECT COUNT(*) FROM friendship WHERE user_id_1 = %s AND status = 1", (user_id,))
+        total_following = cursor.fetchone()[0]
 
-        # Total friends (mutual friendships)
-        total_friends = db.session.query(func.count(Friendship.friendship_id)).filter(
-            Friendship.user_id_1 == user_id,
-            Friendship.status.is_(True),
-            db.session.query(Friendship).filter(
-                Friendship.user_id_2 == user_id,
-                Friendship.user_id_1 == Friendship.user_id_2,
-                Friendship.status.is_(True)
-            ).exists()
-        ).scalar()
+        # Total friends (mutual following relationship with distinct pairs)
+        cursor.execute("""
+            SELECT COUNT(DISTINCT LEAST(f1.user_id_1, f1.user_id_2), GREATEST(f1.user_id_1, f1.user_id_2)) 
+            FROM friendship f1
+            JOIN friendship f2 ON f1.user_id_1 = f2.user_id_2 AND f1.user_id_2 = f2.user_id_1
+            WHERE f1.user_id_1 = %s AND f1.status = 1 AND f2.status = 1
+        """, (user_id,))
+        total_friends = cursor.fetchone()[0]
 
-        # Return the profile data
+        cursor.close()
+        connection.close()
+
+        # Return the calculated profile data
         return jsonify({
-            "username": user.username,
-            "first_name": user.first_name,
-            "last_name": user.last_name,
-            "profile_pic": user.profile_pic,
+            "username": username,
             "total_posts": total_posts,
             "total_followers": total_followers,
             "total_following": total_following,
             "total_friends": total_friends
         }), 200
 
-    except Exception as e:
-        print(f"Error in /profile: {e}")
-        return jsonify({"error": "Something went wrong"}), 500
+    except mysql.connector.Error as err:
+        print(f"Error fetching profile: {err}")
+        return "Error loading profile", 500
     
 @profile_blueprint.route('/profile/posts', methods=['GET'])
 @token_required
