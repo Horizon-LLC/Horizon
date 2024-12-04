@@ -9,8 +9,8 @@
     align-items: flex-start;
     justify-content: center;
     flex-direction: row;
-    margin-top: 3vh;
     background-color: #fcd8b6;
+    margin-top: 3vh;
     padding: 2vh;
 }
 
@@ -39,7 +39,7 @@
     min-width: 400px;
     padding: 1vh;
 }
-.profile-container {
+.profilelist-container {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -51,8 +51,8 @@
     max-width: 20vw; 
     min-width: 200px;
     min-width: 400px;
-    margin-right: 25vw;
     background-color: #fcd8b6;
+    margin-left: 4vw;
 }
 .user-card {
     width: 100%;

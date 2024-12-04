@@ -31,7 +31,10 @@ html, body {
   flex-direction: column;
   justify-content: flex-start;
   padding-top: 5vh;
-  background-color: #fcd8b6;
+  background-image: url('images/navbar_sun.png'); 
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat; 
   border-right: 1px solid  hsl(26, 74%, 60%);
 }
 

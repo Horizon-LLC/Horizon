@@ -12,7 +12,7 @@ const AllUserList = (setAlertModal) => {
     }, [setAlertModal]);
 
     return (
-        <Card className='profile-container'>
+        <Card className='profilelist-container'>
             <ScrollShadow hideScrollBar>
                 {users.length > 0 ? (
                     users.map((user) => (

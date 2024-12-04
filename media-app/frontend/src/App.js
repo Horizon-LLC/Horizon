@@ -17,8 +17,8 @@ import {BrowserRouter, Routes, Route, Navigate, useNavigate } from "react-router
 
 
 function App() {
-  const [loggedInUser, setLoggedInUser] = useState(null);
-  const [loggedInUserId, setLoggedInUserId] = useState(null);
+    const [loggedInUser, setLoggedInUser] = useState(null);
+    const [loggedInUserId, setLoggedInUserId] = useState(null);
 
   // Initialize user from localStorage if available
   useEffect(() => {
