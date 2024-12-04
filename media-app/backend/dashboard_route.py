@@ -4,6 +4,8 @@ from functools import wraps
 from graphviz import render
 from backend.database.db import get_db_connection
 from backend.auth import token_required
+from backend.user_routes import fetch_username_by_user_id
+
 
 boolDebug = False
 
@@ -14,6 +16,33 @@ dashboard_blueprint = Blueprint('dashboard', __name__)
 
 
 # Dashboard route
+
+# Fetch single user's post
+# @dashboard_blueprint.route('/dashboard', methods=['GET'])
+# @token_required
+# def dashboard(user_id, username):
+#     try:
+#         connection = get_db_connection()
+#         cursor = connection.cursor()
+#
+#         #Fetch all posts for the logged-in user
+#         query = "SELECT content, created_at FROM post WHERE user_id = %s ORDER BY created_at DESC"
+#         cursor.execute(query, (user_id,))
+#         posts = cursor.fetchall()
+#
+#         post_list = [{"content": post[0], "created_at": post[1]} for post in posts]
+#
+#         cursor.close()
+#         connection.close()
+#
+#         #Render the dashboard template, passing the username and posts
+#         return jsonify({"username": username, "posts": post_list}), 200
+#     except mysql.connector.Error as err:
+#         print(f"Error fetching posts: {err}")
+#         return "Error loading dashboard", 500
+# Dashboard route
+
+# Fetch all users' post
 @dashboard_blueprint.route('/dashboard', methods=['GET'])
 @token_required
 def dashboard(user_id, username):
@@ -21,18 +50,27 @@ def dashboard(user_id, username):
         connection = get_db_connection()
         cursor = connection.cursor()
 
-        #Fetch all posts for the logged-in user
-        query = "SELECT content, created_at FROM post WHERE user_id = %s ORDER BY created_at DESC"
-        cursor.execute(query, (user_id,))
+        # Fetch all posts for all users
+        query = """
+            SELECT post.user_id, post.content, post.created_at
+            FROM post
+            ORDER BY post.created_at DESC
+        """
+        cursor.execute(query)
         posts = cursor.fetchall()
 
-        post_list = [{"content": post[0], "created_at": post[1]} for post in posts]
+        # Process each post and fetch the username
+        post_list = []
+        for post in posts:
+            user_id, content, created_at = post
+            post_username = fetch_username_by_user_id(user_id)  # Fetch the username
+            post_list.append({"username": post_username, "content": content, "created_at": created_at})
 
         cursor.close()
         connection.close()
 
-        #Render the dashboard template, passing the username and posts
-        return jsonify({"username": username, "posts": post_list}), 200
+        # Return the posts
+        return jsonify({"posts": post_list}), 200
     except mysql.connector.Error as err:
         print(f"Error fetching posts: {err}")
         return "Error loading dashboard", 500

@@ -187,3 +187,27 @@ def get_single_user(user_id):
     except mysql.connector.Error as err:
         print(f"Error fetching user: {err}")
         return jsonify({'error': str(err)}), 500
+
+
+# Helper function to fetch username by user_id
+def fetch_username_by_user_id(user_id):
+    try:
+        connection = get_db_connection()
+        cursor = connection.cursor()
+
+        # Query to fetch username by user_id
+        query = "SELECT username FROM user WHERE user_id = %s"
+        cursor.execute(query, (user_id,))
+        result = cursor.fetchone()
+
+        cursor.close()
+        connection.close()
+
+        if result:
+            return result[0]  # Return the username
+        else:
+            return None  # Return None if no username is found
+    except mysql.connector.Error as err:
+        print(f"Error fetching username: {err}")
+        return None
+
