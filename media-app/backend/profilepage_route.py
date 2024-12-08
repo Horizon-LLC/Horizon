@@ -37,21 +37,38 @@ def profile(user_id, username):
         """, (user_id,))
         total_friends = cursor.fetchone()[0]
 
+        # Fetch posts by the user with their post IDs
+        cursor.execute("""
+            SELECT post_id, content, created_at 
+            FROM post 
+            WHERE user_id = %s 
+            ORDER BY created_at DESC
+        """, (user_id,))
+        posts = cursor.fetchall()
+
+        # Format posts for JSON response
+        post_list = [
+            {"post_id": post[0], "content": post[1], "created_at": post[2]}
+            for post in posts
+        ]
+
         cursor.close()
         connection.close()
 
-        # Return the calculated profile data
+        # Return the calculated profile data along with posts
         return jsonify({
             "username": username,
             "total_posts": total_posts,
             "total_followers": total_followers,
             "total_following": total_following,
-            "total_friends": total_friends
+            "total_friends": total_friends,
+            "posts": post_list
         }), 200
 
     except mysql.connector.Error as err:
         print(f"Error fetching profile: {err}")
         return "Error loading profile", 500
+
     
 @profile_blueprint.route('/profile/posts', methods=['GET'])
 @token_required
