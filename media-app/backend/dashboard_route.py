@@ -75,7 +75,6 @@ def dashboard(user_id, username):
         print(f"Error fetching posts: {err}")
         return "Error loading dashboard", 500
 
-
 # Create post route, protected with JWT
 @dashboard_blueprint.route('/create-post', methods=['POST'])
 @token_required
