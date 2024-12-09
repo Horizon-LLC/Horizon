@@ -50,9 +50,9 @@ def dashboard(user_id, username):
         connection = get_db_connection()
         cursor = connection.cursor()
 
-        # Fetch all posts for all users
+        # Fetch all posts for all users, including post_id
         query = """
-            SELECT post.user_id, post.content, post.created_at
+            SELECT post.post_id, post.user_id, post.content, post.created_at
             FROM post
             ORDER BY post.created_at DESC
         """
@@ -62,9 +62,14 @@ def dashboard(user_id, username):
         # Process each post and fetch the username
         post_list = []
         for post in posts:
-            user_id, content, created_at = post
+            post_id, user_id, content, created_at = post
             post_username = fetch_username_by_user_id(user_id)  # Fetch the username
-            post_list.append({"username": post_username, "content": content, "created_at": created_at})
+            post_list.append({
+                "post_id": post_id,
+                "username": post_username,
+                "content": content,
+                "created_at": created_at
+            })
 
         cursor.close()
         connection.close()
@@ -74,6 +79,7 @@ def dashboard(user_id, username):
     except mysql.connector.Error as err:
         print(f"Error fetching posts: {err}")
         return "Error loading dashboard", 500
+
 
 # Create post route, protected with JWT
 @dashboard_blueprint.route('/create-post', methods=['POST'])
