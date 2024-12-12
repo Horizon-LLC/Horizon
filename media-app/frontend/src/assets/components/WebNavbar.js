@@ -1,12 +1,9 @@
 import { Navbar, NavbarContent, NavbarItem, Spacer } from "@nextui-org/react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-export const WebNavbar = ({loggedInUser}) => {
-    const location = useLocation();
+export const WebNavbar = ({loggedInUser, showNavbar}) => {
   
-    if (location.pathname === '/Login' || location.pathname === '/Signup') {
-      return null;
-    }
+    if (!showNavbar) return null;
   
     return (
       <Navbar className="navbar">
@@ -25,16 +22,6 @@ export const WebNavbar = ({loggedInUser}) => {
           <NavbarItem>
             <Link className='navbar-item' color="foreground" to="/Friends">
               Friends
-            </Link>
-          </NavbarItem>
-          <NavbarItem>
-            <Link className='navbar-item' color="foreground" to="/DatabaseTest">
-              Database Test
-            </Link>
-          </NavbarItem>
-          <NavbarItem>
-            <Link className='navbar-item' color="foreground" to="/EntityDatabase">
-              Entity Database
             </Link>
           </NavbarItem>
           {loggedInUser ? (

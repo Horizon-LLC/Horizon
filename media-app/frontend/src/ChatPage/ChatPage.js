@@ -4,6 +4,7 @@ import { IoSendSharp } from "react-icons/io5";
 import { Button, Card, CardBody, CardFooter, CardHeader, Input, ScrollShadow } from '@nextui-org/react';
 import React, { useState, useEffect, useRef } from 'react';
 import { io } from 'socket.io-client';
+import {sendMessage} from '../handlers/MessageHandler';
 import API_BASE_URL from '../config';
 
 // Initialize WebSocket client with necessary configurations
@@ -56,42 +57,6 @@ const ChatPage = ({ loggedInUser, loggedInUserId }) => {
             }
         } catch (error) {
             setError('Failed to fetch messages');
-        }
-    };
-
-    // Send message to the server
-    const sendMessage = async () => {
-        if (newMessage.trim() === '') return;
-        const token = localStorage.getItem('token');
-        if (!token) {
-            setError('Authorization token is missing.');
-            return;
-        }
-
-        try {
-            const response = await fetch(`${API_BASE_URL}/send-message`, {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    sender_id: loggedInUserId,
-                    receiver_id: userId,
-                    chatbox_id: chatboxId,
-                    content: newMessage,
-                }),
-            });
-
-            if (response.ok) {
-                setNewMessage('');
-                fetchMessages();  // Refetch messages to reflect the new one sent
-            } else {
-                const data = await response.json();
-                setError(data.error || 'Failed to send message');
-            }
-        } catch (error) {
-            setError('Something went wrong while sending the message');
         }
     };
 
@@ -172,7 +137,7 @@ const ChatPage = ({ loggedInUser, loggedInUserId }) => {
                     endContent={
                         <Button
                             auto
-                            onClick={sendMessage}
+                            onClick={() => sendMessage(loggedInUserId, userId, chatboxId, newMessage, setNewMessage, fetchMessages, setError)}
                             className='send-button'
                             disabled={!newMessage.trim()}
                         >

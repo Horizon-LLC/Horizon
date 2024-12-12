@@ -43,8 +43,8 @@ function App() {
     <div className="App">
       <NextUIProvider>
         <BrowserRouter>
-          <WebNavbar loggedInUser={loggedInUser} />
-          <div className='main-container'>
+          <WebNavbar loggedInUser={loggedInUser} showNavbar={!["/Login", "Signup"].includes(window.location.pathname)} />
+          <div className={`main-container ${["/Login", "/Signup"].includes(window.location.pathname) ? "" : "with-navbar"}`}>
             <Routes>
               <Route path="/" element={<Navigate to="/Login" />} />
               <Route path="/DatabaseTest" element={<UserList />} />

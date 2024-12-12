@@ -24,3 +24,48 @@ export const followUser = async (userId, setAlertModal) => {
         showErrorMess('Something went wrong while following the user', 'error', setAlertModal);
     }
 };
+
+
+export const fetchFriendsList = async (setFriendsList) => {
+    const token = localStorage.getItem('token');
+    try {
+        const response = await fetch(`${API_BASE_URL}/profile/friends`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            setFriendsList(data);
+        } else {
+            console.error('Failed to fetch friends list:', response.statusText);
+        }
+    } catch (error) {
+        console.error('Error fetching friends list:', error);
+    }
+};
+
+export const fetchCombinedFollowList = async (setCombinedFollowList) => {
+    const token = localStorage.getItem('token');
+    try {
+        const response = await fetch(`${API_BASE_URL}/profile/followers-following`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            setCombinedFollowList(data);
+        } else {
+            console.error('Failed to fetch follow list:', response.statusText);
+        }
+    } catch (error) {
+        console.error('Error fetching follow list:', error);
+    }
+};

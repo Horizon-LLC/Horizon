@@ -12,12 +12,8 @@ const Feed = forwardRef(({ userId }, ref) => {
         setLoading(true);
         const token = localStorage.getItem('token'); // Get the token from local storage
         try {
-            // If userId is provided, fetch posts for that user; otherwise, fetch for logged-in user
-            const url = userId 
-                ? `${API_BASE_URL}/profile/${userId}/posts`
-                : `${API_BASE_URL}/dashboard`;
 
-            const response = await fetch(url, {
+            const response = await fetch(`${API_BASE_URL}/dashboard`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`,
