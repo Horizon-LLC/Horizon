@@ -77,15 +77,23 @@ export const getAllUsers = async (setUsers, setAlertModal) => {
     }
 };
 
-export const fetchUserProfile = async (setUsername, setTotalPosts, setTotalFollowers, setTotalFollowing, setTotalFriends, setPosts) => {
+export const fetchUserProfile = async (
+    setUsername,
+    setTotalPosts,
+    setTotalFollowers,
+    setTotalFollowing,
+    setTotalFriends,
+    setPosts,
+    setProfilePic
+) => {
     const token = localStorage.getItem('token');
     try {
         const response = await fetch(`${API_BASE_URL}/profile`, {
             method: 'GET',
             headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json',
-            },
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
         });
 
         if (response.ok) {
@@ -95,7 +103,8 @@ export const fetchUserProfile = async (setUsername, setTotalPosts, setTotalFollo
             setTotalFollowers(data.total_followers);
             setTotalFollowing(data.total_following);
             setTotalFriends(data.total_friends);
-            setPosts(data.posts);
+            setPosts(data.posts || []);
+            setProfilePic(data.profile_pic || defaultProfilePic); // Set profile picture
         } else {
             console.error('Failed to fetch profile:', response.statusText);
         }
@@ -103,6 +112,7 @@ export const fetchUserProfile = async (setUsername, setTotalPosts, setTotalFollo
         console.error('Error fetching profile:', error);
     }
 };
+
 
 
 export const handleLogout = async (setLoggedInUser, navigate) => {

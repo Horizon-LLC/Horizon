@@ -110,12 +110,11 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    align-items: center;
+    align-items: stretch; /* Ensure children match parent width */
     height: 80%;
     min-height: 80vh;
-    width: 100%; 
+    width: 100%;
     max-width: 40vw;
-    min-width: 300px; 
     overflow: auto;
     border-radius: 2vh;
 }
@@ -136,9 +135,9 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    align-items: flex-start;
+    align-items: stretch; /* Match parent width */
     width: 100%; 
-    max-width: 40vw;
+    max-width: 100%; /* Match parent */
     min-width: 300px; 
 }
 
@@ -146,5 +145,27 @@
     color: #808080;
     font-size: small;
     font-weight: 500;
+}
+
+.pagination-controlss {
+    display: flex;
+    justify-content: space-between;
+    width: 100%; /* Ensure it stretches to container width */
+    padding: 10px 0;
+    margin-top: 20px;
+}
+
+.pagination-controls button {
+    padding: 10px 20px;
+    background-color: #450b00;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.pagination-controls button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
 }
 

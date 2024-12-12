@@ -1,33 +1,27 @@
-import './MainPage.css';
 import React, { useEffect, useState, forwardRef, useImperativeHandle } from 'react';
-import {CircularProgress } from "@nextui-org/react";
+import { CircularProgress } from "@nextui-org/react";
 import Post from '../assets/components/Post';
 import API_BASE_URL from '../config';
 
-const Feed = forwardRef(({ userId }, ref) => {
+const Feed = forwardRef((props, ref) => {
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [page, setPage] = useState(0); // Page number (starts at 0)
 
-    const fetchPosts = async () => {
+    const fetchPosts = async (page) => {
         setLoading(true);
-        const token = localStorage.getItem('token'); // Get the token from local storage
+        const token = localStorage.getItem('token'); 
         try {
-
-            const response = await fetch(`${API_BASE_URL}/dashboard`, {
+            const response = await fetch(`${API_BASE_URL}/dashboard?limit=7&offset=${page * 7}`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
                 },
             });
-
-            if (response.status === 401) {
-                console.error('Unauthorized: Please log in to access the posts');
-                return;
-            }
-
+    
             const data = await response.json();
-
+    
             if (response.ok) {
                 setPosts(data.posts);
             } else {
@@ -39,25 +33,45 @@ const Feed = forwardRef(({ userId }, ref) => {
             setLoading(false);
         }
     };
+    
 
     useImperativeHandle(ref, () => ({
-        refresh: fetchPosts,
+        refresh: () => {
+            setPage(0); // Reset to the first page
+            fetchPosts(0); // Fetch posts for the first page
+        },
     }));
+    
 
     useEffect(() => {
-        fetchPosts();
-    }, []);  // Re-fetch posts when userId changes
+        fetchPosts(page);
+    }, [page]); // Re-fetch posts when the page changes
 
     return (
         <div className="feed-container">
             {loading && <CircularProgress aria-label="Loading..." />}
-            {posts.length === 0 ? (
-                <></>
-            ) : (
-                posts.map((post, index) => (
-                    <Post key={index} post={post} index={index} />
-                ))
+            {posts.length === 0 && !loading ? <p>No posts available</p> : (
+                posts.map((post, index) => <Post key={index} post={post} index={index} />)
             )}
+            <div className="pagination-controlss">
+                <button
+                    disabled={page === 0}
+                    onClick={() => {
+                        setPage((prev) => Math.max(prev - 1, 0));
+                        window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to top
+                    }}
+                >
+                    Previous
+                </button>
+                <button
+                    onClick={() => {
+                        setPage((prev) => prev + 1);
+                        window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to top
+                    }}
+                >
+                    Next
+                </button>
+            </div>
         </div>
     );
 });

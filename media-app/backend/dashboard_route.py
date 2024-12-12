@@ -47,38 +47,32 @@ dashboard_blueprint = Blueprint('dashboard', __name__)
 @token_required
 def dashboard(user_id, username):
     try:
+        limit = int(request.args.get('limit', 7))  # Default to 7 posts per page
+        offset = int(request.args.get('offset', 0))  # Default to the first page
         connection = get_db_connection()
         cursor = connection.cursor()
 
-        # Fetch all posts for all users, including post_id
         query = """
             SELECT post.post_id, post.user_id, post.content, post.created_at
             FROM post
             ORDER BY post.created_at DESC
+            LIMIT %s OFFSET %s
         """
-        cursor.execute(query)
+        cursor.execute(query, (limit, offset))
         posts = cursor.fetchall()
 
-        # Process each post and fetch the username
-        post_list = []
-        for post in posts:
-            post_id, user_id, content, created_at = post
-            post_username = fetch_username_by_user_id(user_id)  # Fetch the username
-            post_list.append({
-                "post_id": post_id,
-                "username": post_username,
-                "content": content,
-                "created_at": created_at
-            })
+        post_list = [
+            {"post_id": post[0], "username": fetch_username_by_user_id(post[1]), "content": post[2], "created_at": post[3]}
+            for post in posts
+        ]
 
         cursor.close()
         connection.close()
-
-        # Return the posts
         return jsonify({"posts": post_list}), 200
     except mysql.connector.Error as err:
         print(f"Error fetching posts: {err}")
         return "Error loading dashboard", 500
+
 
 
 # Create post route, protected with JWT

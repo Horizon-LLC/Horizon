@@ -5,6 +5,7 @@ from backend.database.db import get_db_connection
 from backend.auth import token_required
 from sqlalchemy import func
 from backend.models import db, User, Post, Friendship
+from backend.upload_files import upload_to_s3
 
 boolDebug = False
 
@@ -16,60 +17,45 @@ profile_blueprint = Blueprint('profile', __name__)
 def profile(user_id, username):
     try:
         connection = get_db_connection()
-        cursor = connection.cursor()
+        cursor = connection.cursor(dictionary=True)
 
-        # Total posts by the user
-        cursor.execute("SELECT COUNT(*) FROM post WHERE user_id = %s", (user_id,))
-        total_posts = cursor.fetchone()[0]
+        cursor.execute("SELECT profile_pic FROM user WHERE user_id = %s", (user_id,))
+        user_data = cursor.fetchone()
 
-        # Total followers (where other users follow the logged-in user)
-        cursor.execute("SELECT COUNT(*) FROM friendship WHERE user_id_2 = %s AND status = 1", (user_id,))
-        total_followers = cursor.fetchone()[0]
+        if not user_data:
+            return jsonify({"error": "User not found"}), 404
 
-        # Total following (where the logged-in user follows other users)
-        cursor.execute("SELECT COUNT(*) FROM friendship WHERE user_id_1 = %s AND status = 1", (user_id,))
-        total_following = cursor.fetchone()[0]
+        cursor.execute("SELECT COUNT(*) AS total_posts FROM post WHERE user_id = %s", (user_id,))
+        total_posts = cursor.fetchone()['total_posts']
 
-        # Total friends (mutual following relationship with distinct pairs)
+        cursor.execute("SELECT COUNT(*) AS total_followers FROM friendship WHERE user_id_2 = %s AND status = 1", (user_id,))
+        total_followers = cursor.fetchone()['total_followers']
+
+        cursor.execute("SELECT COUNT(*) AS total_following FROM friendship WHERE user_id_1 = %s AND status = 1", (user_id,))
+        total_following = cursor.fetchone()['total_following']
+
         cursor.execute("""
-            SELECT COUNT(DISTINCT LEAST(f1.user_id_1, f1.user_id_2), GREATEST(f1.user_id_1, f1.user_id_2)) 
+            SELECT COUNT(DISTINCT LEAST(f1.user_id_1, f1.user_id_2), GREATEST(f1.user_id_1, f1.user_id_2)) AS total_friends
             FROM friendship f1
             JOIN friendship f2 ON f1.user_id_1 = f2.user_id_2 AND f1.user_id_2 = f2.user_id_1
             WHERE f1.user_id_1 = %s AND f1.status = 1 AND f2.status = 1
         """, (user_id,))
-        total_friends = cursor.fetchone()[0]
-
-        # Fetch posts by the user with their post IDs
-        cursor.execute("""
-            SELECT post_id, content, created_at 
-            FROM post 
-            WHERE user_id = %s 
-            ORDER BY created_at DESC
-        """, (user_id,))
-        posts = cursor.fetchall()
-
-        # Format posts for JSON response
-        post_list = [
-            {"post_id": post[0], "content": post[1], "created_at": post[2]}
-            for post in posts
-        ]
+        total_friends = cursor.fetchone()['total_friends']
 
         cursor.close()
         connection.close()
 
-        # Return the calculated profile data along with posts
         return jsonify({
             "username": username,
+            "profile_pic": user_data.get("profile_pic"),
             "total_posts": total_posts,
             "total_followers": total_followers,
             "total_following": total_following,
-            "total_friends": total_friends,
-            "posts": post_list
+            "total_friends": total_friends
         }), 200
 
     except mysql.connector.Error as err:
-        print(f"Error fetching profile: {err}")
-        return "Error loading profile", 500
+        return jsonify({"error": "Error loading profile"}), 500
 
     
 @profile_blueprint.route('/profile/posts', methods=['GET'])
@@ -160,3 +146,46 @@ def get_followers_and_following(user_id, username):
     except mysql.connector.Error as err:
         print(f"Error fetching followers and following: {err}")
         return jsonify({"error": "Error loading followers and following"}), 500
+
+
+@profile_blueprint.route('/upload-profile-pic', methods=['POST'])
+@token_required
+def upload_profile_pic(user_id, username):
+    if 'file' not in request.files:
+        print("No file found in request")  # Log missing file
+        return jsonify({"error": "No file uploaded"}), 400
+
+    file = request.files['file']
+    if file.filename == '':
+        print("Empty filename")  # Log empty file
+        return jsonify({"error": "File is empty"}), 400
+
+    # Log file details
+    print(f"File received: {file.filename}, User ID: {user_id}")
+
+    # Generate a unique filename
+    filename = f"profile_pictures/{user_id}_{file.filename}"
+
+    # Upload to S3
+    file_url = upload_to_s3(file, filename)
+    if not file_url:
+        print("Failed to upload to S3")  # Log S3 upload failure
+        return jsonify({"error": "Failed to upload profile picture"}), 500
+
+    # Update the database
+    try:
+        connection = get_db_connection()
+        cursor = connection.cursor()
+        cursor.execute(
+            "UPDATE user SET profile_pic = %s WHERE user_id = %s",
+            (file_url, user_id)
+        )
+        connection.commit()
+        cursor.close()
+        connection.close()
+
+        print(f"Database updated for User ID {user_id}, URL: {file_url}")  # Log database update
+        return jsonify({"message": "Profile picture updated", "profile_pic_url": file_url}), 200
+    except Exception as e:
+        print(f"Database error: {e}")  # Log database error
+        return jsonify({"error": "Failed to update database"}), 500
