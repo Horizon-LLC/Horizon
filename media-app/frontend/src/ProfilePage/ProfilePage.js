@@ -10,6 +10,7 @@ import UserPagePosts from '../assets/components/UserPagePosts';
 import FollowUModal from '../assets/components/FollowUModal';
 import { fetchUserProfile } from '../handlers/UserHandler';
 import { handleLogout } from '../handlers/UserHandler';
+import { updateBio } from '../handlers/UserHandler';
 import BioModal from '../assets/components/BioModal';
 import ProfilePictureModal from '../assets/components/ProfilePictureModal';
 
@@ -48,10 +49,16 @@ const ProfilePage = ({ setLoggedInUser, loggedInUserId }) => {
     };
 
     // Handle updating the bio
-    const handleUpdateBio = () => {
-        setBio(bioInput); // Update the bio in state
+    const handleUpdateBio = async () => {
+        if (bioInput.trim().length === 0) {
+            alert("Bio cannot be empty.");
+            return;
+        }
+    
+        await updateBio(bioInput, setBio, setAlertModal);
         setIsBioModalOpen(false); // Close the modal
     };
+    
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
@@ -120,7 +127,7 @@ const ProfilePage = ({ setLoggedInUser, loggedInUserId }) => {
             <BioModal
                 isBioModalOpen={isBioModalOpen}
                 setIsBioModalOpen={setIsBioModalOpen}
-                handleUpdateBio={handleUpdateBio}
+                handleUpdateBio={handleUpdateBio} // Use the updated handler
                 bioInput={bioInput}
                 setBioInput={setBioInput}
             />

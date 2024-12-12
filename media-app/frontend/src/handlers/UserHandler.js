@@ -1,5 +1,7 @@
 import API_BASE_URL from '../config';
 import { showErrorMess } from './SystemNotification';
+import defaultProfilePic from '../images/defaultprofilepicture.jpg';
+
 
 export const createAcc = async (e,formData, navigate) => {
     e.preventDefault();
@@ -137,3 +139,31 @@ export const handleLogout = async (setLoggedInUser, navigate) => {
         alert('An error occurred while logging out.');
     }
 };
+
+
+export const updateBio = async (newBio, setBio, setAlertModal) => {
+    const token = localStorage.getItem('token'); // Get token from local storage
+    try {
+        const response = await fetch(`${API_BASE_URL}/updateBio`, {
+            method: 'PUT',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ bio: newBio }),  // Only send the new bio
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+            setBio(newBio); // Update the bio in the frontend state
+            setAlertModal({ isOpen: true, text: 'Bio updated successfully!', type: 'success' });
+        } else {
+            setAlertModal({ isOpen: true, text: data.error || 'Failed to update bio', type: 'error' });
+        }
+    } catch (error) {
+        console.error('Error updating bio:', error);
+        setAlertModal({ isOpen: true, text: 'Error connecting to server. Try again later.', type: 'error' });
+    }
+};
+
+

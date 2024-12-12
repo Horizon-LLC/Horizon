@@ -11,6 +11,7 @@ import datetime
 from typing import List, Dict, Optional, Union, Tuple
 import mysql.connector
 from backend.database.db import get_db_connection
+from backend.auth import token_required
 
 # Use a secure secret key for JWT encoding
 SECRET_KEY = 'HORIZON'
@@ -19,20 +20,21 @@ SECRET_KEY = 'HORIZON'
 user_blueprint = Blueprint('user', __name__)
 
 # Route to create a new user
-@user_blueprint.route('/createUser', methods=['POST'])  # Added leading '/'
+@user_blueprint.route('/createUser', methods=['POST'])
 def create_user():
     data = request.json
 
     # Capture user data from the request
     first_name = data.get('first_name')
-    last_name = data.get('last_name')  # Corrected this line
+    last_name = data.get('last_name')
     username = data.get('username')
     email = data.get('email')
     date_of_birth = data.get('date_of_birth')
-    password = data.get('password')  # No Hash the password
+    password = data.get('password')
     security_question = data.get('security_question')
     security_answer = data.get('security_answer')
     is_verified = False  # Default to False until verification
+    bio = "No Bio Yet"  # Set default bio value
 
     # Check if any required fields are blank
     required_fields = {
@@ -51,7 +53,7 @@ def create_user():
         return jsonify({
             'error': 'One or more blank fields'
         }), 400
-    
+
     try:
         # Establish database connection
         connection = get_db_connection()
@@ -59,15 +61,15 @@ def create_user():
 
         # Define the SQL query with placeholders
         query = """
-        INSERT INTO user (first_name, last_name, profile_pic, username, email, date_of_birth, is_verified, password, location, security_question, security_answer)
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        INSERT INTO user (first_name, last_name, profile_pic, username, email, date_of_birth, is_verified, password, location, security_question, security_answer, bio)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         """
 
-        # Execute the query with placeholders for profile_pic and location
+        # Execute the query with the default bio value
         cursor.execute(query, (
             first_name,
             last_name,
-            '/images/default_profile_pic.jpg',  # Placeholder for profile_pic
+            '/images/default_profile_pic.jpg', 
             username,
             email,
             date_of_birth,
@@ -75,7 +77,8 @@ def create_user():
             password,
             'Earth',  # Placeholder for location
             security_question,
-            security_answer
+            security_answer,
+            bio  # Default bio value
         ))
 
         # Commit the transaction and close the connection
@@ -89,8 +92,9 @@ def create_user():
 
     except mysql.connector.Error as err:
         # Handle any database errors
-        print(f"Error occurred: {err}")  #
+        print(f"Error occurred: {err}")
         return jsonify({'error': str(err)}), 500
+
 
 
 #Route to serve the login form to test login functionality.
@@ -173,7 +177,11 @@ def get_single_user(user_id):
         cursor = connection.cursor(dictionary=True)  # Use dictionary=True to return results as a dictionary
 
         # Fetch the user details by user_id
-        query = "SELECT user_id, first_name, last_name, username, email, date_of_birth, is_verified FROM user WHERE user_id = %s"
+        query = """
+        SELECT user_id, first_name, last_name, username, email, date_of_birth, is_verified, bio
+        FROM user
+        WHERE user_id = %s
+        """
         cursor.execute(query, (user_id,))
         user = cursor.fetchone()
 
@@ -211,3 +219,33 @@ def fetch_username_by_user_id(user_id):
         print(f"Error fetching username: {err}")
         return None
 
+
+@user_blueprint.route('/updateBio', methods=['PUT'])
+@token_required
+def update_bio(user_id, username):
+    data = request.json
+    new_bio = data.get('bio')
+
+    if not new_bio:
+        return jsonify({"error": "Bio is required"}), 400
+
+    if len(new_bio) > 150:  # Validate bio length
+        return jsonify({"error": "Bio cannot exceed 150 characters"}), 400
+
+    try:
+        connection = get_db_connection()
+        cursor = connection.cursor()
+
+        # Update the bio in the database
+        query = "UPDATE user SET bio = %s WHERE user_id = %s"
+        cursor.execute(query, (new_bio, user_id))
+        connection.commit()
+
+        cursor.close()
+        connection.close()
+
+        return jsonify({"message": "Bio updated successfully"}), 200
+
+    except mysql.connector.Error as err:
+        print(f"Error updating bio: {err}")
+        return jsonify({"error": "Failed to update bio"}), 500

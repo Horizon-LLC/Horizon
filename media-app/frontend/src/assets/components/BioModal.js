@@ -1,5 +1,6 @@
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Textarea } from '@nextui-org/react';
 
+
 const BioModal = ({isBioModalOpen, setIsBioModalOpen, handleUpdateBio, bioInput, setBioInput}) => {
     return(
         <Modal isOpen={isBioModalOpen} onOpenChange={() => setIsBioModalOpen(false)} hideCloseButton={true}>
