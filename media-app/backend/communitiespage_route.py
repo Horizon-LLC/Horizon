@@ -6,7 +6,7 @@ from backend.database.db import get_db_connection
 community_blueprint = Blueprint('community', __name__)
 
 # Route to get all communities
-@community_blueprint.route('/get-communities', methods=['GET'])
+@community_blueprint.route('/get-communities', methods=['GET', 'OPTIONS'])
 def get_communities():
     try:
         connection = get_db_connection()
@@ -26,7 +26,7 @@ def get_communities():
         connection.close()
 
 # Route to create a new community
-@community_blueprint.route('/create-community', methods=['POST'])
+@community_blueprint.route('/create-community', methods=['POST', 'OPTIONS'])
 def create_community():
     data = request.json
     name = data.get('name')

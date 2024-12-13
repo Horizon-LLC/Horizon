@@ -20,6 +20,11 @@ export const WebNavbar = ({loggedInUser, showNavbar}) => {
             </Link>
           </NavbarItem>
           <NavbarItem>
+            <Link className='navbar-item' color="foreground" to="/communities">
+              Communities
+            </Link>
+          </NavbarItem>
+          <NavbarItem>
             <Link className='navbar-item' color="foreground" to="/Friends">
               Friends
             </Link>

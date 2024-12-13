@@ -42,7 +42,7 @@ from backend.profilepage_route import profile_blueprint
 from backend.friendpage_route import friend_blueprint
 from backend.comment_route import comment_blueprint
 from backend.like_route import like_blueprint
-
+from backend.communitiespage_route import community_blueprint
 
 
 
@@ -55,6 +55,7 @@ app.register_blueprint(profile_blueprint)
 app.register_blueprint(friend_blueprint)
 app.register_blueprint(comment_blueprint)
 app.register_blueprint(like_blueprint)  # Register the like blueprint
+app.register_blueprint(community_blueprint)
 
 # Route to test the database connection
 @app.route('/test-db', methods=['GET'])

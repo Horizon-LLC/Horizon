@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import API_BASE_URL from '../config';
 
 const Communities = () => {
   const [communities, setCommunities] = useState([]);
@@ -7,7 +8,7 @@ const Communities = () => {
 
   // Fetch communities from the backend
   useEffect(() => {
-    fetch("/get-communities")
+    fetch(`${API_BASE_URL}/get-communities`)
       .then((response) => response.json())
       .then((data) => setCommunities(data))
       .catch((err) => console.error("Error fetching communities:", err));
@@ -21,7 +22,7 @@ const Communities = () => {
 
   // Submit new community to the backend
   const handleCreateCommunity = () => {
-    fetch("/create-community", {
+    fetch(`${API_BASE_URL}/create-community`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -38,48 +39,50 @@ const Communities = () => {
   };
 
   return (
-    <div className="communities">
+    <div className="communities-container">
+      <div className="communities-container-2">
         <h1>All Communities</h1>
         <button onClick={() => setShowModal(true)} className="create-community-button">
-            Create Community
+          Create Community
         </button>
 
         <div className="community-list">
-            {communities.map((community) => (
+          {communities.map((community) => (
             <div key={community.id} className="community-card">
-                <h2>{community.name}</h2>
-                <p>{community.description}</p>
+              <h2>{community.name}</h2>
+              <p>{community.description}</p>
             </div>
-            ))}
+          ))}
         </div>
 
         {showModal && (
-            <div className="modal">
+          <div className="modal">
             <div className="modal-content">
-                <h2>Create a New Community</h2>
-                <label>
+              <h2>Create a New Community</h2>
+              <label>
                 Name:
                 <input
-                    type="text"
-                    name="name"
-                    value={newCommunity.name}
-                    onChange={handleInputChange}
+                  type="text"
+                  name="name"
+                  value={newCommunity.name}
+                  onChange={handleInputChange}
                 />
-                </label>
-                <label>
+              </label>
+              <label>
                 Description:
                 <textarea
-                    name="description"
-                    value={newCommunity.description}
-                    onChange={handleInputChange}
+                  name="description"
+                  value={newCommunity.description}
+                  onChange={handleInputChange}
                 />
-                </label>
-                <button onClick={handleCreateCommunity}>Complete</button>
-                <button onClick={() => setShowModal(false)}>Cancel</button>
+              </label>
+              <button onClick={handleCreateCommunity}>Complete</button>
+              <button onClick={() => setShowModal(false)}>Cancel</button>
             </div>
             <div className="modal-overlay" onClick={() => setShowModal(false)} />
-            </div>
+          </div>
         )}
+      </div>
     </div>
   );
 };

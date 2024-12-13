@@ -1,13 +1,24 @@
-.communities {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start; /* Align to the left inside the container */
-    justify-content: center; /* Vertically center */
-    height: 100vh; /* Full viewport height */
-    position: absolute; /* Position it relative to the viewport */
-    right: 0; /* Align to the right of the screen */
-    top: 0; /* Optional: if you want it to align at the top of the screen */
-}
+  .communities-container {
+      position: relative; /* Ensures it's positioned relative to the flow of the document */
+      top: 60px; /* Push it down exactly the height of the navbar */
+      width: calc(100vw - 300px); /* Adjust container width (example: subtract 300px for side spacing) */
+      height: calc(100vh - 60px); /* Full height minus navbar height */
+      background-color: #f9f9f9; /* Optional background color for clarity */
+      display: flex;
+      justify-content: right;
+      align-items: flex-start;
+      padding: 20px; /* Optional padding for internal spacing */
+  }
+
+  .communities-container-2 {
+    right: 0;           /* Aligns the container to the right side of the screen */
+    top: 60px;          /* Adds some space from the top to avoid the navbar */
+    width: 600px;       /* Sets a fixed width for the container */
+    padding: 20px;
+    background-color: #f9f9f9;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+  }
   
   .create-community-button {
     margin-bottom: 20px;

@@ -9,6 +9,7 @@ import HomePage from './MainPage/HomePage';
 import ChatPage from './ChatPage/ChatPage';
 import FriendsPage from './FriendsPage/Friends';
 import UserProfile from './UserPage/UserProfile';
+import CommunitiesPage from './CommunitiesPage/Communities';
 import WebNavbar from './assets/components/WebNavbar';
 
 
@@ -57,6 +58,7 @@ function App() {
               <Route path="/Friends" element={<FriendsPage />} />
               <Route path="/user/:userId" element={<UserProfile loggedInUser={loggedInUser} loggedInUserId={loggedInUserId}/>} />
               <Route path="/chat/:chatboxId" element={<ChatPage loggedInUser={loggedInUser} loggedInUserId={loggedInUserId}/>} />
+              <Route path="/communities" element={<CommunitiesPage />} />
             </Routes>
           </div>
         </BrowserRouter>
