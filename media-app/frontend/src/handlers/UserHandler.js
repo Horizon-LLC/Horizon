@@ -166,4 +166,28 @@ export const updateBio = async (newBio, setBio, setAlertModal) => {
     }
 };
 
+export const searchUsers = async (query, setUsers, setAlertModal) => {
+    try {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`${API_BASE_URL}/searchUsers?q=${query}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+            setUsers(data); // Update users based on search results
+        } else {
+            showErrorMess(data.error || 'Failed to search users', 'error', setAlertModal);
+        }
+    } catch (error) {
+        console.error('Error searching users:', error);
+        showErrorMess('Something went wrong while searching users', 'error', setAlertModal);
+    }
+};
+
+
 

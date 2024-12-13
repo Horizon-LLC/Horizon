@@ -249,3 +249,31 @@ def update_bio(user_id, username):
     except mysql.connector.Error as err:
         print(f"Error updating bio: {err}")
         return jsonify({"error": "Failed to update bio"}), 500
+
+
+# Route to search users by username
+@user_blueprint.route('/searchUsers', methods=['GET'])
+def search_users():
+    search_query = request.args.get('q', '')  # Get search query from URL parameters
+
+    try:
+        connection = get_db_connection()
+        cursor = connection.cursor(dictionary=True)
+
+        query = """
+        SELECT user_id, username 
+        FROM user 
+        WHERE LOWER(username) LIKE %s
+        """
+        cursor.execute(query, (f"{search_query.lower()}%",))  # Match starting with query, case-insensitive
+
+        users = cursor.fetchall()
+
+        cursor.close()
+        connection.close()
+
+        return jsonify(users), 200
+    except mysql.connector.Error as err:
+        print(f"Error searching users: {err}")
+        return jsonify({'error': 'Failed to search users'}), 500
+

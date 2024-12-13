@@ -124,13 +124,34 @@
     min-width: 300px; 
     min-height: 130px;
     background-color: #fcd8b6;
-    border-radius: 0%;
-    border: 1px solid  hsl(29, 92%, 75%);
+    border-radius: 2%;
+    border: 1.5px solid #8b4513;
     font-family: 'Nunito', sans-serif;
     color: #450b00;
-    font-size: 14pt;
+    font-size: 15pt;
     overflow: hidden; /* Prevent scrolling within the card */
 }
+
+/* Make the username larger */
+.post-card .username {
+    font-size: 17pt; /* Larger font size for username */
+    font-weight: bold; /* Optional: Make it bold */
+    color: #450b00; /* Optional: Customize color */
+}
+
+/* Make the "Posted on:" part smaller */
+.post-card .posted-on {
+    font-size: 11pt; /* Smaller font size for "Posted on:" */
+    color: rgb(10, 10, 10); /* Optional: Keep it light */
+}
+
+/* Keep the regular text the same */
+.post-card .post-content {
+    font-size: 14pt; /* Regular font size for post content */
+    color: #450b00; /* Optional: Customize color */
+    text-align: left; /* Align text to the left */
+}
+
 
 .post-card img {
     display: block; /* Removes inline spacing from images */

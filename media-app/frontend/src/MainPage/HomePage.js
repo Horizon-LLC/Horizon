@@ -1,5 +1,5 @@
 import './MainPage.css';
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { ScrollShadow, Spacer, useDisclosure } from '@nextui-org/react';
 import { CiSearch } from "react-icons/ci";
 import Feed from './Feed';
@@ -19,6 +19,15 @@ const HomePage = ({ loggedInUser, setLoggedInUser, setLoggedInUserId }) => {
     // Define state for feed mode
     const [feedMode, setFeedMode] = useState('explore'); 
     const [loading, setLoading] = useState(false); // Loading stat
+    const [searchQuery, setSearchQuery] = useState('');
+    const [loggedInUserId, setLoggedInUserIdState] = useState(null);
+
+
+    useEffect(() => {
+        const storedUserId = localStorage.getItem('user_id');
+        setLoggedInUserIdState(storedUserId ? parseInt(storedUserId, 10) : null); // Parse to int
+    }, []);
+    
     
 
     return (
@@ -51,8 +60,15 @@ const HomePage = ({ loggedInUser, setLoggedInUser, setLoggedInUserId }) => {
             </div>
             <Spacer x={5} />
             <div className='side-container'>
-                <SearchBar className="search-box" />
-                <AllUserList setAlertModal={setAlertModal} />
+                <SearchBar
+                    className="search-box"
+                    onSearch={setSearchQuery} // Pass search query to state
+                />
+                <AllUserList 
+                    setAlertModal={setAlertModal} 
+                    searchQuery={searchQuery} 
+                    loggedInUserId={loggedInUserId} // Pass logged-in user ID
+                />
             </div>
 
             <PostModal 

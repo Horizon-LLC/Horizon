@@ -1,25 +1,33 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, ScrollShadow } from '@nextui-org/react';
 import UserCard from './UserCard';
+import { searchUsers, getAllUsers } from '../../handlers/UserHandler';
 import { followUser } from '../../handlers/FollowHandler';
-import { getAllUsers } from '../../handlers/UserHandler';
 
-const AllUserList = (setAlertModal) => {
-    const [users, setUsers] = useState([]);    
+const AllUserList = ({ setAlertModal, searchQuery, loggedInUserId }) => {
+    const [users, setUsers] = useState([]);
 
     useEffect(() => {
-        getAllUsers(setUsers, setAlertModal); 
-    }, [setAlertModal]);
+        if (searchQuery.trim() === '') {
+            getAllUsers(setUsers, setAlertModal); // Fetch all users when search is empty
+        } else {
+            searchUsers(searchQuery, setUsers, setAlertModal); // Search users
+        }
+    }, [searchQuery, setAlertModal]);
+
+    // Filter out the logged-in user (only if `loggedInUserId` is defined)
+    const filteredUsers = loggedInUserId ? users.filter(user => user.user_id !== loggedInUserId) : users;
 
     return (
         <Card className='profilelist-container'>
             <ScrollShadow hideScrollBar>
-                {users.length > 0 ? (
-                    users.map((user) => (
+                {filteredUsers.length > 0 ? (
+                    filteredUsers.map((user) => (
                         <UserCard 
                             key={user.user_id} 
                             user={user} 
-                            setAlertModal={setAlertModal}
+                            setAlertModal={setAlertModal} 
+                            followUser={followUser} // Pass followUser
                         />
                     ))
                 ) : (
@@ -31,4 +39,3 @@ const AllUserList = (setAlertModal) => {
 };
 
 export default AllUserList;
-

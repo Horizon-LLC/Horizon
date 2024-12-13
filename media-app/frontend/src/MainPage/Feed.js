@@ -53,12 +53,16 @@ const Feed = forwardRef((props, ref) => {
     }));
 
     // Fetch posts whenever the page changes
+    // Reset to page 0 and fetch posts when the mode changes
     useEffect(() => {
-        // Reset to page 0 and fetch posts when mode changes or page changes
         setPage(0);  // Reset the page to 0
-        setLoading(true);
         fetchPosts(0); // Fetch posts for the first page
-    }, [page, props.selectedMode]); // Add `props.selectedMode` as a dependency
+    }, [props.selectedMode]); // Only depends on `props.selectedMode`
+
+    // Fetch posts whenever the page changes
+    useEffect(() => {
+        fetchPosts(page); // Fetch posts for the current page
+    }, [page]); // Independent of `props.selectedMode`
 
     // Handlers for the Create Post modal
     const handleCreatePostOpen = () => {
@@ -92,26 +96,29 @@ const Feed = forwardRef((props, ref) => {
             {/* Pagination */}
             <div className="pagination-controlss">
                 <button
-                    disabled={page === 0 || loading}
+                    disabled={page === 0 || loading} // Disable if on page 0 or loading
                     onClick={() => {
-                        setPage((prev) => Math.max(prev - 1, 0));
-                        fetchPosts(page - 1); // Fetch posts for the previous page
-                        window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to top
+                        if (page > 0) { // Ensure the page is greater than 0
+                            setLoading(true); // Show loading
+                            setPosts([]); // Clear stale posts
+                            setPage((prev) => prev - 1); // Decrement the page
+                        }
                     }}
                 >
                     Previous
                 </button>
                 <button
-                    disabled={loading}
+                    disabled={loading} // Disable if loading
                     onClick={() => {
-                        setPage((prev) => prev + 1);
-                        fetchPosts(page + 1); // Fetch posts for the next page
-                        window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to top
+                        setLoading(true); // Show loading
+                        setPosts([]); // Clear stale posts
+                        setPage((prev) => prev + 1); // Increment the page
                     }}
                 >
-                    Next 
+                    Next
                 </button>
             </div>
+
 
             {/* Create Post Modal */}
             <CreatePostModal

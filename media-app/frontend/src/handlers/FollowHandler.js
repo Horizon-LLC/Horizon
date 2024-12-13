@@ -26,6 +26,7 @@ export const followUser = async (userId, setAlertModal) => {
 };
 
 
+
 export const fetchFriendsList = async (setFriendsList) => {
     const token = localStorage.getItem('token');
     try {

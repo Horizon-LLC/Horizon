@@ -14,17 +14,8 @@
     
 }
 
-.profile-page {
-    padding: 90px;
-    background-color: #f1eaea;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-}
-
 .profile-head {
+    width: 100%; /* Matches the parent's width */
     position: relative; /* Ensure it respects the `top` property */
     background-color: #f1eaea;
     border-bottom: 2px solid #000000;
@@ -32,6 +23,7 @@
     display: flex; /* Use flexbox for layout */
     align-items: center; /* Center align items */
     justify-content: space-between; /* Space between elements */
+    max-width: 1500px;
 }
 
 
@@ -39,16 +31,15 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr); /* Maintain 4 columns */
     gap: 15px; /* Space between posts */
-    width: 100%; /* Reduce the width */
-    max-width: 900px; /* Limit the grid's maximum width */
-    margin: 10px auto; /* Move it closer to the top and center it horizontally */
+    width: 100%; /* Stretch to full width */
+    max-width: 1500px; /* Limit the grid's maximum width */
+    margin: 20px auto; /* Center the grid and add spacing above */
     padding: 10px; /* Add padding inside the grid */
     background-color: #f0f0f0; /* Light background for visibility */
     border-radius: 8px; /* Rounded corners */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a shadow for better appearance */
-    position: relative;
-    top: -120px;
 }
+
 
 /* Style for each post */
 .post {
@@ -244,13 +235,12 @@
 }
 
 
-
-
 .options {
     display: flex;
-    gap: 15px;
-    margin-top: -55px;
+    gap: 15px; /* Space between child elements */
+    margin-top: 20px; /* Add positive spacing from .posts-grid */
 }
+
 
 .option-button {
     background-color: #4a90e2;
