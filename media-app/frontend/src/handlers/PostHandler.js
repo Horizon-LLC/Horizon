@@ -13,7 +13,7 @@ const formatDate = (date) => {
 
 export const createPost = async (message, setMessage, feedRefresh, setAlertModal) => {
     if (!message) {
-        showErrorMess('Post content cannot be empty', 'error', setAlertModal);
+        setAlertModal({ type: 'error', message: 'Post content cannot be empty' });
         return;
     }
     const token = localStorage.getItem('token'); 

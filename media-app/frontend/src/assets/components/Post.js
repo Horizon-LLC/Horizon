@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 const Post = ({ post, index }) => {
   const [liked, setLiked] = useState(false); // State to track if the post is liked
   const [likeCount, setLikeCount] = useState(0); // State to track total likes
+  const [imageError, setImageError] = useState(false); // State to track image loading error
   const navigate = useNavigate();
 
 
@@ -24,7 +25,15 @@ const Post = ({ post, index }) => {
         <p>{post.username}</p>
       </CardHeader>
       <CardBody>
-        <p>{post.content}</p>
+        {post.content && <p>{post.content}</p>}
+        {post.pic_link && (
+          <img
+            src={imageError ? '/images/placeholder-image.jpg' : post.pic_link}
+            alt="Attached media"
+            className="post-card-img"
+            onError={() => setImageError(true)}
+        />
+      )}
       </CardBody>
       <CardFooter>
         <p style={{ color: 'gray' }}>

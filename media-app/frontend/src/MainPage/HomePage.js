@@ -38,7 +38,7 @@ const HomePage = ({ loggedInUser, setLoggedInUser, setLoggedInUserId }) => {
             <PostModal 
                 isOpen={isOpen} 
                 onOpenChange={onOpenChange} 
-                feedRefresh={feedRefresh}
+                refreshFeed={feedRefresh.current?.refresh || (() => console.log('Refresh function not available'))}
                 setAlertModal={setAlertModal}
             />
 

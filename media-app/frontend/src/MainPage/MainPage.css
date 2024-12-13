@@ -122,7 +122,6 @@
     width: 100%; 
     max-width: 40vw;
     min-width: 300px; 
-    height: 25vh;
     min-height: 130px;
     background-color: #fcd8b6;
     border-radius: 0%;
@@ -130,7 +129,21 @@
     font-family: 'Nunito', sans-serif;
     color: #450b00;
     font-size: 14pt;
+    overflow: hidden; /* Prevent scrolling within the card */
 }
+
+.post-card img {
+    display: block; /* Removes inline spacing from images */
+    max-width: 100%; /* Ensures the image fits the card width */
+    height: auto; /* Maintains the image's aspect ratio */
+    max-height: 350px;
+    width: auto; /* Maintains aspect ratio when resizing */
+    height: auto; /* Ensures aspect ratio is preserved */
+    object-fit: contain;
+    margin-top: 10px; /* Optional: Add some spacing around the image */
+    border-radius: 5px; /* Optional: Add rounded corners to the image */
+}
+
 .feed-container {
     display: flex;
     flex-direction: column;
@@ -155,17 +168,17 @@
     margin-top: 20px;
 }
 
-.pagination-controls button {
+.pagination-controlss button {
     padding: 10px 20px;
     background-color: #450b00;
     color: white;
-    border: none;
     border-radius: 5px;
     cursor: pointer;
 }
 
-.pagination-controls button:disabled {
-    background-color: #ccc;
+.pagination-controlss button:disabled {
     cursor: not-allowed;
+    color: white;
+    background-color: #450b00;
 }
 

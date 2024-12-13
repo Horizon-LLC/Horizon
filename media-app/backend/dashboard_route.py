@@ -5,6 +5,7 @@ from graphviz import render
 from backend.database.db import get_db_connection
 from backend.auth import token_required
 from backend.user_routes import fetch_username_by_user_id
+from backend.upload_files import upload_to_s3
 
 
 boolDebug = False
@@ -15,33 +16,6 @@ boolDebug = False
 dashboard_blueprint = Blueprint('dashboard', __name__)
 
 
-# Dashboard route
-
-# Fetch single user's post
-# @dashboard_blueprint.route('/dashboard', methods=['GET'])
-# @token_required
-# def dashboard(user_id, username):
-#     try:
-#         connection = get_db_connection()
-#         cursor = connection.cursor()
-#
-#         #Fetch all posts for the logged-in user
-#         query = "SELECT content, created_at FROM post WHERE user_id = %s ORDER BY created_at DESC"
-#         cursor.execute(query, (user_id,))
-#         posts = cursor.fetchall()
-#
-#         post_list = [{"content": post[0], "created_at": post[1]} for post in posts]
-#
-#         cursor.close()
-#         connection.close()
-#
-#         #Render the dashboard template, passing the username and posts
-#         return jsonify({"username": username, "posts": post_list}), 200
-#     except mysql.connector.Error as err:
-#         print(f"Error fetching posts: {err}")
-#         return "Error loading dashboard", 500
-# Dashboard route
-
 # Fetch all users' post
 @dashboard_blueprint.route('/dashboard', methods=['GET'])
 @token_required
@@ -50,28 +24,29 @@ def dashboard(user_id, username):
         limit = int(request.args.get('limit', 7))  # Default to 7 posts per page
         offset = int(request.args.get('offset', 0))  # Default to the first page
         connection = get_db_connection()
-        cursor = connection.cursor()
+        cursor = connection.cursor(dictionary=True)
 
         query = """
-            SELECT post.post_id, post.user_id, post.content, post.created_at
+            SELECT post.post_id, post.user_id, post.content, post.pic_link,
+                   COALESCE(post.created_at, NOW()) AS created_at
             FROM post
-            ORDER BY post.created_at DESC
+            ORDER BY created_at DESC
             LIMIT %s OFFSET %s
         """
         cursor.execute(query, (limit, offset))
         posts = cursor.fetchall()
 
-        post_list = [
-            {"post_id": post[0], "username": fetch_username_by_user_id(post[1]), "content": post[2], "created_at": post[3]}
-            for post in posts
-        ]
+        for post in posts:
+            post["username"] = fetch_username_by_user_id(post["user_id"])
 
         cursor.close()
         connection.close()
-        return jsonify({"posts": post_list}), 200
+        return jsonify({"posts": posts}), 200
     except mysql.connector.Error as err:
         print(f"Error fetching posts: {err}")
-        return "Error loading dashboard", 500
+        return jsonify({"error": "Failed to fetch posts"}), 500
+
+
 
 
 
@@ -82,33 +57,49 @@ def create_post(user_id, username):
     if boolDebug:
         print("Create post route hit!")  # Add this at the beginning to check if the route is accessed
 
-    data = request.get_json()
-    content = data.get('content')
-    created_at = data.get('created_at')
+    content = request.form.get('content')  # Fetch content from form data
+    created_at = request.form.get('created_at')  # Fetch created_at from form data
+    file = request.files.get('file')  # Check for an attached file
 
+    pic_link = None
+    if file:
+        filename = f"post_media/{user_id}_{file.filename}"
+        pic_link = upload_to_s3(file, filename)
+        if not pic_link:
+            return jsonify({"error": "Failed to upload media file"}), 500
 
     if not content:
-        return jsonify({"error": "Post content cannot be empty"})
+        return jsonify({"error": "Post content cannot be empty"}), 400
+
+    # Default `created_at` to the current timestamp if not provided
+    if not created_at:
+        from datetime import datetime
+        created_at = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
     try:
-        #Insert the post into the database
         connection = get_db_connection()
-        cursor = connection .cursor()
+        cursor = connection.cursor()
 
-        if(boolDebug):
-            print(f"Attempting to insert post content: {content} for user: {user_id} created at: {created_at}")  # Use 'user_id' from the JWT token
-        query = "INSERT INTO post (content, created_at, user_id) VALUES (%s, %s, %s)"
-        cursor.execute(query, (content, created_at, user_id))
+        query = """
+            INSERT INTO post (content, created_at, user_id, pic_link)
+            VALUES (%s, %s, %s, %s)
+        """
+        cursor.execute(query, (content, created_at, user_id, pic_link))
 
         connection.commit()
         cursor.close()
         connection.close()
 
-        return jsonify({"message": "Post Created successfully", "post_content": content, "created_at": created_at}), 201
+        return jsonify({
+            "message": "Post created successfully",
+            "post_content": content,
+            "pic_link": pic_link,
+            "created_at": created_at
+        }), 201
     except mysql.connector.Error as err:
-        if boolDebug:
-            print(f"Database Error: {err}")  # Output error to your terminal for debugging
+        print(f"Database Error: {err}")
         return jsonify({"error": f"Failed to create post: {err}"}), 500
+
 
 
 # Edit post route (placeholder), protected with JWT
