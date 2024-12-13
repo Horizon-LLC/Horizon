@@ -86,7 +86,8 @@ export const fetchUserProfile = async (
     setTotalFollowing,
     setTotalFriends,
     setPosts,
-    setProfilePic
+    setProfilePic,
+    setBio // Add setBio to update the bio state
 ) => {
     const token = localStorage.getItem('token');
     try {
@@ -94,19 +95,21 @@ export const fetchUserProfile = async (
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            }
+                'Content-Type': 'application/json',
+            },
         });
 
         if (response.ok) {
             const data = await response.json();
+            console.log('Fetched bio:', data.bio); // Log the fetched bio
             setUsername(data.username);
             setTotalPosts(data.total_posts);
             setTotalFollowers(data.total_followers);
             setTotalFollowing(data.total_following);
             setTotalFriends(data.total_friends);
             setPosts(data.posts || []);
-            setProfilePic(data.profile_pic || defaultProfilePic); // Set profile picture
+            setProfilePic(data.profile_pic || defaultProfilePic); 
+            setBio(data.bio || ''); // Set bio with fetched data
         } else {
             console.error('Failed to fetch profile:', response.statusText);
         }
@@ -114,6 +117,7 @@ export const fetchUserProfile = async (
         console.error('Error fetching profile:', error);
     }
 };
+
 
 
 

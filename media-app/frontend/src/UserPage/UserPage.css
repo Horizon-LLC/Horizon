@@ -1,35 +1,235 @@
-.userpage-container {
-    width: 100%;
-    min-width: calc(100vw - 200px);
-    max-width: calc(100vw - 400px);
+
+.center-container-profile {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
     height: 100%;
     min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
+    width: 100%; 
+    max-width: 40vw;
+    min-width: 300px; 
+    margin: auto;
+}
+
+
+/* Header section containing profile picture and info */
+.profile-head {
+    width: 100%; /* Matches the parent width */
+    padding: 20px; /* Spacing around content */
+    display: flex; /* Flexbox layout */
+    align-items: center; /* Center items vertically */
+    justify-content: space-between; /* Distribute space between children */
+    max-width: 1500px; /* Restricts maximum width */
+    background-color: #fcd8b6; /* Same as main container background */
+    border-radius: 2%; /* Rounded corners */
+    border: 1.5px solid #8b4513; /* Dark border for definition */
+    margin-top: 5px;
+}
+
+/* Username styling */
+.username-text {
+    font-size: 1.5rem; /* Slightly larger font size */
+    font-weight: bold; /* Bold text for emphasis */
+    color: #450b00; /* Dark brown text color */
+}
+
+/* Profile picture styling */
+.pfp {
+    border-radius: 100%; /* Makes the image circular */
+    overflow: hidden; /* Hides content overflowing the circle */
+    border: 1.5px solid #8b4513; /* Border for emphasis */
+    flex-direction: row; /* Stack items vertically */
+}
+
+.box{
     flex-direction: column;
 }
 
-.usertop-container {
-    width: 100%;
-    min-width: 100%;
-    height: 20%;
-    min-height: 20vh;
+.info {
     display: flex;
-    flex-direction: row;
-    align-items: center;
-    border-bottom: 1px solid  #c0d6e8;
-    padding: 2vw;
-}
-.username-text {
-    font-weight: bold;
-    font-size: 3rem;
+    flex-direction: column; /* Stack info vertically */
+    flex: 1; /* Allow info to take remaining space */
+    align-items: flex-start; /* Align items to the left */
+    margin-bottom: -40px; /* Space below the username */
 }
 
-.message-button, .follow-button {
-    background-color: #4CAF50;
-    width: 3vw;
-    min-width: 100px;
-    max-width: 3vw;
-    margin: 1vw;
+.username-text {
+    font-size: 2rem; /* Adjust font size for username */
+    font-weight: bold; /* Make username bold */
+    margin-left: 20px;
+    flex-direction: column;
+}
+
+.settings-button {
+    background: none; /* No background */
+    border: none; /* No border */
+    cursor: pointer; /* Pointer cursor */
+    font-size: 3.0rem; /* Larger font size for the icon */
+    color: #000; /* Black color for the icon */
+    position: absolute; /* Position it absolutely within the profile-head */
+    top: 70px; /* Distance from the top */
+    right: 70px; /* Align to the right */
+}
+
+.info-line {
+    display: flex; /* Use flexbox to arrange items in a line */
+    justify-content: space-between; /* Space evenly */
+    width: 100%; /* Full width */
+    margin-top: 10px; /* Space from the username */
+    margin-right: 20px;
+
+}
+
+.info-text {
+    text-align: center;
+    font-weight: bold; /* Make text bold for emphasis */
+}
+
+.bio {
+    font-size: medium;
+    text-align: left;
+    margin-top: 10px; /* Add margin for spacing */
+}
+
+.feed-container-profile {
+    display: flex; /* Flexbox for layout */
+    flex-direction: column; /* Stack children vertically */
+    justify-content: flex-start; /* Align to the top */
+    align-items: center; /* Center horizontally */
+    width: 100%; /* Full width */
+    max-width: 1200px; /* Maximum width */
+    margin: 0 auto; /* Center horizontally */
+    padding: 20px; /* Internal spacing */
+    background-color: #fcd8b6; /* Same as main container background */
+    border-radius: 2%; /* Rounded corners */
+    border: 1.5px solid #8b4513; /* Dark border for definition */
+    
+    overflow-y: scroll; /* Enable vertical scrolling */
+    scrollbar-width: none; /* Hide scrollbar (for Firefox) */
+    overflow-y: scroll; /* Allow vertical scrolling */
+}
+
+.feed-bottom {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch; /* Ensure children match parent width */
+    height: 80%;
+    min-height: 80vh;
+    width: 100%;
+    max-width: 40vw;
+    overflow: auto;
+    border-radius: 2vh;
+
+    /* Hide scrollbar for all browsers */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+.feed-bottom::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Edge */
+}
+
+
+.post-card {
+    width: 100%; 
+    max-width: 40vw;
+    min-width: 300px; 
+    min-height: 130px;
+    background-color: #fcd8b6;
+    border-radius: 2%;
+    border: 1.5px solid #8b4513;
+    font-family: 'Nunito', sans-serif;
+    color: #450b00;
+    font-size: 15pt;
+    overflow: hidden; /* Prevent scrolling within the card */
+}
+
+/* Make the username larger */
+.post-card .username {
+    font-size: 17pt; /* Larger font size for username */
+    font-weight: bold; /* Optional: Make it bold */
+    color: #450b00; /* Optional: Customize color */
+}
+
+/* Make the "Posted on:" part smaller */
+.post-card .posted-on {
+    font-size: 11pt; /* Smaller font size for "Posted on:" */
+    color: rgb(10, 10, 10); /* Optional: Keep it light */
+}
+
+/* Keep the regular text the same */
+.post-card .post-content {
+    font-size: 14pt; /* Regular font size for post content */
+    color: #450b00; /* Optional: Customize color */
+    text-align: left; /* Align text to the left */
+}
+
+.post-card img {
+    display: block; /* Removes inline spacing from images */
+    max-width: 100%; /* Ensures the image fits the card width */
+    height: auto; /* Maintains the image's aspect ratio */
+    max-height: 350px;
+    width: auto; /* Maintains aspect ratio when resizing */
+    height: auto; /* Ensures aspect ratio is preserved */
+    object-fit: contain;
+    margin-top: 10px; /* Optional: Add some spacing around the image */
+    border-radius: 5px; /* Optional: Add rounded corners to the image */
+}
+
+/* Pagination controls */
+.pagination-controlss-profile {
+    display: flex; /* Flexbox for layout */
+    justify-content: space-between; /* Distribute buttons evenly */
+    width: 100%; /* Full width */
+}
+
+.pagination-controlss-profile button {
+    padding: 10px 20px; /* Button padding */
+    background-color: #450b00; /* Dark brown background */
+    color: white; /* White text */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Hand cursor */
+}
+
+.pagination-controlss-profile button:disabled {
+    cursor: not-allowed; /* Prevent interaction */
+    color: white; /* Keep text white */
+    background-color: #450b00; /* Keep background consistent */
+}
+
+/* Dropdown menu */
+.dropdown-menu {
+    position: absolute; /* Positioned relative to nearest ancestor */
+    top: 60px; /* Space from top */
+    right: 200px; /* Space from right */
+    background-color: #f9f9f9; /* Light background */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+    border-radius: 8px; /* Rounded corners */
+    padding: 20px; /* Internal spacing */
+    z-index: 10; /* Ensure it appears above other elements */
+}
+
+/* Modal styling */
+.modal {
+    position: fixed; /* Fixed to viewport */
+    top: 0; /* Align to top */
+    left: 0; /* Align to left */
+    width: 100vw; /* Full viewport width */
+    height: auto;
+    background: rgba(0, 0, 0, 0.5); /* Transparent black overlay */
+    display: flex; /* Flexbox layout */
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
+    z-index: 1000; /* Ensure it appears above all other elements */
+}
+
+.modal-content {
+    background-color: #fff; /* White background */
+    padding: 20px; /* Internal spacing */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    width: 400px; /* Fixed width */
+    max-width: 100%; /* Responsive width */
 }

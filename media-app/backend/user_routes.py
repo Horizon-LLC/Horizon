@@ -277,3 +277,4 @@ def search_users():
         print(f"Error searching users: {err}")
         return jsonify({'error': 'Failed to search users'}), 500
 
+

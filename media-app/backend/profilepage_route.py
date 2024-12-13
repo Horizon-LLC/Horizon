@@ -19,7 +19,7 @@ def profile(user_id, username):
         connection = get_db_connection()
         cursor = connection.cursor(dictionary=True)
 
-        cursor.execute("SELECT profile_pic FROM user WHERE user_id = %s", (user_id,))
+        cursor.execute("SELECT profile_pic, bio FROM user WHERE user_id = %s", (user_id,))
         user_data = cursor.fetchone()
 
         if not user_data:
@@ -48,6 +48,7 @@ def profile(user_id, username):
         return jsonify({
             "username": username,
             "profile_pic": user_data.get("profile_pic"),
+            "bio": user_data.get("bio"),  # Add bio here
             "total_posts": total_posts,
             "total_followers": total_followers,
             "total_following": total_following,
@@ -56,6 +57,7 @@ def profile(user_id, username):
 
     except mysql.connector.Error as err:
         return jsonify({"error": "Error loading profile"}), 500
+
 
     
 @profile_blueprint.route('/profile/posts', methods=['GET'])
@@ -189,3 +191,57 @@ def upload_profile_pic(user_id, username):
     except Exception as e:
         print(f"Database error: {e}")  # Log database error
         return jsonify({"error": "Failed to update database"}), 500
+    
+
+@profile_blueprint.route('/profile/followers', methods=['GET'])
+@token_required
+def get_followers(user_id, username):
+    try:
+        connection = get_db_connection()
+        cursor = connection.cursor(dictionary=True)
+
+        # Fetch followers
+        query = """
+            SELECT u.user_id, u.username
+            FROM friendship f
+            JOIN user u ON f.user_id_1 = u.user_id
+            WHERE f.user_id_2 = %s AND f.status = 1
+        """
+        cursor.execute(query, (user_id,))
+        followers = cursor.fetchall()
+
+        cursor.close()
+        connection.close()
+
+        return jsonify(followers), 200
+
+    except mysql.connector.Error as err:
+        print(f"Error fetching followers: {err}")
+        return jsonify({"error": "Error loading followers"}), 500
+    
+@profile_blueprint.route('/profile/following', methods=['GET'])
+@token_required
+def get_following(user_id, username):
+    try:
+        connection = get_db_connection()
+        cursor = connection.cursor(dictionary=True)
+
+        # Fetch following
+        query = """
+            SELECT u.user_id, u.username
+            FROM friendship f
+            JOIN user u ON f.user_id_2 = u.user_id
+            WHERE f.user_id_1 = %s AND f.status = 1
+        """
+        cursor.execute(query, (user_id,))
+        following = cursor.fetchall()
+
+        cursor.close()
+        connection.close()
+
+        return jsonify(following), 200
+
+    except mysql.connector.Error as err:
+        print(f"Error fetching following: {err}")
+        return jsonify({"error": "Error loading following"}), 500
+    

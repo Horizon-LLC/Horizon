@@ -19,11 +19,6 @@ export const WebNavbar = ({loggedInUser, showNavbar}) => {
               Home
             </Link>
           </NavbarItem>
-          <NavbarItem>
-            <Link className='navbar-item' color="foreground" to="/Friends">
-              Friends
-            </Link>
-          </NavbarItem>
           {loggedInUser ? (
             <NavbarItem>
               <Link className='navbar-item' to="/Profile"> 

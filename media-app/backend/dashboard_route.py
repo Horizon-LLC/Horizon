@@ -137,37 +137,42 @@ def create_post(user_id, username):
 
 
 
-# Edit post route (placeholder), protected with JWT
-@dashboard_blueprint.route('/edit-post', methods=['PUT'])
+@dashboard_blueprint.route('/dashboard/user-posts', methods=['GET'])
 @token_required
-def edit_post(user_id, username):
-    """
-    Placeholder function for editing a post.
-    """
-    data = request.get_json()
-    post_id = data.get('post_id')
-    new_content = data.get('content')
+def user_posts(user_id, username):
+    try:
+        # Get optional user_id from query params, fallback to the token's user_id
+        requested_user_id = request.args.get('user_id', user_id)
+        limit = int(request.args.get('limit', 7))
+        offset = int(request.args.get('offset', 0))
+        
+        connection = get_db_connection()
+        cursor = connection.cursor(dictionary=True)
 
-    if not post_id or not new_content:
-        return jsonify({"error": "Post ID and new content are required"}), 400
+        query = """
+            SELECT post.post_id, post.user_id, post.content, post.pic_link,
+                   COALESCE(post.created_at, NOW()) AS created_at
+            FROM post
+            WHERE user_id = %s
+            ORDER BY created_at DESC
+            LIMIT %s OFFSET %s
+        """
+        cursor.execute(query, (requested_user_id, limit, offset))
+        posts = cursor.fetchall()
 
-    # Placeholder response indicating the function is not yet implemented
-    return jsonify({"message": "Edit post functionality is not implemented yet"}), 501
+        # Fetch the username for the requested user_id
+        cursor.execute("SELECT username FROM user WHERE user_id = %s", (requested_user_id,))
+        user_data = cursor.fetchone()
+        requested_username = user_data['username'] if user_data else 'Unknown User'
 
+        for post in posts:
+            post["username"] = requested_username
 
-# Delete post route (placeholder), protected with JWT
-@dashboard_blueprint.route('/delete-post', methods=['DELETE'])
-@token_required
-def delete_post(user_id, username):
-    """
-    Placeholder function for deleting a post.
-    """
-    data = request.get_json()
-    post_id = data.get('post_id')
+        cursor.close()
+        connection.close()
+        return jsonify({"posts": posts}), 200
+    except mysql.connector.Error as err:
+        print(f"Error fetching user posts: {err}")
+        return jsonify({"error": "Failed to fetch user posts"}), 500
 
-    if not post_id:
-        return jsonify({"error": "Post ID is required"}), 400
-
-    # Placeholder response indicating the function is not yet implemented
-    return jsonify({"message": "Delete post functionality is not implemented yet"}), 501
 

@@ -65,7 +65,7 @@ const CreatePostModal = ({ isOpen, onOpenChange, refreshFeed }) => {
                         <ModalHeader>Create a Post</ModalHeader>
                         <ModalBody>
                             <Textarea
-                                placeholder="What's on your mind?"
+                                placeholder="What do you want to say?"
                                 fullWidth
                                 value={content}
                                 onChange={(e) => setContent(e.target.value)}

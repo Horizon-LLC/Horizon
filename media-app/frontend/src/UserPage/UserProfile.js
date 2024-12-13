@@ -1,14 +1,26 @@
-import './UserPage.css';
+import React, { useEffect, useState, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import React, { useEffect, useState } from 'react';
-import { Button } from '@nextui-org/react';
+import './UserPage.css';
+import defaultProfilePic from '../images/defaultprofilepicture.jpg';
+import { Button, useDisclosure } from '@nextui-org/react';
+import FriendsListModal from '../assets/components/FriendsListModal';
+import UserPagePosts from '../assets/components/UserPagePosts';
+import UserPostsFeed from '../assets/components/UserPostsFeed';
 import API_BASE_URL from '../config';
 
 const UserProfile = ({ loggedInUser, loggedInUserId }) => {
     const { userId } = useParams();
-    const [userData, setUserData] = useState(null);
-    const [error, setError] = useState(null);
+    const [username, setUsername] = useState('');
+    const [bio, setBio] = useState('');
+    const [profilePic, setProfilePic] = useState(defaultProfilePic);
+    const [totalPosts, setTotalPosts] = useState(0);
+    const [totalFollowers, setTotalFollowers] = useState(0);
+    const [totalFollowing, setTotalFollowing] = useState(0);
     const navigate = useNavigate();
+    const feedRefresh = useRef(null);
+    const { isOpen: isFriendsOpen, onOpen: onFriendsOpen, onOpenChange: onFriendsOpenChange } = useDisclosure();
+
+    const [error, setError] = useState(null);
 
     // Fetch the profile data for the specified user
     const fetchUserData = async () => {
@@ -24,7 +36,12 @@ const UserProfile = ({ loggedInUser, loggedInUserId }) => {
 
             const data = await response.json();
             if (response.ok) {
-                setUserData(data);
+                setUsername(data.username);
+                setBio(data.bio || 'No bio available');
+                setProfilePic(data.profile_pic || defaultProfilePic);
+                setTotalPosts(data.total_posts);
+                setTotalFollowers(data.total_followers);
+                setTotalFollowing(data.total_following);
             } else {
                 setError(data.error || 'Failed to fetch user data');
             }
@@ -54,7 +71,7 @@ const UserProfile = ({ loggedInUser, loggedInUserId }) => {
             const chatboxId = data.chatbox_id;
 
             // Navigate to ChatPage with state
-            navigate(`/chat/${chatboxId}`, { state: { userId, username: userData.username } });
+            navigate(`/chat/${chatboxId}`, { state: { userId, username } });
         } catch (error) {
             setError('Something went wrong while creating or fetching the chatbox');
             console.error(error);
@@ -85,7 +102,6 @@ const UserProfile = ({ loggedInUser, loggedInUserId }) => {
         }
     };
 
-    // Initial data fetch for user profile
     useEffect(() => {
         fetchUserData();
     }, [userId]);
@@ -94,20 +110,39 @@ const UserProfile = ({ loggedInUser, loggedInUserId }) => {
         return <p>{error}</p>;
     }
 
-    if (!userData) {
-        return <p>Loading...</p>;
-    }
-
     return (
-        <div className='userpage-container'>
-            <div className='usertop-container'>
-                <p className='username-text'>{userData.username}</p>
-                <Button className='message-button' onClick={chatboxDirect}> Message </Button>
-                <Button className='follow-button' onClick={addFriend}> Follow </Button>
+        <div className="center-container-profile">
+            <div className="profile-head">
+                <div className="pfp">
+                    <img
+                        src={profilePic}
+                        alt="Profile"
+                    />
+                </div>
+                <div className="info">
+                    <span className="username-text">{username}</span>
+                    <div className="info-line">
+                        <span className="info-text">{totalPosts} Posts</span>
+                        <span className="info-text">{totalFollowers} Followers</span>
+                        <span className="info-text">{totalFollowing} Following</span>
+                    </div>
+                    <div className="bio">{bio}</div>
+                </div>
             </div>
-            <div className='userbottom-container'>
-                {/* Additional user details can go here */}
+
+            <div className="usertop-container">
+                <Button className="message-button" onClick={chatboxDirect}> Message </Button>
+                <Button className="follow-button" onClick={addFriend}> Follow </Button>
             </div>
+
+            <div className="feed-bottom">
+                <UserPostsFeed
+                    ref={feedRefresh}
+                    userId={userId} // Ensure only this user's posts are shown
+                />
+            </div>
+
+            <FriendsListModal isOpen={isFriendsOpen} onOpenChange={onFriendsOpenChange} />
         </div>
     );
 };

@@ -13,6 +13,8 @@ import { handleLogout } from '../handlers/UserHandler';
 import { updateBio } from '../handlers/UserHandler';
 import BioModal from '../assets/components/BioModal';
 import ProfilePictureModal from '../assets/components/ProfilePictureModal';
+import UserPostsFeed from '../assets/components/UserPostsFeed';
+import CreatePostModal from '../assets/components/PostModal';
 
 const ProfilePage = ({ setLoggedInUser, loggedInUserId }) => {
     const [username, setUsername] = useState('');
@@ -26,8 +28,10 @@ const ProfilePage = ({ setLoggedInUser, loggedInUserId }) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const navigate = useNavigate();
     const feedRefresh = useRef(null);
+    const [isCreatePostModalOpen, setIsCreatePostModalOpen] = useState(false);
 
-    const [bio, setBio] = useState('About Me. I love to sleep.');
+
+    const [bio, setBio] = useState('');
     const [isBioModalOpen, setIsBioModalOpen] = useState(false);
     const [bioInput, setBioInput] = useState('');
     const { isOpen: isProfilePicOpen, onOpen: onProfilePicOpen, onOpenChange: onProfilePicOpenChange } = useDisclosure();
@@ -37,10 +41,24 @@ const ProfilePage = ({ setLoggedInUser, loggedInUserId }) => {
 
     const [alertModal, setAlertModal] = useState({ isOpen: false, text: '', type: '' });
 
+    const handleCreatePostModalOpenChange = (isOpen) => {
+        setIsCreatePostModalOpen(isOpen);
+    };
+    
+
     // Fetch the user profile data, including profile picture
     useEffect(() => {
-        fetchUserProfile(setUsername, setTotalPosts, setTotalFollowers, setTotalFollowing, setTotalFriends, setPosts, setProfilePic);
-    }, [navigate]);
+        fetchUserProfile(
+            setUsername,
+            setTotalPosts,
+            setTotalFollowers,
+            setTotalFollowing,
+            setTotalFriends,
+            setPosts,
+            setProfilePic,
+            setBio // Pass setBio here
+        );
+    }, [navigate]); // Trigger on navigation changes
 
     // Handle opening the bio modal
     const handleOpenBioModal = () => {
@@ -65,7 +83,7 @@ const ProfilePage = ({ setLoggedInUser, loggedInUserId }) => {
     };
 
     return (
-        <div className="profile-container">
+        <div className="center-container-profile">
             <div className="profile-head">
                 <div className="pfp">
                     <img
@@ -76,25 +94,16 @@ const ProfilePage = ({ setLoggedInUser, loggedInUserId }) => {
                 </div>
                 <div className="info">
                     <span className="username-text">{username}</span>
-                    <button className="settings-button" onClick={toggleMenu}>
-                        &#9776;
-                    </button>
                     <div className="info-line">
                         <span className="info-text">{totalPosts} Posts</span>
                         <span className="info-text">{totalFollowers} Followers</span>
                         <span className="info-text">{totalFollowing} Following</span>
-                        <Button
-                            color="primary"
-                            variant="light"
-                            className="info-text"
-                            onClick={onFriendsOpen}
-                            style={{ cursor: 'pointer' }}
-                        >
-                            {totalFriends} Friends
-                        </Button>
                     </div>
-                    <div className="bio">{bio}</div>
+                    <div className="bio">{bio || 'No bio available'}</div>
                 </div>
+                <button className="settings-button" onClick={toggleMenu}>
+                        &#9776;
+                    </button>
             </div>
 
             {isMenuOpen && (
@@ -113,31 +122,28 @@ const ProfilePage = ({ setLoggedInUser, loggedInUserId }) => {
                 </div>
             )}
 
-            {/* Posts section */}
-            <UserPagePosts posts={posts} totalPosts={totalPosts} />
-
-            {/* Options section */}
-            <div className="options">
-                <CreatePostButton onOpen={onPostOpen} />
-                <Button color="primary" className="max-w-xs" onClick={onFollowOpen}>
-                    Message
-                </Button>
+            {/* User's Posts Feed */}
+            <div className="feed-bottom">
+                <UserPostsFeed
+                    ref={feedRefresh}
+                    userId={loggedInUserId}
+                />
             </div>
+
 
             <BioModal
                 isBioModalOpen={isBioModalOpen}
                 setIsBioModalOpen={setIsBioModalOpen}
-                handleUpdateBio={handleUpdateBio} // Use the updated handler
+                handleUpdateBio={handleUpdateBio} 
                 bioInput={bioInput}
                 setBioInput={setBioInput}
             />
-            <FollowUModal isOpen={isFollowOpen} onOpenChange={onFollowOpenChange} loggedInUserId={loggedInUserId} />
-            <PostModal
-                isOpen={isPostOpen}
-                onOpenChange={onPostOpenChange}
-                feedRefresh={feedRefresh}
-                setAlertModal={setAlertModal}
+            <CreatePostModal
+                isOpen={isCreatePostModalOpen}
+                onOpenChange={handleCreatePostModalOpenChange}
+                refreshFeed={() => feedRefresh.current.refresh()}
             />
+            <FollowUModal isOpen={isFollowOpen} onOpenChange={onFollowOpenChange} loggedInUserId={loggedInUserId} />
             <FriendsListModal isOpen={isFriendsOpen} onOpenChange={onFriendsOpenChange} />
             <ProfilePictureModal
                 isOpen={isProfilePicOpen}
