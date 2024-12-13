@@ -10,6 +10,7 @@ friend_blueprint = Blueprint('friend', __name__)
 def add_friend(user_id, username):
     """
     Adds a friend (follower) to the database.
+    Prevents duplicate friendships.
     """
     data = request.get_json()
     if not data or 'userId' not in data:
@@ -23,7 +24,21 @@ def add_friend(user_id, username):
         connection = get_db_connection()
         print("Debug: Connection established")
 
-        with connection.cursor() as cursor:
+        with connection.cursor(dictionary=True) as cursor:
+            # Check if the friendship already exists
+            check_query = """
+                SELECT * FROM friendship 
+                WHERE user_id_1 = %s AND user_id_2 = %s
+            """
+            cursor.execute(check_query, (user_id, friend_id))
+            existing_friendship = cursor.fetchone()
+
+            print(f"Debug: Existing friendship: {existing_friendship}")  # Add debug here
+            if existing_friendship:
+                print("Debug: Friendship already exists")
+                return jsonify({'error': 'You are already following this user.'}), 400
+
+            # Insert the new friendship
             sql_query = "INSERT INTO friendship (user_id_1, user_id_2, status) VALUES (%s, %s, %s)"
             print(f"Debug: Executing query: {sql_query}")
             cursor.execute(sql_query, (user_id, friend_id, 1))
@@ -45,6 +60,7 @@ def add_friend(user_id, username):
                 print("Debug: Connection closed")
             except Exception as close_err:
                 print(f"Debug: Error closing connection - {str(close_err)}")
+
 
 
 

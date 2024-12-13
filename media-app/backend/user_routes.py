@@ -176,12 +176,12 @@ def get_single_user(user_id):
         connection = get_db_connection()
         cursor = connection.cursor(dictionary=True)
 
-        # Fetch user profile information
+        # Fetch user profile information with DISTINCT to eliminate duplicates
         query = """
         SELECT username, profile_pic, bio,
-               (SELECT COUNT(*) FROM post WHERE user_id = %s) AS total_posts,
-               (SELECT COUNT(*) FROM friendship WHERE user_id_2 = %s AND status = 1) AS total_followers,
-               (SELECT COUNT(*) FROM friendship WHERE user_id_1 = %s AND status = 1) AS total_following
+               (SELECT COUNT(DISTINCT user_id_2) FROM friendship WHERE user_id_1 = %s AND status = 1) AS total_following,
+               (SELECT COUNT(DISTINCT user_id_1) FROM friendship WHERE user_id_2 = %s AND status = 1) AS total_followers,
+               (SELECT COUNT(*) FROM post WHERE user_id = %s) AS total_posts
         FROM user
         WHERE user_id = %s
         """
@@ -197,6 +197,7 @@ def get_single_user(user_id):
             return jsonify({'error': 'User not found'}), 404
     except mysql.connector.Error as err:
         return jsonify({'error': str(err)}), 500
+
 
 
 

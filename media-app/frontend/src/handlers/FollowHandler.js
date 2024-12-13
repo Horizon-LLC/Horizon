@@ -10,20 +10,23 @@ export const followUser = async (userId, setAlertModal) => {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ userId })
+            body: JSON.stringify({ userId }),
         });
 
         const data = await response.json();
         if (response.ok) {
             showErrorMess('Friend added successfully', 'success', setAlertModal);
         } else {
-            showErrorMess(data.error || 'Failed to add friend', 'error', setAlertModal);
+            // Show specific error if the friendship already exists
+            const errorMessage = data.error || 'Failed to add friend. You already have them followed';
+            showErrorMess(errorMessage, 'error', setAlertModal);
         }
     } catch (error) {
-        console.error('Error following user:', error);
+        console.error('Error following user: You already have them followed ', error);
         showErrorMess('Something went wrong while following the user', 'error', setAlertModal);
     }
 };
+
 
 
 

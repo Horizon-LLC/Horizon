@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import UserList from './UserList';
-import EntityList from './EntityListPage/EntityList';
+//import EntityList from './EntityListPage/EntityList';
 import LoginPage from './LoginSignup/LoginPage';
 import SignupPage from './LoginSignup/SignupPage';
 import ProfilePage from './ProfilePage/ProfilePage';
@@ -47,8 +47,6 @@ function App() {
           <div className={`main-container ${["/Login", "/Signup"].includes(window.location.pathname) ? "" : "with-navbar"}`}>
             <Routes>
               <Route path="/" element={<Navigate to="/Login" />} />
-              <Route path="/DatabaseTest" element={<UserList />} />
-              <Route path="/EntityDatabase" element={<EntityList />} />
               <Route path="/Login" element={<LoginPage setLoggedInUser={setLoggedInUser} setLoggedInUserId={setLoggedInUserId} />} /> 
               <Route path="/Signup" element={<SignupPage />} />
               <Route path="/Profile" element={<ProfilePage setLoggedInUser={setLoggedInUser} loggedInUserId={loggedInUserId} />} />

@@ -68,9 +68,9 @@
     cursor: pointer;
     font-size: 3.0rem;
     color: #000;
-    position: absolute; /* Position relative to the .profile-head */
-    top: 105px; /* Adjust to move down slightly from the top edge */
-    right: 10px;
+    position: fixed; /* Fixed to the viewport */
+    top: 3% !important;
+    left: 93%;
 }
 
 
