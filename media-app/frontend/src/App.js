@@ -10,6 +10,7 @@ import ChatPage from './ChatPage/ChatPage';
 import FriendsPage from './FriendsPage/Friends';
 import UserProfile from './UserPage/UserProfile';
 import WebNavbar from './assets/components/WebNavbar';
+import SelectedPost from './MainPage/SelectedPost';
 
 
 import {NextUIProvider} from "@nextui-org/react";
@@ -57,6 +58,7 @@ function App() {
               <Route path="/Friends" element={<FriendsPage />} />
               <Route path="/user/:userId" element={<UserProfile loggedInUser={loggedInUser} loggedInUserId={loggedInUserId}/>} />
               <Route path="/chat/:chatboxId" element={<ChatPage loggedInUser={loggedInUser} loggedInUserId={loggedInUserId}/>} />
+              <Route path="/post/:postId" element={<SelectedPost loggedInUser={loggedInUser} loggedInUserId={loggedInUserId}/>} />
             </Routes>
           </div>
         </BrowserRouter>

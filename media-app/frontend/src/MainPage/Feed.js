@@ -55,7 +55,7 @@ const Feed = forwardRef(({ userId }, ref) => {
                 <></>
             ) : (
                 posts.map((post, index) => (
-                    <Post key={index} post={post} index={index} />
+                    <Post key={index} post={post} index={index} styleClass={"post-card"} />
                 ))
             )}
         </div>

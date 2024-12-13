@@ -1,0 +1,13 @@
+.postpage-container {
+    width: 100%;
+    min-width: calc(100vw - 200px);
+    max-width: calc(100vw - 400px);
+    height: 100%;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    margin-top: 3vh;
+    padding: 2vh;
+}

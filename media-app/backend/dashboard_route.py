@@ -55,7 +55,9 @@ def dashboard(user_id, username):
             SELECT post.post_id, post.user_id, post.content, post.created_at
             FROM post
             ORDER BY post.created_at DESC
+            LIMIT 10
         """
+        
         cursor.execute(query)
         posts = cursor.fetchall()
 

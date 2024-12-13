@@ -27,9 +27,14 @@
 }
 
 .message-button, .follow-button {
-    background-color: #4CAF50;
+    background-color: #ad8ede;
+    color: white;
     width: 3vw;
     min-width: 100px;
     max-width: 3vw;
+    height: 3vh;
+    min-height: 3vh;
+    max-height: 3vh;
     margin: 1vw;
+    border-radius: 5px;
 }

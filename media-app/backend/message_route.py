@@ -89,7 +89,7 @@ def send_message(user_id, username):
             "receiver_id": receiver_id,
             "chatbox_id": chatbox_id,
             "content": content,
-            "time": current_time
+            "time": current_time.isoformat()
         }
         socketio.emit('receive_message', message_data, room=chatbox_id)
         cursor.close()

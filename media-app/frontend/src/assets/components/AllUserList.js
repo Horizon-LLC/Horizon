@@ -1,7 +1,6 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import { Card, ScrollShadow } from '@nextui-org/react';
 import UserCard from './UserCard';
-import { followUser } from '../../handlers/FollowHandler';
 import { getAllUsers } from '../../handlers/UserHandler';
 
 const AllUserList = (setAlertModal) => {

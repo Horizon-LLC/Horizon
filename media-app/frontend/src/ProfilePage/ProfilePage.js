@@ -2,17 +2,19 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './ProfilePage.css';
 import defaultProfilePic from '../images/defaultprofilepicture.jpg';
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Textarea, useDisclosure } from '@nextui-org/react';
+import { ScrollShadow, Button, Spacer } from '@nextui-org/react';
 import FriendsListModal from '../assets/components/FriendsListModal';
 import PostModal from '../assets/components/PostModal';
 import CreatePostButton from '../assets/components/CreatePostButton';
 import UserPagePosts from '../assets/components/UserPagePosts';
 import FollowUModal from '../assets/components/FollowUModal';
 import { fetchUserProfile } from '../handlers/UserHandler';
-import { handleLogout } from '../handlers/UserHandler';
 import BioModal from '../assets/components/BioModal';
+import OptionModal from '../assets/components/OptionModal';
+import { TiMessageTyping } from "react-icons/ti";
 
 const ProfilePage = ({ setLoggedInUser, loggedInUserId }) => {
+    const [loading, setLoading] = useState(false);
     const [username, setUsername] = useState('');
     const [totalPosts, setTotalPosts] = useState(0);
     const [totalFollowers, setTotalFollowers] = useState(0);
@@ -27,9 +29,10 @@ const ProfilePage = ({ setLoggedInUser, loggedInUserId }) => {
     const [bio, setBio] = useState('About Me. I love to sleep.'); 
     const [isBioModalOpen, setIsBioModalOpen] = useState(false);
     const [bioInput, setBioInput] = useState(''); 
-    const { isPostOpen, onPostOpen, onPostOpenChange } = useDisclosure();
-    const { isFollowOpen, onFollowOpen, onFollowOpenChange } = useDisclosure();
-    const { isFriendsOpen, onFriendsOpen, onFriendsOpenChange } = useDisclosure();
+    const [isPostModalOpen, setIsPostModalOpen] = useState(false);
+    const [isFollowModalOpen, setIsFollowModalOpen] = useState(false);
+    const [isFriendModalOpen, setIsFriendModalOpen] = useState(false);
+    const [isOptionModalOpen, setIsOptionModalOpen] = useState(false);
     
     const [alertModal, setAlertModal] = useState({ isOpen: false, text: '', type: '' });
 
@@ -51,10 +54,29 @@ const ProfilePage = ({ setLoggedInUser, loggedInUserId }) => {
         setIsMenuOpen(!isMenuOpen);
     };
 
+    const handleBioModalToggle = () => {
+        setIsBioModalOpen(!isBioModalOpen);
+      };
 
+      const handleOptionModalToggle = () => {
+        setIsOptionModalOpen(!isOptionModalOpen);
+      };
+
+    const handlePostModalToggle = () => {
+        setIsPostModalOpen(!isPostModalOpen);
+      };
+    
+    const handleFollowModalToggle = () => {
+        setIsFollowModalOpen(!isFollowModalOpen);
+    };
+
+    const handleFriendModalToggle = () => {
+        setIsFriendModalOpen(!isFriendModalOpen);
+    };
+    
 
     useEffect(() => {
-        fetchUserProfile(setUsername, setTotalPosts, setTotalFollowers, setTotalFollowing, setTotalFriends, setPosts);
+        fetchUserProfile(localStorage.getItem("user_id"), setUsername, setTotalPosts, setTotalFollowers, setTotalFollowing, setTotalFriends, setPosts, setLoading);
     }, [navigate]);
 
     return (
@@ -64,15 +86,20 @@ const ProfilePage = ({ setLoggedInUser, loggedInUserId }) => {
                         <img src={defaultProfilePic} alt="Profile" />
                     </div>
                     <div className="info">
+                        <div className='info-top'>
                         <span className="username-text">{username}</span>
-                        <button className="settings-button" onClick={toggleMenu}>
+                        <button className="settings-button" onClick={handleOptionModalToggle}>
                             &#9776;
                         </button>
+                        </div>
                         <div className="info-line">
-                            <span className="info-text">{totalPosts} Posts</span>
-                            <span className="info-text">{totalFollowers} Followers</span>
-                            <span className="info-text">{totalFollowing} Following</span>
-                            <Button color="primary" variant="light" className="info-text" onClick={onFriendsOpen} style={{ cursor: 'pointer' }}>
+                            <h1 className="info-text">{totalPosts} Posts</h1>
+                            <Spacer x={5} />
+                            <h1 className="info-text">{totalFollowers} Followers</h1>
+                            <Spacer x={5} />
+                            <h1 className="info-text">{totalFollowing} Following</h1>
+                            <Spacer x={5} />
+                            <Button color="black" variant="light" className="info-text" onClick={handleFriendModalToggle} >
                             {totalFriends} Friends
                             </Button>
                         </div>
@@ -80,50 +107,53 @@ const ProfilePage = ({ setLoggedInUser, loggedInUserId }) => {
                     </div>
                 </div>
 
-                {isMenuOpen && (
-                    <div className="dropdown-menu">
-                        <div className="profile-card1">
-                            <button className="logout-button" onClick={() => handleLogout(setLoggedInUser, navigate)}>Log Out</button>
-                            <button className="placeholder-button">Change Profile Picture</button>
-                            <button className="placeholder-button" onClick={handleOpenBioModal}>
-                                Change Bio
-                            </button>
-                        </div>
-                    </div>
-                )}
+                <Spacer y={8} />
+
 
                 {/* Posts section */}
-                <UserPagePosts posts={posts} totalPosts={totalPosts}/>
+                <ScrollShadow hideScrollBar>
+                <UserPagePosts posts={posts} totalPosts={totalPosts} loading={loading} />
+                </ScrollShadow>
+
+                <Spacer y={8} />
 
                 {/* Options section */}
                 <div className="options">
-                    <CreatePostButton onOpen={onPostOpen} />
-                    <Button color="primary" className="max-w-xs" onClick={onFollowOpen}>
-                    Message
+                    <CreatePostButton onOpen={handlePostModalToggle} />
+                    <Spacer x={8} />
+                    <Button color="primary" className="openmessage-button" onClick={handleFollowModalToggle}>
+                    <TiMessageTyping />
                     </Button>
                 </div>
 
                 <BioModal 
                 isBioModalOpen={isBioModalOpen} 
-                setIsBioModalOpen={setIsBioModalOpen} 
+                onOpenChange={setIsBioModalOpen} 
                 handleUpdateBio={handleUpdateBio} 
                 bioInput={bioInput}
                 setBioInput={setBioInput}
                 />
+                <OptionModal 
+                setLoggedInUser={setLoggedInUser} 
+                navigate={navigate} 
+                isOpen={isOptionModalOpen} 
+                onOpenChange={setIsOptionModalOpen} 
+                handleBioModalToggle={handleBioModalToggle}
+                />
                 <FollowUModal 
-            isOpen={isFollowOpen} 
-            onOpenChange={onFollowOpenChange} 
-            loggedInUserId={loggedInUserId} 
-             />
-            <PostModal 
-                isOpen={isPostOpen} 
-                onOpenChange={onPostOpenChange} 
-                feedRefresh={feedRefresh}
-                setAlertModal={setAlertModal}
+                    isOpen={isFollowModalOpen} 
+                    onOpenChange={setIsFollowModalOpen} 
+                    loggedInUserId={loggedInUserId} 
+                />
+                <PostModal 
+                    isOpen={isPostModalOpen} 
+                    onOpenChange={setIsPostModalOpen} 
+                    feedRefresh={feedRefresh}
+                    setAlertModal={setAlertModal}
                 />
                 <FriendsListModal 
-                    isOpen={isFriendsOpen} 
-                    onOpenChange={onFriendsOpenChange} 
+                    isOpen={isFriendModalOpen} 
+                    onOpenChange={setIsFriendModalOpen} 
                 />
         </div>
     );

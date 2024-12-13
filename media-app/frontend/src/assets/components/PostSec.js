@@ -1,12 +1,13 @@
 import React, {useState, useEffect} from 'react';
-import { Card, CardHeader, CardBody, CardFooter, Button, Spacer, ScrollShadow } from '@nextui-org/react';
+import { Card, CardHeader, CardBody, CardFooter, Button, Spacer } from '@nextui-org/react';
 import { BiLike, BiSolidLike } from "react-icons/bi";
 import { FaRegCommentDots } from "react-icons/fa";
 import { toggleLike, fetchLikeData } from '../../handlers/LikeHandler';
 import { useNavigate } from 'react-router-dom';
+import '../CSS/Comment.css';
 
 
-const Post = ({ post, index, styleClass }) => {
+const PostSec = ({ post, index, onModalOpen }) => {
   const [liked, setLiked] = useState(false); // State to track if the post is liked
   const [likeCount, setLikeCount] = useState(0); // State to track total likes
   const navigate = useNavigate();
@@ -18,14 +19,12 @@ const Post = ({ post, index, styleClass }) => {
   }, []);
 
   return (
-    <Card key={index} className={`${styleClass}`} style={{ marginVertical: 10 }} shadow="none">
+    <Card key={index} className="selectedpost-card" style={{ marginVertical: 10 }} shadow="none">
       <CardHeader className='post-header'>
         <p>{post.username}</p>
       </CardHeader>
       <CardBody>
-        <ScrollShadow hideScrollBar isEnabled={false}>
         <p>{post.content}</p>
-        </ScrollShadow>
       </CardBody>
       <CardFooter>
         <p style={{ color: 'gray' }}>
@@ -43,7 +42,7 @@ const Post = ({ post, index, styleClass }) => {
             padding: 0, 
             minWidth: 'auto', 
           }} 
-          onClick={() => navigate(`/post/${post.post_id}`, { state: { post: post, index: index } })}
+          onClick={onModalOpen}
         >
           <FaRegCommentDots size={24}/>
         </Button>
@@ -56,8 +55,8 @@ const Post = ({ post, index, styleClass }) => {
           style={{
             background: 'transparent',
             boxShadow: 'none',
-            padding: 0, // Removes padding for the button to show only the icon
-            minWidth: 'auto', // Prevents the button from taking up space
+            padding: 0, 
+            minWidth: 'auto', 
           }} 
           onClick={() => toggleLike(post.post_id, liked, setLiked, setLikeCount)}
         >
@@ -69,4 +68,4 @@ const Post = ({ post, index, styleClass }) => {
   );
 };
 
-export default Post;
+export default PostSec;

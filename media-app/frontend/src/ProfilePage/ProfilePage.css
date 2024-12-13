@@ -1,6 +1,6 @@
 .profile-container {
     width: 100%;
-    min-width: calc(100vw - 200px);
+    min-width: calc(100vw - 350px);
     max-width: calc(100vw - 400px);
     height: 100%;
     min-height: 100vh;
@@ -8,24 +8,16 @@
     align-items: center;
     justify-content: flex-start;
     flex-direction: column;
-    background-color: #fcd8b6;
-    margin-top: 3vh;
-    padding: 2vh;
     
 }
 
-.profile-page {
-    padding: 90px;
-    background-color: #f1eaea;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-}
 
 .profile-head {
-    position: relative; /* Ensure it respects the `top` property */
+    width: 100%;
+    min-width: calc(100vw - 200px);
+    max-width: calc(100vw - 400px);
+    height: 20vh;
+    min-height: 20vh;
     background-color: #f1eaea;
     border-bottom: 2px solid #000000;
     padding: 100px; /* Add padding for spacing */
@@ -34,59 +26,42 @@
     justify-content: space-between; /* Space between elements */
 }
 
-
-.posts-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr); /* Maintain 4 columns */
-    gap: 15px; /* Space between posts */
-    width: 100%; /* Reduce the width */
-    max-width: 900px; /* Limit the grid's maximum width */
-    margin: 10px auto; /* Move it closer to the top and center it horizontally */
-    padding: 10px; /* Add padding inside the grid */
-    background-color: #f0f0f0; /* Light background for visibility */
-    border-radius: 8px; /* Rounded corners */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a shadow for better appearance */
-    position: relative;
-    top: -120px;
-}
-
-/* Style for each post */
-.post {
-    background-color: hsl(0, 0%, 99%);
-    border-radius: 5px;
-    padding: 20px;
+.profile-posts {
     display: flex;
-    flex-direction: column; /* Allows date and content to stack */
-    align-items: center;
-    justify-content: center;
-    height: 150px;
-    width: 100%;
-    box-sizing: border-box;
-    border: 1px solid #ddd;
-    overflow: hidden; /* Ensures overflow is clipped */
-    position: relative; /* For absolute positioning of the date */
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%; 
+    max-width: 40vw;
+    min-width: 300px; 
+    height: 60vh;
+    max-height: 60vh;
+    min-height: 30vh;
+    border-radius: 2vh;
 }
 
-.post-content {
-    text-align: center;
-    font-size: 1rem;
-    white-space: nowrap; /* Prevents wrapping */
-    overflow: hidden; /* Clips overflow */
-    text-overflow: ellipsis; /* Adds ellipsis for clipped text */
-    width: 100%; /* Makes the content take the full width */
-    cursor: pointer; /* Indicate clickable content */
+.profile-post {
+    width: 40vw; 
+    max-width: 40vw;
+    min-width: 300px; 
+    height: 30vh;
+    min-height: 30vh;
+    background-color: #fcd8b6;
+    border-radius: 0%;
+    border: 1px solid  hsl(29, 92%, 75%);
+    font-family: 'Nunito', sans-serif;
+    color: #450b00;
+    font-size: 14pt;
 }
 
-.post-date {
-    position: absolute;
-    bottom: 5px; /* Positioned at the bottom */
-    right: 10px; /* Positioned to the right */
-    font-size: 0.7rem; /* Smaller font size */
-    color: gray;
-    pointer-events: none; /* Prevent interfering with clicks */
-    text-align: right; /* Align text to the right */
+.profile-modal {
+    height: 40vh;
+    max-height: 40vh;
+    min-height: 40vh;
+    width: 30vw;
+    max-width: 30vw;
+    max-width: 30vw;
 }
-
 
 .pfp {
     border-radius: 100%;
@@ -104,6 +79,25 @@
     flex: 1; /* Allow info to take remaining space */
     align-items: flex-start; /* Align items to the left */
     margin-bottom: -40px; /* Space below the username */
+    width: 70vw;
+    min-width: 70vw;
+    max-width: 70vw;
+}
+.info-top {
+    display: flex;
+    flex-direction: row; /* Stack info vertically */
+    align-items: flex-start; 
+    width: 70vw;
+    min-width: 70vw;
+    max-width: 70vw;
+}
+.info-line {
+    display: flex; /* Use flexbox to arrange items in a line */
+    width: 70vw;
+    min-width: 70vw;
+    max-width: 70vw;
+    margin-top: 10px; /* Space from the username */
+    align-items: center;
 }
 
 .username-text {
@@ -123,12 +117,6 @@
     right: 70px; /* Align to the right */
 }
 
-.info-line {
-    display: flex; /* Use flexbox to arrange items in a line */
-    justify-content: space-between; /* Space evenly */
-    width: 100%; /* Full width */
-    margin-top: 10px; /* Space from the username */
-}
 
 .info-text {
     text-align: center;
@@ -243,17 +231,28 @@
     background-color: #b71c1c;
 }
 
-
+.openmessage-button {
+    background-color: #ad8ede;
+    font-weight: 750;
+    font-size: xx-large;
+    width:5vh;
+    max-width: 5vh;
+    min-width: 5vh;
+    height: 5vh;
+    min-height: 5vh;
+    max-height: 5vh;
+    border-radius: 50%;
+}
 
 
 .options {
     display: flex;
+    align-items: center;
+    justify-content: center;
     gap: 15px;
-    margin-top: -55px;
 }
 
 .option-button {
-    background-color: #4a90e2;
     color: white;
     padding: 10px 20px;
     border: none;
@@ -268,31 +267,3 @@
 }
 
 
-
-.pagination-controls {
-    display: flex; /* Align items inside flex container */
-    justify-content: center; /* Center the buttons horizontally */
-    align-items: center; /* Center the buttons vertically */
-    gap: 10px; /* Add space between the buttons */
-    padding: 10px; /* Add padding around the controls */
-    grid-column: span 4; /* Ensure the controls span all 4 columns of the grid */
-    background-color: #f0f0f0; /* Match the grid's background color */
-    border-radius: 8px; /* Rounded corners to match the grid */
-    margin-top: 7px; /* Space above the controls */
-}
-
-
-.pagination-controls button {
-    padding: 8px 15px; /* Adjust padding for smaller buttons */
-    background-color: #4a90e2;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1.2rem; /* Slightly larger font for arrow buttons */
-}
-
-.pagination-controls button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-}

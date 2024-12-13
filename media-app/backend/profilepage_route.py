@@ -11,41 +11,56 @@ boolDebug = False
 # Define the blueprint for the profile
 profile_blueprint = Blueprint('profile', __name__)
 
-@profile_blueprint.route('/profile', methods=['GET'])
+import logging
+
+@profile_blueprint.route('/profile/<int:target_user_id>', methods=['GET'])
 @token_required
-def profile(user_id, username):
+def profile(user_id, username, target_user_id):
     try:
+        # Check if target_user_id is passed
+        if not target_user_id:
+            raise ValueError("target_user_id is missing")
+
+        # Establish database connection
         connection = get_db_connection()
         cursor = connection.cursor()
 
-        # Total posts by the user
-        cursor.execute("SELECT COUNT(*) FROM post WHERE user_id = %s", (user_id,))
+        # Fetch the target user's username
+        cursor.execute("SELECT username FROM user WHERE user_id = %s", (target_user_id,))
+        target_user = cursor.fetchone()
+        if not target_user:
+            raise ValueError("User not found")
+
+        target_username = target_user[0]
+
+        # Total posts by the target user
+        cursor.execute("SELECT COUNT(*) FROM post WHERE user_id = %s", (target_user_id,))
         total_posts = cursor.fetchone()[0]
 
-        # Total followers (where other users follow the logged-in user)
-        cursor.execute("SELECT COUNT(*) FROM friendship WHERE user_id_2 = %s AND status = 1", (user_id,))
+        # Total followers (where other users follow the target user)
+        cursor.execute("SELECT COUNT(*) FROM friendship WHERE user_id_2 = %s AND status = 1", (target_user_id,))
         total_followers = cursor.fetchone()[0]
 
-        # Total following (where the logged-in user follows other users)
-        cursor.execute("SELECT COUNT(*) FROM friendship WHERE user_id_1 = %s AND status = 1", (user_id,))
+        # Total following (where the target user follows other users)
+        cursor.execute("SELECT COUNT(*) FROM friendship WHERE user_id_1 = %s AND status = 1", (target_user_id,))
         total_following = cursor.fetchone()[0]
 
         # Total friends (mutual following relationship with distinct pairs)
-        cursor.execute("""
+        cursor.execute(""" 
             SELECT COUNT(DISTINCT LEAST(f1.user_id_1, f1.user_id_2), GREATEST(f1.user_id_1, f1.user_id_2)) 
             FROM friendship f1
             JOIN friendship f2 ON f1.user_id_1 = f2.user_id_2 AND f1.user_id_2 = f2.user_id_1
             WHERE f1.user_id_1 = %s AND f1.status = 1 AND f2.status = 1
-        """, (user_id,))
+        """, (target_user_id,))
         total_friends = cursor.fetchone()[0]
 
-        # Fetch posts by the user with their post IDs
-        cursor.execute("""
+        # Fetch posts by the target user
+        cursor.execute(""" 
             SELECT post_id, content, created_at 
             FROM post 
             WHERE user_id = %s 
             ORDER BY created_at DESC
-        """, (user_id,))
+        """, (target_user_id,))
         posts = cursor.fetchall()
 
         # Format posts for JSON response
@@ -57,9 +72,8 @@ def profile(user_id, username):
         cursor.close()
         connection.close()
 
-        # Return the calculated profile data along with posts
         return jsonify({
-            "username": username,
+            "username": target_username,
             "total_posts": total_posts,
             "total_followers": total_followers,
             "total_following": total_following,
@@ -67,9 +81,16 @@ def profile(user_id, username):
             "posts": post_list
         }), 200
 
+    except ValueError as e:
+        logging.error(f"ValueError: {e}")
+        return jsonify({"error": str(e)}), 400
     except mysql.connector.Error as err:
-        print(f"Error fetching profile: {err}")
-        return "Error loading profile", 500
+        logging.error(f"Database Error: {err}")
+        return jsonify({"error": "Database error"}), 500
+    except Exception as e:
+        logging.error(f"Unexpected Error: {e}")
+        return jsonify({"error": "Unexpected error occurred"}), 500
+
 
     
 @profile_blueprint.route('/profile/posts', methods=['GET'])

@@ -11,16 +11,12 @@ const UserList = () => {
 
 
     const fetchData = async () => {
-        console.log("Button clicked, fetching data...");  // Check if this logs in the console
         try {
             const response = await fetch(`${API_BASE_URL}/allUsers`);  // Call Flask API
-            console.log("Response status:", response.status);  // Log the status code
             // Log the raw response to check if it's valid
-            console.log("Raw response:", response);
 
             // Check if the response is OK
             if (!response.ok) {
-                console.log("Failed to fetch data:", response.status);
                 throw new Error(`Error: ${response.status}`);
             }
 

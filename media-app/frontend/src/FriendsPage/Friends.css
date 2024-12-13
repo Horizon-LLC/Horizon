@@ -6,7 +6,7 @@
     min-height: 100vh;
     display: flex;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center;
 }
 .friends-container {
     right: 0;           /* Aligns the container to the right side of the screen */
@@ -30,12 +30,12 @@
     padding: 10px;
     width: 100%;
     font-size: 16px;
-    background-color: #4CAF50;
+    background-color: #ad8ede;
     color: white;
     border: none;
     cursor: pointer;
   }
   
   .addfriend-button:hover {
-    background-color: #45a049;
+    background-color: hsl(263, 55%, 65%);
   }
