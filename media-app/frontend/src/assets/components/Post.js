@@ -4,6 +4,7 @@ import { BiLike, BiSolidLike } from "react-icons/bi";
 import { FaRegCommentDots } from "react-icons/fa";
 import { fetchLikeData, toggleLike } from '../../handlers/LikeHandler';
 import API_BASE_URL from '../../config';
+import { useNavigate } from 'react-router-dom';
 
 
 const Post = ({ post, index }) => {
@@ -14,6 +15,8 @@ const Post = ({ post, index }) => {
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     fetchLikeData(post.post_id, setLiked, setLikeCount);
@@ -77,7 +80,7 @@ const Post = ({ post, index }) => {
         <CardFooter>
           <p className="posted-on">{new Date(post.created_at).toLocaleString()}</p>
           <Spacer x={3} />
-          <Button auto flat style={{ background: 'transparent', boxShadow: 'none' }} onClick={() => { setShowComments(true); fetchComments(); }}>
+          <Button auto flat style={{ background: 'transparent', boxShadow: 'none' }} onClick={() => navigate(`/post/${post.post_id}`, { state: { post: post, index: index } })}>
             <FaRegCommentDots size={24} />
           </Button>
           <Spacer x={3} />

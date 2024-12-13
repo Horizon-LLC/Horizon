@@ -81,6 +81,17 @@ const ChatPage = ({ loggedInUser, loggedInUserId }) => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, [messages]);
 
+    useEffect(() => {
+        fetchMessages(); // Fetch messages on initial load
+
+        const intervalId = setInterval(() => {
+            fetchMessages(); // Fetch messages every 5 seconds
+        }, 5000);
+
+        // Cleanup interval on component unmount
+        return () => clearInterval(intervalId);
+    }, [chatboxId]);
+
     return (
         <div className='chat-container'>
             <div className='chat-header'>
@@ -141,7 +152,7 @@ const ChatPage = ({ loggedInUser, loggedInUserId }) => {
                             className='send-button'
                             disabled={!newMessage.trim()}
                         >
-                            <IoSendSharp className="text-black/50 mb-0.5 dark:text-white/90 text-slate-400" />
+                            <IoSendSharp className="text-black/50 mb-0.5 dark:text-white/90 text-slate-400 send-image" />
                         </Button>
                     }
                 />

@@ -15,6 +15,9 @@
 
 /* Header section containing profile picture and info */
 .profile-head {
+    height: 30vh;
+    min-height: 30vh;
+    max-height: 30vh;
     width: 100%; /* Matches the parent width */
     padding: 20px; /* Spacing around content */
     display: flex; /* Flexbox layout */
@@ -32,6 +35,14 @@
     font-size: 1.5rem; /* Slightly larger font size */
     font-weight: bold; /* Bold text for emphasis */
     color: #450b00; /* Dark brown text color */
+}
+
+.usertop-container {
+    padding-top: 10px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: row;
 }
 
 /* Profile picture styling */

@@ -1,11 +1,12 @@
 .chat-container {
+    width: 100%;
+    min-width: calc(100vw - 350px);
+    max-width: calc(100vw - 400px);
     height: 100%;
     min-height: 100vh;
-    width: 100%;
-    min-width: 100vw;
+
     display: flex;
     flex-direction: column;
-    margin-right: 5vw;
 
 }
 .chat-header {
@@ -24,11 +25,12 @@
 }
 .chat-content {
     width: 100%;
-    min-width: 100vw;
+    min-width: calc(100vw - 350px);
+    max-width: calc(100vw - 400px);
     height: 80%;
     min-height: 80vh;
-    border-top: 1px solid  #c0d6e8;
-    border-bottom: 1px solid  #c0d6e8;
+    border-top: 1px solid  hsl(26, 74%, 60%);
+    border-bottom: 1px solid  hsl(26, 74%, 60%);
     overflow: auto;
     display: flex;
     flex-direction: column;
@@ -56,7 +58,12 @@
     margin-bottom: 1vh;
     margin-left: 60vw;
 }
-
+.send-button {
+    background-color: hsl(10, 100%, 14%);
+}
+.send-image {
+    color: hsl(36, 81%, 70%);
+}
 .otheruser-message {
     width: 20vw;
     min-width: 200px;

@@ -1,8 +1,9 @@
+import './UserPage.css';
 import React, { useEffect, useState, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import './UserPage.css';
 import defaultProfilePic from '../images/defaultprofilepicture.jpg';
-import { Button, useDisclosure } from '@nextui-org/react';
+import { Button, useDisclosure, Spacer } from '@nextui-org/react';
 import FriendsListModal from '../assets/components/FriendsListModal';
 import UserPagePosts from '../assets/components/UserPagePosts';
 import UserPostsFeed from '../assets/components/UserPostsFeed';
@@ -131,8 +132,9 @@ const UserProfile = ({ loggedInUser, loggedInUserId }) => {
             </div>
 
             <div className="usertop-container">
-                <Button className="message-button" onClick={chatboxDirect}> Message </Button>
-                <Button className="follow-button" onClick={addFriend}> Follow </Button>
+                <Button className='addfriend-button' onClick={chatboxDirect}> Message </Button>
+                <Spacer x={5} />
+                <Button className='addfriend-button' onClick={addFriend}> Follow </Button>
             </div>
 
             <div className="feed-bottom">

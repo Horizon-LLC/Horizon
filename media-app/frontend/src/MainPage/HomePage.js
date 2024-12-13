@@ -48,14 +48,12 @@ const HomePage = ({ loggedInUser, setLoggedInUser, setLoggedInUserId }) => {
                 <CreatePostButton onOpen={onOpen} />
             </div>
                 <div className='feed-bottom'>
-                    <ScrollShadow hideScrollBar>
                     <Feed 
                         ref={feedRefresh} 
                         selectedMode={feedMode} 
                         loading={loading} 
                         setLoading={setLoading} 
                     />
-                    </ScrollShadow>
                 </div>
             </div>
             <Spacer x={5} />

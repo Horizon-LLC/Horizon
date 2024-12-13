@@ -1,0 +1,12 @@
+.profilefeed-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch; /* Match parent width */
+    width: 100%; 
+    max-width: 100%; /* Match parent */
+    min-width: 300px; 
+    height: 65vh;
+    min-height: 65vh;
+    max-height: 65vh;
+}

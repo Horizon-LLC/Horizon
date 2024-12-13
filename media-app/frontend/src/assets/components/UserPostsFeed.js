@@ -1,7 +1,8 @@
 import React, { useState, useEffect, forwardRef, useImperativeHandle } from 'react';
-import { CircularProgress } from '@nextui-org/react';
+import { CircularProgress, ScrollShadow } from '@nextui-org/react';
 import Post from './Post';
 import API_BASE_URL from '../../config';
+import '../CSS/Profile.css';
 
 const UserPostsFeed = forwardRef(({ userId }, ref) => {
     const [posts, setPosts] = useState([]);
@@ -47,7 +48,7 @@ const UserPostsFeed = forwardRef(({ userId }, ref) => {
     }, [page]);
 
     return (
-        <div className="feed-container">
+        <div className="profilefeed-container">
             <div className="pagination-controlss-profile">
                 <button
                     disabled={page === 0 || loading}
@@ -62,12 +63,16 @@ const UserPostsFeed = forwardRef(({ userId }, ref) => {
                     Next Page
                 </button>
             </div>
+            <ScrollShadow hideScrollBar>
+                <div>
             {loading && <CircularProgress aria-label="Loading user posts..." />}
             {!loading && posts.length === 0 ? (
                 <p>No posts available</p>
             ) : (
                 posts.map((post, index) => <Post key={index} post={post} index={index} />)
             )}
+            </div>
+            </ScrollShadow>
             
         </div>
     );

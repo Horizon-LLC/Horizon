@@ -1,5 +1,5 @@
 import React, { useEffect, useState, forwardRef, useImperativeHandle } from 'react';
-import { CircularProgress } from '@nextui-org/react';
+import { CircularProgress, ScrollShadow } from '@nextui-org/react';
 import Post from '../assets/components/Post';
 import CreatePostButton from '../assets/components/CreatePostButton';
 import CreatePostModal from '../assets/components/PostModal';
@@ -88,13 +88,16 @@ const Feed = forwardRef((props, ref) => {
 
     return (
         <div className="feed-container">
+            <ScrollShadow hideScrollBar >
+                <div>
             {loading && <CircularProgress aria-label="Loading feed..." />} {/* Show loading */}
             {!loading && posts.length === 0 ? (
                 <p>No posts available</p>
             ) : (
                 posts.map((post, index) => <Post key={index} post={post} index={index} />)
             )}
-
+            </div>
+            </ScrollShadow>
             {/* Pagination */}
             <div className="pagination-controlss">
                 <button
