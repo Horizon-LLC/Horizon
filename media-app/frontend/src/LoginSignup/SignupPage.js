@@ -57,7 +57,7 @@ const SignupPage = () => {
                             className="max-w-xs"
                             name="security_question"
                             value={formData.security_question}
-                            onChange={(choice) => selectChange(choice, formData, setFormData)}
+                            onChange={(value) => selectChange(value, formData, setFormData)} // Pass the selected value directly
                         >
                             {questions.map((question) => (
                                 <SelectItem key={question.key} value={question.label}>

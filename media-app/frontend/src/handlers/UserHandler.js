@@ -5,6 +5,7 @@ import defaultProfilePic from '../images/defaultprofilepicture.jpg';
 
 export const createAcc = async (e,formData, navigate) => {
     e.preventDefault();
+    console.log("Form submitted:", formData); // Debug log
 
     try {
         const response = await fetch(`${API_BASE_URL}/createUser`, {

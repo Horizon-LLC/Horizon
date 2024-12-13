@@ -69,7 +69,7 @@ def create_user():
         cursor.execute(query, (
             first_name,
             last_name,
-            '/images/default_profile_pic.jpg', 
+            '/https://horizon-profile-pictures-bucket.s3.amazonaws.com/profile_pictures/2_360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg', 
             username,
             email,
             date_of_birth,
@@ -169,20 +169,23 @@ def get_all_users_light():
         print(f"Error fetching users: {err}")
         return jsonify({'error': str(err)}), 500
 
-# Route to fetch a single user's details by user_id
+
 @user_blueprint.route('/user/<int:user_id>', methods=['GET'])
 def get_single_user(user_id):
     try:
         connection = get_db_connection()
-        cursor = connection.cursor(dictionary=True)  # Use dictionary=True to return results as a dictionary
+        cursor = connection.cursor(dictionary=True)
 
-        # Fetch the user details by user_id
+        # Fetch user profile information
         query = """
-        SELECT user_id, first_name, last_name, username, email, date_of_birth, is_verified, bio
+        SELECT username, profile_pic, bio,
+               (SELECT COUNT(*) FROM post WHERE user_id = %s) AS total_posts,
+               (SELECT COUNT(*) FROM friendship WHERE user_id_2 = %s AND status = 1) AS total_followers,
+               (SELECT COUNT(*) FROM friendship WHERE user_id_1 = %s AND status = 1) AS total_following
         FROM user
         WHERE user_id = %s
         """
-        cursor.execute(query, (user_id,))
+        cursor.execute(query, (user_id, user_id, user_id, user_id))
         user = cursor.fetchone()
 
         cursor.close()
@@ -193,8 +196,8 @@ def get_single_user(user_id):
         else:
             return jsonify({'error': 'User not found'}), 404
     except mysql.connector.Error as err:
-        print(f"Error fetching user: {err}")
         return jsonify({'error': str(err)}), 500
+
 
 
 # Helper function to fetch username by user_id

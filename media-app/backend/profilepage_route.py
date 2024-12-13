@@ -19,21 +19,34 @@ def profile(user_id, username):
         connection = get_db_connection()
         cursor = connection.cursor(dictionary=True)
 
+        # Fetch profile picture and bio
         cursor.execute("SELECT profile_pic, bio FROM user WHERE user_id = %s", (user_id,))
         user_data = cursor.fetchone()
 
         if not user_data:
             return jsonify({"error": "User not found"}), 404
 
+        # Fetch total posts
         cursor.execute("SELECT COUNT(*) AS total_posts FROM post WHERE user_id = %s", (user_id,))
         total_posts = cursor.fetchone()['total_posts']
 
-        cursor.execute("SELECT COUNT(*) AS total_followers FROM friendship WHERE user_id_2 = %s AND status = 1", (user_id,))
+        # Fetch total unique followers
+        cursor.execute("""
+            SELECT COUNT(DISTINCT f.user_id_1) AS total_followers
+            FROM friendship f
+            WHERE f.user_id_2 = %s AND f.status = 1
+        """, (user_id,))
         total_followers = cursor.fetchone()['total_followers']
 
-        cursor.execute("SELECT COUNT(*) AS total_following FROM friendship WHERE user_id_1 = %s AND status = 1", (user_id,))
+        # Fetch total unique following
+        cursor.execute("""
+            SELECT COUNT(DISTINCT f.user_id_2) AS total_following
+            FROM friendship f
+            WHERE f.user_id_1 = %s AND f.status = 1
+        """, (user_id,))
         total_following = cursor.fetchone()['total_following']
 
+        # Fetch total mutual friends (bidirectional relationships)
         cursor.execute("""
             SELECT COUNT(DISTINCT LEAST(f1.user_id_1, f1.user_id_2), GREATEST(f1.user_id_1, f1.user_id_2)) AS total_friends
             FROM friendship f1
@@ -45,10 +58,11 @@ def profile(user_id, username):
         cursor.close()
         connection.close()
 
+        # Return the profile data
         return jsonify({
             "username": username,
             "profile_pic": user_data.get("profile_pic"),
-            "bio": user_data.get("bio"),  # Add bio here
+            "bio": user_data.get("bio"),
             "total_posts": total_posts,
             "total_followers": total_followers,
             "total_following": total_following,
@@ -218,15 +232,17 @@ def get_followers(user_id, username):
     except mysql.connector.Error as err:
         print(f"Error fetching followers: {err}")
         return jsonify({"error": "Error loading followers"}), 500
+
     
 @profile_blueprint.route('/profile/following', methods=['GET'])
 @token_required
 def get_following(user_id, username):
+    print(f"Fetching following for user_id: {user_id}")
     try:
+        print(f"Fetching following for user_id: {user_id}, username: {username}")
         connection = get_db_connection()
         cursor = connection.cursor(dictionary=True)
 
-        # Fetch following
         query = """
             SELECT u.user_id, u.username
             FROM friendship f
@@ -239,9 +255,10 @@ def get_following(user_id, username):
         cursor.close()
         connection.close()
 
-        return jsonify(following), 200
-
+        print(f"Following list: {following}")
+        return jsonify({"following": following}), 200
     except mysql.connector.Error as err:
         print(f"Error fetching following: {err}")
         return jsonify({"error": "Error loading following"}), 500
-    
+
+

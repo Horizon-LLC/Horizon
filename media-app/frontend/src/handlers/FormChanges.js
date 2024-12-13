@@ -13,9 +13,10 @@ export const dateChange = (value, formData, setFormData) => {
     });
 };
 
-export const selectChange = (selectedValue, formData, setFormData) => {
+export const selectChange = (value, formData, setFormData) => {
     setFormData({
         ...formData,
-        security_question: selectedValue,
+        [value.target.name]: value.target.value, // Assign the selected value
     });
 };
+

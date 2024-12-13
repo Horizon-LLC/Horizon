@@ -18,7 +18,9 @@ const Feed = forwardRef((props, ref) => {
         setPosts([]); // Clear stale posts
     
         const token = localStorage.getItem('token');
-        const endpoint = props.selectedMode === 'following' ? '/dashboard/following' : '/dashboard';
+        const endpoint = (props.selectedMode === 'following')
+            ? '/dashboard/following'
+            : '/dashboard';
     
         try {
             const response = await fetch(`${API_BASE_URL}${endpoint}?limit=7&offset=${page * 7}`, {

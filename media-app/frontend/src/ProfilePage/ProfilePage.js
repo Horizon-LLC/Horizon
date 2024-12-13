@@ -15,6 +15,7 @@ import BioModal from '../assets/components/BioModal';
 import ProfilePictureModal from '../assets/components/ProfilePictureModal';
 import UserPostsFeed from '../assets/components/UserPostsFeed';
 import CreatePostModal from '../assets/components/PostModal';
+import API_BASE_URL from '../config';
 
 const ProfilePage = ({ setLoggedInUser, loggedInUserId }) => {
     const [username, setUsername] = useState('');
@@ -39,11 +40,93 @@ const ProfilePage = ({ setLoggedInUser, loggedInUserId }) => {
     const { isFollowOpen, onFollowOpen, onFollowOpenChange } = useDisclosure();
     const { isFriendsOpen, onFriendsOpen, onFriendsOpenChange } = useDisclosure();
 
+    const [isFollowingModalOpen, setIsFollowingModalOpen] = useState(false);
+    const [followingList, setFollowingList] = useState([]);
+
+
     const [alertModal, setAlertModal] = useState({ isOpen: false, text: '', type: '' });
 
     const handleCreatePostModalOpenChange = (isOpen) => {
         setIsCreatePostModalOpen(isOpen);
     };
+
+    const [isFollowersModalOpen, setIsFollowersModalOpen] = useState(false);
+    const [followersList, setFollowersList] = useState([]);
+
+    const fetchFollowers = async () => {
+        console.log("Fetching followers list...");
+        try {
+            const response = await fetch(`${API_BASE_URL}/profile/followers`, {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            console.log("Response status:", response.status);
+
+            if (response.ok) {
+                const data = await response.json();
+                console.log("Followers data:", data);
+
+                // Remove duplicates
+                const uniqueFollowers = data.filter(
+                    (value, index, self) =>
+                        index === self.findIndex((t) => t.user_id === value.user_id)
+                );
+
+                setFollowersList(uniqueFollowers);
+                setIsFollowersModalOpen(true);
+            } else {
+                console.error("Failed to fetch followers list, status:", response.status);
+                const errorText = await response.text();
+                console.error("Response text:", errorText);
+            }
+        } catch (error) {
+            console.error("Error fetching followers list:", error);
+        }
+    };
+
+    
+    const fetchFollowing = async () => {
+        console.log("Fetching following list...");
+        try {
+            const response = await fetch(`${API_BASE_URL}/profile/following`, {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                    'Content-Type': 'application/json',
+                },
+            });
+    
+            console.log("Response status:", response.status);
+    
+            if (response.ok) {
+                const data = await response.json();
+                console.log("Following data:", data);
+    
+                // Remove duplicates
+                const uniqueFollowing = data.following.filter(
+                    (value, index, self) =>
+                        index === self.findIndex((t) => t.user_id === value.user_id)
+                );
+    
+                setFollowingList(uniqueFollowing);
+                setIsFollowingModalOpen(true);
+            } else {
+                console.error("Failed to fetch following list, status:", response.status);
+                const errorText = await response.text();
+                console.error("Response text:", errorText);
+            }
+        } catch (error) {
+            console.error("Error fetching following list:", error);
+        }
+    };
+    
+
+    
+    
     
 
     // Fetch the user profile data, including profile picture
@@ -85,6 +168,9 @@ const ProfilePage = ({ setLoggedInUser, loggedInUserId }) => {
     return (
         <div className="center-container-profile">
             <div className="profile-head">
+                <button className="settings-button" onClick={toggleMenu}>
+                        &#9776;
+                </button>
                 <div className="pfp">
                     <img
                         src={profilePic}
@@ -96,14 +182,15 @@ const ProfilePage = ({ setLoggedInUser, loggedInUserId }) => {
                     <span className="username-text">{username}</span>
                     <div className="info-line">
                         <span className="info-text">{totalPosts} Posts</span>
-                        <span className="info-text">{totalFollowers} Followers</span>
-                        <span className="info-text">{totalFollowing} Following</span>
+                        <span className="info-text" onClick={fetchFollowers}>
+                            {totalFollowers} Followers
+                        </span>
+                        <span className="info-text" onClick={fetchFollowing}>
+                            {totalFollowing} Following
+                        </span>
                     </div>
                     <div className="bio">{bio || 'No bio available'}</div>
                 </div>
-                <button className="settings-button" onClick={toggleMenu}>
-                        &#9776;
-                    </button>
             </div>
 
             {isMenuOpen && (
@@ -121,6 +208,60 @@ const ProfilePage = ({ setLoggedInUser, loggedInUserId }) => {
                     </div>
                 </div>
             )}
+
+            {isFollowersModalOpen && (
+                <div
+                    className="following-modal-overlay"
+                    onClick={() => setIsFollowersModalOpen(false)}
+                >
+                    <div
+                        className="following-modal-content"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <button
+                            className="close-button"
+                            onClick={() => setIsFollowersModalOpen(false)}
+                        >
+                            ×
+                        </button>
+                        <h3>Followers</h3>
+                        <ul>
+                            {followersList.map((user) => (
+                                <li key={user.user_id}>{user.username}</li>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
+            )}
+
+            {isFollowingModalOpen && (
+                <div
+                    className="following-modal-overlay"
+                    onClick={() => setIsFollowingModalOpen(false)}
+                >
+                    <div
+                        className="following-modal-content following-modal-specific"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <button
+                            className="close-button"
+                            onClick={() => setIsFollowingModalOpen(false)}
+                        >
+                            ×
+                        </button>
+                        <h3>Following</h3>
+                        <ul>
+                            {followingList.map((user) => (
+                                <li key={user.user_id}>{user.username}</li>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
+            )}
+
+
+
+
 
             {/* User's Posts Feed */}
             <div className="feed-bottom">
