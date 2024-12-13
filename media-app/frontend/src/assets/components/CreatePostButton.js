@@ -3,7 +3,15 @@ import { Button } from '@nextui-org/react';
 
 const CreatePostButton = ({ onOpen }) => {
     return (
-        <Button color="primary" className="max-w-xs" onClick={onOpen}>
+        <Button
+            style={{
+                backgroundColor: '#450b00',
+                color: 'white',
+                fontWeight: 'bold',
+            }}
+            className="max-w-xs"
+            onClick={onOpen}
+        >
             Create Post
         </Button>
     );

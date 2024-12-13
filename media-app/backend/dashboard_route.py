@@ -47,6 +47,41 @@ def dashboard(user_id, username):
         return jsonify({"error": "Failed to fetch posts"}), 500
 
 
+@dashboard_blueprint.route('/dashboard/following', methods=['GET'])
+@token_required
+def dashboard_following(user_id, username):
+    try:
+        limit = int(request.args.get('limit', 7))  # Default to 7 posts per page
+        offset = int(request.args.get('offset', 0))  # Default to the first page
+        connection = get_db_connection()
+        cursor = connection.cursor(dictionary=True)
+
+        query = """
+            SELECT post.post_id, post.user_id, post.content, post.pic_link,
+                   COALESCE(post.created_at, NOW()) AS created_at
+            FROM post
+            WHERE user_id IN (
+                SELECT user_id_2
+                FROM friendship
+                WHERE user_id_1 = %s AND status = 1
+            )
+            ORDER BY created_at DESC
+            LIMIT %s OFFSET %s
+        """
+        cursor.execute(query, (user_id, limit, offset))
+        posts = cursor.fetchall()
+
+        for post in posts:
+            post["username"] = fetch_username_by_user_id(post["user_id"])
+
+        cursor.close()
+        connection.close()
+        return jsonify({"posts": posts}), 200
+    except mysql.connector.Error as err:
+        print(f"Error fetching following posts: {err}")
+        return jsonify({"error": "Failed to fetch posts"}), 500
+
+
 
 
 

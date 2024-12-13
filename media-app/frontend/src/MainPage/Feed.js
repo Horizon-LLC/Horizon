@@ -13,19 +13,22 @@ const Feed = forwardRef((props, ref) => {
 
     // Fetch posts from the backend
     const fetchPosts = async (page) => {
-        console.log('Fetching posts for page:', page); // Debug log
-        setLoading(true);
-        setPosts([]); // Clear current posts before fetching new ones
+        console.log('Fetching posts for page:', page, 'Mode:', props.selectedMode); // Debug log
+        setLoading(true); // Start loading
+        setPosts([]); // Clear stale posts
+    
         const token = localStorage.getItem('token');
+        const endpoint = props.selectedMode === 'following' ? '/dashboard/following' : '/dashboard';
+    
         try {
-            const response = await fetch(`${API_BASE_URL}/dashboard?limit=7&offset=${page * 7}`, {
+            const response = await fetch(`${API_BASE_URL}${endpoint}?limit=7&offset=${page * 7}`, {
                 method: 'GET',
                 headers: {
                     Authorization: `Bearer ${token}`,
                     'Content-Type': 'application/json',
                 },
             });
-
+    
             const data = await response.json();
             if (response.ok) {
                 console.log('Posts fetched:', data.posts); // Debug log
@@ -36,7 +39,7 @@ const Feed = forwardRef((props, ref) => {
         } catch (error) {
             console.error('Error fetching posts:', error);
         } finally {
-            setLoading(false);
+            setLoading(false); // End loading
         }
     };
 
@@ -51,8 +54,11 @@ const Feed = forwardRef((props, ref) => {
 
     // Fetch posts whenever the page changes
     useEffect(() => {
-        fetchPosts(page);
-    }, [page]);
+        // Reset to page 0 and fetch posts when mode changes or page changes
+        setPage(0);  // Reset the page to 0
+        setLoading(true);
+        fetchPosts(0); // Fetch posts for the first page
+    }, [page, props.selectedMode]); // Add `props.selectedMode` as a dependency
 
     // Handlers for the Create Post modal
     const handleCreatePostOpen = () => {
@@ -76,12 +82,8 @@ const Feed = forwardRef((props, ref) => {
 
     return (
         <div className="feed-container">
-            {/* Add CreatePostButton */}
-            
-
-            {/* Posts */}
-            {loading && <CircularProgress aria-label="Loading..." />}
-            {posts.length === 0 && !loading ? (
+            {loading && <CircularProgress aria-label="Loading feed..." />} {/* Show loading */}
+            {!loading && posts.length === 0 ? (
                 <p>No posts available</p>
             ) : (
                 posts.map((post, index) => <Post key={index} post={post} index={index} />)
@@ -90,17 +92,20 @@ const Feed = forwardRef((props, ref) => {
             {/* Pagination */}
             <div className="pagination-controlss">
                 <button
-                    disabled={page === 0}
+                    disabled={page === 0 || loading}
                     onClick={() => {
                         setPage((prev) => Math.max(prev - 1, 0));
+                        fetchPosts(page - 1); // Fetch posts for the previous page
                         window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to top
                     }}
                 >
                     Previous
                 </button>
                 <button
+                    disabled={loading}
                     onClick={() => {
                         setPage((prev) => prev + 1);
+                        fetchPosts(page + 1); // Fetch posts for the next page
                         window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to top
                     }}
                 >

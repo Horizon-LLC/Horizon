@@ -76,7 +76,7 @@
 }
 .addfriend-button {
     background-color: #450b00;
-    color: #450b00;
+    color: 'white';
     width: 3vw;
     min-width: 100px;
     max-width: 3vw;
@@ -96,9 +96,9 @@
 
 .feed-top {
     display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-end;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: stretch;
     height: 10%;
     min-height: 10vh;
     width: 100%; 
@@ -152,6 +152,36 @@
     width: 100%; 
     max-width: 100%; /* Match parent */
     min-width: 300px; 
+}
+
+.feed-type-container {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between label and radio buttons */
+}
+
+.feed-type-label {
+    font-family: 'Nunito', sans-serif;
+    font-size: 16px; /* Slightly larger font size */
+    font-weight: bold;
+    color: #450b00;
+}
+
+.feed-settings label {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    font-size: 16px; /* Slightly larger text */
+    font-weight: 500;
+    color: #450b00;
+}
+
+.feed-settings input[type='radio'] {
+    width: 20px; /* Larger radio button */
+    height: 20px; /* Larger radio button */
+    margin-right: 8px; /* Space between radio button and text */
+    cursor: pointer;
+    accent-color: black; /* Changes selected button to black */
 }
 
 .charCountText {

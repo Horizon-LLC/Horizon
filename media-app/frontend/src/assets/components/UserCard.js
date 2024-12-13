@@ -13,6 +13,10 @@ const UserCard = ({ user, followUser, setAlertModal }) => {
             <Spacer x={5} />
             <Button
                 className='addfriend-button'
+                style={{
+                    backgroundColor: '#450b00',
+                    color: 'white',
+                }}
                 onClick={() => followUser(user.user_id, setAlertModal)}
             >
                 Follow
@@ -22,4 +26,3 @@ const UserCard = ({ user, followUser, setAlertModal }) => {
 };
 
 export default UserCard;
-
