@@ -47,8 +47,17 @@
 
 /* Profile picture styling */
 .pfp {
+    width: 5vw;
+    min-width: 5vw;
+    max-width: 5vw;
+    height: 5vw;
+    min-height: 5vw;
+    max-height: 5vw;
     border-radius: 100%; /* Makes the image circular */
-    overflow: hidden; /* Hides content overflowing the circle */
+    align-items: center;
+    display: flex;
+    justify-content: center;
+ 
     border: 1.5px solid #8b4513; /* Border for emphasis */
     flex-direction: row; /* Stack items vertically */
 }

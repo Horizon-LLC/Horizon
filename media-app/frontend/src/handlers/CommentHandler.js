@@ -5,7 +5,7 @@ import { showErrorMess } from './SystemNotification';
 
 export const getComments = async (token, post_id) => {
     try {
-      const response = await fetch(`http://127.0.0.1:5000/get-comments/${post_id}`, {
+      const response = await fetch(`${API_BASE_URL}/get-comments/${post_id}`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`, // Include token if needed
@@ -27,7 +27,7 @@ export const getComments = async (token, post_id) => {
 
   export const createComment = async (token, post_id, message, feedRefresh) => {
   try {
-    const response = await fetch(`http://127.0.0.1:5000/create-comment`, {
+    const response = await fetch(`${API_BASE_URL}/create-comment`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -54,7 +54,7 @@ export const getComments = async (token, post_id) => {
 
 export const editComment = async (token, comment_id, newContent) => {
     try {
-      const response = await fetch(`http://127.0.0.1:5000/edit-comment/${comment_id}`, {
+      const response = await fetch(`${API_BASE_URL}/edit-comment/${comment_id}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -80,7 +80,7 @@ export const editComment = async (token, comment_id, newContent) => {
   
   export const deleteComment = async (token, comment_id) => {
     try {
-      const response = await fetch(`http://127.0.0.1:5000/delete-comment/${comment_id}`, {
+      const response = await fetch(`${API_BASE_URL}/delete-comment/${comment_id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,

@@ -116,6 +116,7 @@ const UserProfile = ({ loggedInUser, loggedInUserId }) => {
             <div className="profile-head">
                 <div className="pfp">
                     <img
+                        className='image'
                         src={profilePic}
                         alt="Profile"
                     />

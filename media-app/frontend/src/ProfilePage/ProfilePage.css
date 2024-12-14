@@ -37,10 +37,20 @@
 
 /* Profile picture styling */
 .pfp {
-    border-radius: 100%; /* Makes the image circular */
+    width: 4vw;
+    min-width: 4vw;
+    max-width: 4vw;
+    height: 4vw;
+    min-height: 4vw;
+    max-height: 4vw;
     overflow: hidden; /* Hides content overflowing the circle */
     border: 1.5px solid #8b4513; /* Border for emphasis */
     flex-direction: row; /* Stack items vertically */
+}
+.image {
+    height: 100%;
+    width: 100%;
+    border-radius: 100%; /* Makes the image circular */
 }
 
 .box{
