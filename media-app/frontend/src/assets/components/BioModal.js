@@ -22,10 +22,10 @@ const BioModal = ({isBioModalOpen, setIsBioModalOpen, handleUpdateBio, bioInput,
                             <p className="charCountText">{bioInput.length} / 150 characters</p>
                         </ModalBody>
                         <ModalFooter>
-                            <Button auto flat color="danger" onClick={onClose}>
+                            <Button auto flat color="danger" onPress={onClose}>
                                 Cancel
                             </Button>
-                            <Button auto color="primary" onClick={handleUpdateBio}>
+                            <Button auto color="primary" onPress={handleUpdateBio}>
                                 Update
                             </Button>
                         </ModalFooter>
@@ -37,3 +37,4 @@ const BioModal = ({isBioModalOpen, setIsBioModalOpen, handleUpdateBio, bioInput,
 };
 
 export default BioModal;
+

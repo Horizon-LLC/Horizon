@@ -36,7 +36,6 @@ const CreatePostModal = ({ isOpen, onOpenChange, refreshFeed }) => {
 
             if (response.ok) {
                 const newPost = await response.json();
-                alert('Post created successfully!');
                 refreshFeed(newPost); // Pass new post directly to Feed
                 onOpenChange(false); // Close the modal
             } else {

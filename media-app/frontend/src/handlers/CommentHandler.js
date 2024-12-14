@@ -3,7 +3,7 @@ import { showErrorMess } from './SystemNotification';
 
 
 
-export const getComments = async (token, post_id) => {
+const getComments = async (token, post_id) => {
     try {
       const response = await fetch(`${API_BASE_URL}/get-comments/${post_id}`, {
         method: 'GET',
@@ -22,6 +22,15 @@ export const getComments = async (token, post_id) => {
     } catch (error) {
       console.error('Error fetching comments:', error);
       alert('An error occurred while fetching comments');
+    }
+  };
+  
+  export const fetchComments = async (token, post_id, setComments) => {
+    try {
+        const fetchedComments = await getComments(token, post_id);
+        setComments(fetchedComments.comments);
+    } catch (error) {
+        console.error('Error fetching comments:', error);
     }
   };
 
@@ -67,7 +76,6 @@ export const editComment = async (token, comment_id, newContent) => {
   
       const result = await response.json();
       if (response.ok) {
-        alert('Comment updated successfully');
         return result; // Optionally, return the updated comment
       } else {
         alert(result.error || 'Failed to update comment');

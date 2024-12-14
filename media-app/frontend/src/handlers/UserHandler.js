@@ -195,4 +195,56 @@ export const searchUsers = async (query, setUsers, setAlertModal) => {
 };
 
 
+export const fetchUserData = async (userId, setError, setUsername, setBio, setProfilePic, setTotalPosts, setTotalFollowers, setTotalFollowing) => {
+    try {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`${API_BASE_URL}/user/${userId}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        });
 
+        const data = await response.json();
+        if (response.ok) {
+            setUsername(data.username);
+            setBio(data.bio || 'No bio available');
+            setProfilePic(data.profile_pic || defaultProfilePic);
+            setTotalPosts(data.total_posts);
+            setTotalFollowers(data.total_followers);
+            setTotalFollowing(data.total_following);
+        } else {
+            setError(data.error || 'Failed to fetch user data');
+        }
+    } catch (error) {
+        setError('Something went wrong while fetching user data');
+    }
+};
+
+export const fetchUserPosts = async (userId, page, setPosts, setLoading) => {
+    setLoading(true);
+    const token = localStorage.getItem('token');
+    try {
+        const response = await fetch(
+            `${API_BASE_URL}/dashboard/user-posts?limit=7&offset=${page * 7}&user_id=${userId}`,
+            {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+            }
+        );
+        const data = await response.json();
+        if (response.ok) {
+            setPosts(data.posts);
+        } else {
+            console.error('Failed to fetch user posts:', data.error);
+        }
+    } catch (error) {
+        console.error('Error fetching user posts:', error);
+    } finally {
+        setLoading(false);
+    }
+};

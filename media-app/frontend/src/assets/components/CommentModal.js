@@ -6,7 +6,7 @@ const CommentModal = ({ post_id, isOpen, onOpenChange, commentRefresh }) => {
     const maxChar = 10000; 
     const [message, setMessage] = useState('');
 
-    const token = localStorage.getItem('token'); // Assumes token is stored in localStorage
+    const token = localStorage.getItem('token'); 
 
     const messageLengthCheck = (e, maxChar, setMessage) => {
         if (e.target.value.length <= maxChar) {
@@ -44,13 +44,13 @@ const CommentModal = ({ post_id, isOpen, onOpenChange, commentRefresh }) => {
                 <p className='charCountText'>{message.length} / {maxChar} characters</p>
                 </ModalBody>
                 <ModalFooter>
-                <Button auto flat color="danger" onClick={() => onOpenChange(false)}>
+                <Button auto flat color="danger" onPress={() => onOpenChange(false)}>
                     Cancel
                 </Button>
                 <Button auto color='primary' 
-                    onClick={async () => {
+                    onPress={async () => {
                     await handleCommentSubmit();
-                    onOpenChange(false);  // Close the modal after submitting the comment
+                    onOpenChange(false);  
                     }}
                 >
                     Comment
@@ -62,3 +62,4 @@ const CommentModal = ({ post_id, isOpen, onOpenChange, commentRefresh }) => {
 };
 
 export default CommentModal;
+

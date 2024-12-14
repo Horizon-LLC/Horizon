@@ -24,3 +24,4 @@ const Comment = ({ username, content, createdAt }) => {
 };
 
 export default Comment;
+

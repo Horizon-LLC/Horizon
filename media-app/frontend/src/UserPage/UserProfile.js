@@ -5,9 +5,11 @@ import './UserPage.css';
 import defaultProfilePic from '../images/defaultprofilepicture.jpg';
 import { Button, useDisclosure, Spacer } from '@nextui-org/react';
 import FriendsListModal from '../assets/components/FriendsListModal';
-import UserPagePosts from '../assets/components/UserPagePosts';
 import UserPostsFeed from '../assets/components/UserPostsFeed';
 import API_BASE_URL from '../config';
+import { addFriend } from '../handlers/FollowHandler';
+import { fetchUserData } from '../handlers/UserHandler';
+import { chatboxDirect } from '../handlers/MessageHandler';
 
 const UserProfile = ({ loggedInUser, loggedInUserId }) => {
     const { userId } = useParams();
@@ -23,88 +25,8 @@ const UserProfile = ({ loggedInUser, loggedInUserId }) => {
 
     const [error, setError] = useState(null);
 
-    // Fetch the profile data for the specified user
-    const fetchUserData = async () => {
-        try {
-            const token = localStorage.getItem('token');
-            const response = await fetch(`${API_BASE_URL}/user/${userId}`, {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json',
-                },
-            });
-
-            const data = await response.json();
-            if (response.ok) {
-                setUsername(data.username);
-                setBio(data.bio || 'No bio available');
-                setProfilePic(data.profile_pic || defaultProfilePic);
-                setTotalPosts(data.total_posts);
-                setTotalFollowers(data.total_followers);
-                setTotalFollowing(data.total_following);
-            } else {
-                setError(data.error || 'Failed to fetch user data');
-            }
-        } catch (error) {
-            setError('Something went wrong while fetching user data');
-        }
-    };
-
-    // Creates or fetches a chatbox ID, then navigates to ChatPage
-    const chatboxDirect = async () => {
-        try {
-            const token = localStorage.getItem('token');
-            const response = await fetch(`${API_BASE_URL}/create-or-fetch-chatbox`, {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ user1_id: loggedInUserId, user2_id: userId })
-            });
-
-            if (!response.ok) {
-                throw new Error("Failed to create or fetch chatbox");
-            }
-
-            const data = await response.json();
-            const chatboxId = data.chatbox_id;
-
-            // Navigate to ChatPage with state
-            navigate(`/chat/${chatboxId}`, { state: { userId, username } });
-        } catch (error) {
-            setError('Something went wrong while creating or fetching the chatbox');
-            console.error(error);
-        }
-    };
-
-    // Adds a friend (follow request)
-    const addFriend = async () => {
-        try {
-            const token = localStorage.getItem('token');
-            const response = await fetch(`${API_BASE_URL}/add-friend`, {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ userId })
-            });
-
-            const data = await response.json();
-            if (response.ok) {
-                alert('Follow request sent successfully!');
-            } else {
-                setError(data.error || 'Failed to send follow request');
-            }
-        } catch (error) {
-            setError('Something went wrong while sending the follow request');
-        }
-    };
-
     useEffect(() => {
-        fetchUserData();
+        fetchUserData(userId, setError, setUsername, setBio, setProfilePic, setTotalPosts, setTotalFollowers, setTotalFollowing);
     }, [userId]);
 
     if (error) {
@@ -133,9 +55,9 @@ const UserProfile = ({ loggedInUser, loggedInUserId }) => {
             </div>
 
             <div className="usertop-container">
-                <Button className='addfriend-button' onClick={chatboxDirect}> Message </Button>
+                <Button className='addfriend-button' onPress={() => chatboxDirect(loggedInUserId, userId, username, navigate, setError)}> Message </Button>
                 <Spacer x={5} />
-                <Button className='addfriend-button' onClick={addFriend}> Follow </Button>
+                <Button className='addfriend-button' onPress={() => addFriend(userId, setError)}> Follow </Button>
             </div>
 
             <div className="feed-bottom">

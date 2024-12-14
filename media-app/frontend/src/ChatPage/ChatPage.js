@@ -6,6 +6,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { io } from 'socket.io-client';
 import {sendMessage} from '../handlers/MessageHandler';
 import API_BASE_URL from '../config';
+import { fetchMessages } from '../handlers/MessageHandler';
 
 // Initialize WebSocket client with necessary configurations
 const socket = io(API_BASE_URL, { 
@@ -28,36 +29,8 @@ const ChatPage = ({ loggedInUser, loggedInUserId }) => {
         setMessages([]);  // Reset messages
         setNewMessage('');  // Clear the message input
         setError(null);  // Clear errors
-        fetchMessages();  // Fetch fresh data from the server
+        fetchMessages(chatboxId, setMessages, setError);  // Fetch fresh data from the server
         socket.emit('join_room', { chatbox_id: chatboxId });
-    };
-
-    // Fetch messages from the server
-    const fetchMessages = async () => {
-        const token = localStorage.getItem('token');
-        if (!token) {
-            setError('Authorization token is missing.');
-            return;
-        }
-
-        try {
-            const response = await fetch(`${API_BASE_URL}/get-chatbox-messages?chatbox_id=${chatboxId}`, {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json',
-                },
-            });
-
-            const data = await response.json();
-            if (response.ok && data.messages) {
-                setMessages(data.messages);
-            } else {
-                setError(data.error || 'No messages found');
-            }
-        } catch (error) {
-            setError('Failed to fetch messages');
-        }
     };
 
     // Effect to initialize chat and fetch messages on mount or refresh
@@ -82,10 +55,10 @@ const ChatPage = ({ loggedInUser, loggedInUserId }) => {
     }, [messages]);
 
     useEffect(() => {
-        fetchMessages(); // Fetch messages on initial load
+        fetchMessages(chatboxId, setMessages, setError); // Fetch messages on initial load
 
         const intervalId = setInterval(() => {
-            fetchMessages(); // Fetch messages every 5 seconds
+            fetchMessages(chatboxId, setMessages, setError); // Fetch messages every 5 seconds
         }, 5000);
 
         // Cleanup interval on component unmount
@@ -148,7 +121,7 @@ const ChatPage = ({ loggedInUser, loggedInUserId }) => {
                     endContent={
                         <Button
                             auto
-                            onClick={() => sendMessage(loggedInUserId, userId, chatboxId, newMessage, setNewMessage, fetchMessages, setError)}
+                            onClick={() => sendMessage(loggedInUserId, userId, chatboxId, newMessage, setNewMessage, fetchMessages, setError, setMessages)}
                             className='send-button'
                             disabled={!newMessage.trim()}
                         >

@@ -7,7 +7,6 @@ const ProfilePictureModal = ({ isOpen, onOpenChange, setProfilePic }) => {
         const file = e.target.files[0];
         try {
             const profilePicUrl = await uploadProfilePicture(file); // Call the handler function
-            alert('Profile picture updated!');
             setProfilePic(profilePicUrl); // Update the parent component's profile picture
             onOpenChange(false); // Close the modal
         } catch (error) {

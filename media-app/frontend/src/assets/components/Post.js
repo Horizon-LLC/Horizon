@@ -22,25 +22,7 @@ const Post = ({ post, index }) => {
     fetchLikeData(post.post_id, setLiked, setLikeCount);
   }, [post.post_id]);
 
-  const fetchComments = async () => {
-    setLoading(true);
-    try {
-      const token = localStorage.getItem('token');
-      const response = await fetch(`${API_BASE_URL}/get-comments/${post.post_id}`, {
-        method: 'GET',
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const data = await response.json();
-      console.log('Rendering Post component:', { post });
-      console.log('Rendering CommentPopup:', showComments);
-      if (response.ok) setComments(data.comments);
-      else console.error('Failed to fetch comments:', data.error);
-    } catch (error) {
-      console.error('Error fetching comments:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+
 
   const addComment = async () => {
     if (!newComment.trim()) return;
@@ -53,7 +35,6 @@ const Post = ({ post, index }) => {
       });
       if (response.ok) {
         setNewComment('');
-        fetchComments();
       } else console.error('Failed to add comment:', await response.text());
     } catch (error) {
       console.error('Error adding comment:', error);
@@ -90,23 +71,6 @@ const Post = ({ post, index }) => {
           <p style={{ marginLeft: 10 }}>{likeCount} Likes</p>
         </CardFooter>
       </Card>
-      {showComments && (
-        <Modal open={showComments} onClose={() => setShowComments(false)} aria-labelledby="modal-title">
-          <Modal.Header>
-            <h3>Comments</h3>
-          </Modal.Header>
-          <Modal.Body>
-            {loading ? <p>Loading comments...</p> : comments.map((c) => (
-              <div key={c.comment_id}><strong>{c.username}</strong><p>{c.content}</p></div>
-            ))}
-            <Input value={newComment} onChange={(e) => setNewComment(e.target.value)} placeholder="Write a comment..." fullWidth />
-          </Modal.Body>
-          <Modal.Footer>
-            <Button auto flat onClick={() => setShowComments(false)}>Close</Button>
-            <Button auto onClick={addComment}>Post Comment</Button>
-          </Modal.Footer>
-        </Modal>
-      )}
     </>
   );
 };

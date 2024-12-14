@@ -1,7 +1,7 @@
 import React, { useState, useEffect, forwardRef, useImperativeHandle } from 'react';
 import { CircularProgress, ScrollShadow } from '@nextui-org/react';
 import Post from './Post';
-import API_BASE_URL from '../../config';
+import { fetchUserPosts } from '../../handlers/UserHandler';
 import '../CSS/Profile.css';
 
 const UserPostsFeed = forwardRef(({ userId }, ref) => {
@@ -9,32 +9,7 @@ const UserPostsFeed = forwardRef(({ userId }, ref) => {
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(0);
 
-    const fetchUserPosts = async (page) => {
-        setLoading(true);
-        const token = localStorage.getItem('token');
-        try {
-            const response = await fetch(
-                `${API_BASE_URL}/dashboard/user-posts?limit=7&offset=${page * 7}&user_id=${userId}`,
-                {
-                    method: 'GET',
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        'Content-Type': 'application/json',
-                    },
-                }
-            );
-            const data = await response.json();
-            if (response.ok) {
-                setPosts(data.posts);
-            } else {
-                console.error('Failed to fetch user posts:', data.error);
-            }
-        } catch (error) {
-            console.error('Error fetching user posts:', error);
-        } finally {
-            setLoading(false);
-        }
-    };
+    
 
     useImperativeHandle(ref, () => ({
         refresh: () => {
@@ -44,7 +19,7 @@ const UserPostsFeed = forwardRef(({ userId }, ref) => {
     }));
 
     useEffect(() => {
-        fetchUserPosts(page);
+        fetchUserPosts(userId, page, setPosts, setLoading);
     }, [page]);
 
     return (
